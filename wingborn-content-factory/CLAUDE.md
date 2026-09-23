@@ -119,6 +119,12 @@ Requerem Python 3.10+ e PyYAML. Código de saída diferente de zero é bloqueio 
 Os validadores de tendência e embalagem são heurísticos. Quando devolverem `REVIEW_REQUIRED`,
 mostre os motivos ao usuário em vez de decidir sozinho.
 
+## Narração (fora do Claude)
+
+Depois de `/exportar-projeto`, o usuário narra `11_exports/tts_plain_text.txt` com a própria voz no
+Kaggle, usando `narration/kaggle_narracao.ipynb` (passo a passo em `narration/README.md`). O código
+fica em `narration/narrar.py`; ao alterá-lo, rode `python3 narration/build_notebook.py`.
+
 Testes: `python3 -m unittest discover -s tests -v` (fixture em
 `tests/fixtures/adjacent-trend-mother-dragons/`).
 
