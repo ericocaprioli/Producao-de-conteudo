@@ -1,0 +1,32 @@
+protagonist:
+  name: "Maelle"
+  age: 26
+  appearance: "pale and slight, dark auburn hair in a loose knot, grey eyes, needle-callused fingers, a plain grey hostage cloak"
+  wound: "since her father died, his widow has kept her as the house seamstress and let her be forgotten"
+  strength: "patience and exact hands; she finishes what she starts"
+  desire: "to be seen for what she can do, under her own name"
+  fear: "being erased; dying as someone else"
+  climax_choice: "she says her true name in front of both houses, knowing the law may execute her as an impostor"
+antagonist:
+  name: "Odrenne"
+  relation: "stepmother"
+  public_power: "regent of House Varrow"
+  hidden_motive: "she has promised the northern pass to Lord Castellan in exchange for a marriage for her daughter Isolde"
+ally:
+  name: "Hallam"
+  role: "one-armed wing-mender of the citadel, mocked since his dragon died"
+  risk_taken: "he vouches for Maelle to the warden and puts his own place at the citadel at risk"
+dragon:
+  name_rule: "Veyra; the riders call her 'the old one', and only Hallam uses her name"
+  appearance: "grey-gold scales, a long torn left wing, amber eyes, a scar across her jaw"
+  behavior: "bitter and still; she burns anyone who touches the wing, but watches Maelle work"
+  bond_rule: "she accepts only the hands that have mended her"
+story:
+  symbol_object: "bone needle case"
+  opening_danger: "sent under a false name as hostage to a citadel whose law executes the hostage if the treaty breaks"
+  hidden_truth: "the stepmother planned the swap as a death sentence because she means to break the treaty"
+  first_power_signal: "Veyra lets Maelle close a small tear in her wing without burning her"
+  second_power_signal: "Veyra lowers her wing for Maelle to finish the long seam"
+  public_revelation: "the warden reads Odrenne's letter to Lord Castellan aloud at the treaty renewal"
+  climax_location: "the Cold Reach gate"
+  final_repair: "the warden names her Keeper of the Pass under her own name; she never returns to Varrow"
