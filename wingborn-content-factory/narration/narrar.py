@@ -14,6 +14,10 @@ Modos:
               2) converte cada trecho para o SEU timbre (ChatterboxVC). Pronúncia nativa, voz sua.
     clonagem  narra direto imitando a sua gravação: herda também o sotaque dela.
 
+Ritmo:
+    velocidade  0.9 (padrão) deixa a fala 10% mais lenta que o modelo, sem mudar o tom da voz.
+                Aplicada só na montagem final: mudá-la não gera nenhum trecho de novo.
+
 Saídas na pasta atual:
     narracao_final.wav   narração completa, volume normalizado para o YouTube (-16 LUFS)
     narracao.srt         legenda com o tempo de cada trecho (serve para alinhar as cenas na edição)
@@ -49,6 +53,7 @@ DEFAULTS = {
     "cfg_weight": 0.3,         # menor = ritmo mais solto e menos sotaque copiado da referência
     "temperature": 0.8,
     "max_chars": 250,          # tamanho máximo de cada trecho
+    "velocidade": 0.9,         # ritmo da fala: 1.0 = como o modelo gera, 0.9 = 10% mais lenta (o tom não muda)
     "pausa_frase": 0.25,       # silêncio entre trechos do mesmo parágrafo (s)
     "pausa_paragrafo": 0.7,    # silêncio no fim de cada parágrafo (s)
     "so_primeiros": None,      # teste rápido: gera só os N primeiros trechos
@@ -66,6 +71,8 @@ AUDIO_EXTS = (".wav", ".mp3", ".m4a", ".flac", ".ogg", ".opus", ".aac")
 IGNORED_OUTPUTS = {"narracao_final.wav", "narracao_bruta.wav", "referencia.wav", "voz_base_preparada.wav"}
 BASE_VOICE_STEM = "voz_base"
 MODES = ("nativo", "clonagem")
+SPEED_RANGE = (0.5, 2.0)   # limites do atempo em qualquer versão do ffmpeg
+LOUDNORM = "loudnorm=I=-16:TP=-1.5:LRA=11"
 
 
 class Erro(Exception):
@@ -82,6 +89,17 @@ def load_config(path: Path = Path("config.json")) -> dict:
         cfg.update(json.loads(path.read_text(encoding="utf-8")))
     cfg["usar_take"] = {int(k): int(v) for k, v in (cfg.get("usar_take") or {}).items()}
     return cfg
+
+
+def check_speed(value) -> float:
+    try:
+        speed = float(value)
+    except (TypeError, ValueError):
+        speed = float("nan")
+    if not SPEED_RANGE[0] <= speed <= SPEED_RANGE[1]:
+        raise Erro(f"velocidade {value!r} inválida. Use um número com ponto entre {SPEED_RANGE[0]} e "
+                   f"{SPEED_RANGE[1]}: 0.9 = 10% mais lenta, 1.0 = normal, 1.1 = 10% mais rápida.")
+    return speed
 
 
 def _walk(dirs: list[str]) -> list[Path]:
@@ -209,7 +227,10 @@ def file_hash(path: Path) -> str:
 
 
 def chunk_key(text: str, cfg: dict, ref_hash: str, base_hash: str = "") -> str:
-    """Identidade de um trecho: muda se o texto, as vozes, o modo ou os ajustes de geração mudarem."""
+    """Identidade de um trecho: muda se o texto, as vozes, o modo ou os ajustes de geração mudarem.
+
+    A velocidade fica de fora: é aplicada só na montagem final, então mudá-la reaproveita todas as takes.
+    """
     params = (text, ref_hash, cfg["exaggeration"], cfg["cfg_weight"], cfg["temperature"],
               cfg.get("modo", "nativo"), base_hash)
     return hashlib.md5(repr(params).encode("utf-8")).hexdigest()[:16]
@@ -264,10 +285,15 @@ def prepare_reference(src: Path, inicio: float, duracao: float, out: Path = Path
     return out
 
 
-def normalize(src: Path, dst: Path, sr: int) -> None:
-    """Volume no padrão do YouTube (~ -16 LUFS), mantendo a taxa de amostragem."""
+def audio_filter(velocidade: float) -> str:
+    """atempo muda o ritmo sem mudar o tom; loudnorm vem depois, sobre o áudio já no ritmo final."""
+    return LOUDNORM if velocidade == 1.0 else f"atempo={velocidade:g},{LOUDNORM}"
+
+
+def normalize(src: Path, dst: Path, sr: int, velocidade: float = 1.0) -> None:
+    """Ritmo final e volume no padrão do YouTube (~ -16 LUFS), mantendo a taxa de amostragem."""
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src),
-                    "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", str(sr), str(dst)], check=True)
+                    "-af", audio_filter(velocidade), "-ar", str(sr), str(dst)], check=True)
 
 
 # ---------------------------------------------------------------------------
@@ -299,6 +325,7 @@ def main() -> int:
     if cfg["modo"] not in MODES:
         raise Erro(f"modo '{cfg['modo']}' inválido. Use {MODES}.")
     native = cfg["modo"] == "nativo"
+    speed = check_speed(cfg["velocidade"])
     script_path, ref_src = find_inputs(cfg)
     base_src = find_base_voice(cfg) if native else None
     print(f"Roteiro:    {script_path}")
@@ -307,6 +334,7 @@ def main() -> int:
         print(f"Modo nativo: inglês fluente com {base_src or 'a voz padrão do Chatterbox'}, convertido para a sua voz.")
     else:
         print("Modo clonagem: imita a sua gravação (inclusive o sotaque).")
+    print(f"Velocidade: {speed:g} (1.0 = ritmo do modelo)")
 
     text = script_path.read_text(encoding="utf-8")
     chunks = split_script(text, cfg["max_chars"], cfg["pausa_frase"], cfg["pausa_paragrafo"])
@@ -413,11 +441,16 @@ def main() -> int:
         parts += [audio, np.zeros(int(sr * pause), dtype="float32")]
         cursor += pause
     sf.write("narracao_bruta.wav", np.concatenate(parts), sr)
-    normalize(Path("narracao_bruta.wav"), Path("narracao_final.wav"), sr)
+    normalize(Path("narracao_bruta.wav"), Path("narracao_final.wav"), sr, speed)
+    # O atempo estica o áudio inteiro por igual, pausas incluídas: a legenda acompanha na mesma proporção.
+    entries = [(a / speed, b / speed, t) for a, b, t in entries]
+    total = cursor / speed
     Path("narracao.srt").write_text(build_srt(entries), encoding="utf-8")
 
     still_bad = suspicious({i: duration(i, chosen[i]) for i in texts}, texts)
-    lines = [f"Roteiro: {script_path}", f"Referência: {ref_src}", f"Duração: {cursor / 60:.1f} min", ""]
+    chars = sum(len(t) for t in texts.values())
+    lines = [f"Roteiro: {script_path}", f"Referência: {ref_src}",
+             f"Duração: {total / 60:.1f} min | velocidade {speed:g} | {chars / total:.1f} caracteres por segundo", ""]
     if still_bad:
         lines.append(f"OUÇA ESTES TRECHOS (duração ainda anormal): {still_bad}")
         lines.append("Se algum estiver ruim: coloque USAR_TAKE = {número: 2} e rode de novo (só ele é regerado).")
@@ -436,7 +469,7 @@ def main() -> int:
 
     print()
     print("=" * 64)
-    print(f"PRONTO: narracao_final.wav ({cursor / 60:.1f} min), narracao.srt e relatorio.txt")
+    print(f"PRONTO: narracao_final.wav ({total / 60:.1f} min, velocidade {speed:g}), narracao.srt e relatorio.txt")
     if still_bad:
         print(f"Trechos para ouvir antes de publicar: {still_bad} (veja relatorio.txt ou a célula 4)")
     else:

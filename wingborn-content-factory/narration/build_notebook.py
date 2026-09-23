@@ -21,6 +21,7 @@ INTRO = """# Narração Wingborn — sua voz com Chatterbox
 **Para gerar:** clique em **Run All**. Não é preciso reiniciar a sessão em nenhum momento.
 
 - Teste rápido primeiro? Na célula 3, coloque `"so_primeiros": 3`.
+- Voz rápida ou lenta demais? Na célula 3, mude `"velocidade"` (0.9 = 10% mais lenta, 1.1 = 10% mais rápida) e rode as células 3 e 4. Com a sessão ainda aberta leva segundos: nenhum trecho é gerado de novo.
 - Não quer ficar com a aba aberta? Use **Save Version → Save & Run All (Commit)**. O Kaggle roda sozinho e os arquivos ficam guardados na aba **Output** da versão, sem prazo para baixar.
 
 **Resultado (aba Output → Download):** `narracao_final.wav`, `narracao.srt` (legenda com o tempo de cada trecho, útil para posicionar as cenas) e `relatorio.txt` (lista os trechos que merecem ser ouvidos).
@@ -56,6 +57,8 @@ import json
 config = {
     "modo": "nativo",           # "nativo": inglês fluente sem sotaque, convertido para a SUA voz
                                 # "clonagem": imita a sua gravação direto (herda o sotaque dela)
+    "velocidade": 0.9,          # ritmo da fala: 0.9 = 10% mais lenta, 1.0 = normal, 1.1 = 10% mais rápida
+                                # (use ponto, não vírgula; o tom da voz não muda; mudar só isto não gera nada de novo)
     "exaggeration": 0.7,        # emoção: 0.5 neutro, 0.7+ dramático (alto demais distorce)
     "cfg_weight": 0.3,          # menor = ritmo mais solto e menos sotaque copiado da referência
     "temperature": 0.8,
@@ -78,6 +81,7 @@ RUN = '''# 4) Gerar a narração. Pode rodar de novo à vontade: só o que mudou
 
 LISTEN = '''# 5) (Opcional) Ouvir os trechos marcados como suspeitos no relatório.
 #    Se um estiver ruim: na célula 3 coloque "usar_take": {número: 2} e rode as células 3 e 4 de novo.
+#    As takes tocam no ritmo original do modelo; a "velocidade" só entra na narracao_final.wav.
 import json, glob
 from IPython.display import Audio, Markdown, display
 

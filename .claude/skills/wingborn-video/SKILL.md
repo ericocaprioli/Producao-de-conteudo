@@ -78,6 +78,9 @@ Guia completo: `wingborn-content-factory/narration/README.md`. Resumo para condu
    Leva ~30 min para ~19 min de áudio. Avisos amarelos das bibliotecas são normais.
 5. Ao ver "PRONTO": **Output → /kaggle/working** → atualizar → baixar `narracao_final.wav`,
    `narracao.srt`, `relatorio.txt` **antes de fechar a aba**.
+6. Ritmo: `"velocidade"` na célula 3 (padrão 0.9, 10% mais lenta que o modelo, escolha do
+   usuário; 1.1 = 10% mais rápida). Mudar só ela não regera trechos: as células 3 e 4 remontam
+   áudio e legenda em segundos, se a sessão ainda estiver aberta.
 
 Se o usuário colar a saída do Kaggle, leia e diga o que é normal e o que é erro. Se mudar
 `narration/narrar.py`, rode `python3 narration/build_notebook.py` e os testes.

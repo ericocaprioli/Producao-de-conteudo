@@ -2,6 +2,7 @@
 
 import json
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -19,6 +20,11 @@ except ImportError:  # pragma: no cover
     np = sf = None
 
 SCRIPT = (ROOT / "tests" / "fixtures" / "adjacent-trend-mother-dragons" / "06_script")
+
+
+def srt_end(srt: str) -> float:
+    h, m, s, ms = map(int, re.findall(r"--> (\d+):(\d+):(\d+),(\d+)", srt)[-1])
+    return h * 3600 + m * 60 + s + ms / 1000
 
 
 class TestSplit(unittest.TestCase):
@@ -88,6 +94,21 @@ class TestHelpers(unittest.TestCase):
         cfg = dict(narrar.DEFAULTS)
         self.assertNotEqual(narrar.chunk_key("t", cfg, "v", "padrao"),
                             narrar.chunk_key("t", {**cfg, "modo": "clonagem"}, "v", ""))
+
+    def test_chunk_key_ignores_speed(self):
+        cfg = dict(narrar.DEFAULTS)
+        self.assertEqual(narrar.chunk_key("t", cfg, "v"), narrar.chunk_key("t", {**cfg, "velocidade": 1.1}, "v"))
+
+    def test_speed_validation(self):
+        self.assertEqual(narrar.check_speed(0.9), 0.9)
+        self.assertEqual(narrar.check_speed(1), 1.0)
+        for bad in (90, 0, -1, "0,9", None, float("nan")):
+            with self.subTest(bad=bad), self.assertRaises(narrar.Erro):
+                narrar.check_speed(bad)
+
+    def test_audio_filter_changes_tempo_before_loudness(self):
+        self.assertEqual(narrar.audio_filter(1.0), narrar.LOUDNORM)
+        self.assertEqual(narrar.audio_filter(0.9), "atempo=0.9," + narrar.LOUDNORM)
 
     def test_find_inputs(self):
         with tempfile.TemporaryDirectory() as d:
@@ -164,10 +185,11 @@ class TestEndToEnd(unittest.TestCase):
         os.chdir(self.dir)
         self.model = FakeModel()
         self.vc = FakeVC()
+        self.speeds = []
         self._orig = (narrar.load_model, narrar.prepare_reference, narrar.normalize, narrar.SEARCH_DIRS)
         narrar.load_model = lambda kind="tts": self.vc if kind == "vc" else self.model
         narrar.prepare_reference = lambda src, a, b, out=Path("referencia.wav"): shutil.copy(src, out) and out
-        narrar.normalize = lambda src, dst, sr: shutil.copy(src, dst)
+        narrar.normalize = lambda src, dst, sr, velocidade=1.0: self.speeds.append(velocidade) or shutil.copy(src, dst)
         ds = self.dir / "input"
         ds.mkdir()
         paragraphs = [f"Paragraph {n} is calm and slow, told for quiet nights." for n in range(1, 7)]
@@ -218,6 +240,38 @@ class TestEndToEnd(unittest.TestCase):
         text.write_text(text.read_text().replace("Paragraph 6", "Paragraph six"))
         narrar.main()
         self.assertEqual(len(self.model.calls), calls + 1, "só o trecho alterado deveria ser regerado")
+
+    def test_speed_reuses_takes_and_stretches_subtitles(self):
+        Path("config.json").write_text(json.dumps({"velocidade": 1.0}))
+        self.assertEqual(narrar.main(), 0)
+        normal = srt_end(Path("narracao.srt").read_text())
+        calls = len(self.model.calls)
+
+        Path("config.json").write_text(json.dumps({"velocidade": 0.8}))
+        self.assertEqual(narrar.main(), 0)
+        self.assertEqual(len(self.model.calls), calls, "mudar só a velocidade não deveria gerar trechos")
+        self.assertEqual(self.speeds, [1.0, 0.8])
+        self.assertAlmostEqual(srt_end(Path("narracao.srt").read_text()), normal / 0.8, places=2)
+        self.assertIn("velocidade 0.8", Path("relatorio.txt").read_text())
+
+    def test_invalid_speed_stops_before_generating(self):
+        Path("config.json").write_text(json.dumps({"velocidade": 90}))
+        with self.assertRaises(narrar.Erro):
+            narrar.main()
+        self.assertEqual(self.model.calls, [])
+
+
+@unittest.skipIf(np is None or shutil.which("ffmpeg") is None, "numpy/soundfile/ffmpeg ausentes")
+class TestFfmpeg(unittest.TestCase):
+    def test_speed_stretches_audio_and_keeps_sample_rate(self):
+        with tempfile.TemporaryDirectory() as d:
+            src, dst = Path(d) / "in.wav", Path(d) / "out.wav"
+            noise = np.random.default_rng(0).standard_normal(3 * 24000) * 0.1
+            sf.write(str(src), noise.astype("float32"), 24000)
+            narrar.normalize(src, dst, 24000, 0.9)
+            info = sf.info(str(dst))
+        self.assertEqual(info.samplerate, 24000)
+        self.assertAlmostEqual(info.frames / info.samplerate, 3 / 0.9, delta=0.05)
 
 
 class TestNotebook(unittest.TestCase):

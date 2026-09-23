@@ -135,6 +135,7 @@ Clique em cada cartão para baixar.
 | Kaggle: "Não achei o roteiro / o áudio" | o dataset não está ligado: painel da direita → **Add Input** → escolha o seu dataset |
 | A narração parou no meio | rode a célula 4 de novo: ela continua de onde parou, se a sessão ainda estiver aberta |
 | A voz ficou com sotaque | confira se a célula 3 está com `"modo": "nativo"` |
+| A voz está rápida ou lenta demais | na célula 3, mude `"velocidade"` (0.9 = 10% mais lenta, o padrão; 1.0 = normal; 1.1 = 10% mais rápida) e rode as células 3 e 4. Se a sessão ainda estiver aberta, leva segundos |
 | Um trecho da narração ficou estranho | veja `relatorio.txt`; na célula 3, `"usar_take": {número: 2}`, e rode as células 3 e 4 |
 | Os arquivos sumiram do Output | a sessão foi encerrada; rode de novo, ou use **Save Version** da próxima vez |
 | Não sabe o que fazer | escreva ao Claude: *"estou perdido, onde estamos e qual é o próximo passo?"* |

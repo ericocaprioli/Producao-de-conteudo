@@ -40,6 +40,18 @@ Com `"modo": "clonagem"` o notebook volta a imitar a sua gravação direto, herd
    - `narracao.srt` — legenda com o tempo de cada trecho (use para posicionar as cenas e como legenda do vídeo);
    - `relatorio.txt` — duração total e os trechos que merecem ser ouvidos.
 
+## Ritmo da voz
+
+A narração sai **10% mais lenta** que o ritmo do modelo (`"velocidade": 0.9` na célula 3), num
+tom mais calmo de contador de histórias. Para mudar: `0.8` = 20% mais lenta, `1.0` = ritmo do
+modelo, `1.1` = 10% mais rápida (use ponto, não vírgula). Fora de 0.8–1.2 a voz começa a soar
+artificial.
+
+O tom da voz não muda, e a legenda `narracao.srt` acompanha o novo ritmo. A velocidade é aplicada
+só na montagem final: com a sessão ainda aberta, rodar as células 3 e 4 leva segundos, porque
+nenhum trecho é gerado de novo. O `relatorio.txt` mostra a duração, a velocidade usada e quantos
+caracteres por segundo a narração tem.
+
 ## Se um trecho ficar ruim
 
 O script mede a duração de cada trecho e refaz sozinho os que saem muito longos (alucinação) ou
@@ -48,7 +60,7 @@ onde dá para ouvir as takes. Para escolher outra take: na célula 3, `"usar_tak
 rode as células 3 e 4 de novo. Só aquele trecho é refeito.
 
 Mudar uma frase do roteiro também refaz só aquele trecho. Mudar a voz ou os ajustes de emoção
-refaz tudo.
+refaz tudo. Mudar a velocidade não refaz nada.
 
 ## Para quem mantém o projeto
 
