@@ -27,8 +27,9 @@ adequado antes de gerar cenas e SEO.
    16:00-20:00 — reparação e encerramento, ajustado à duração real
    ```
 
-   Ajustar os tempos à duração real estimada do roteiro (contagem de caracteres/palavras dos
-   cinco blocos), mantendo ordem e função de cada trecho.
+   Ajustar os tempos à duração real estimada: total de caracteres dos cinco blocos ÷
+   `narration_chars_per_second` (`config/retention-rules.yaml`, padrão 15) ÷ 60. Se a estimativa
+   sair de 15–20 minutos, avisar o usuário. Manter ordem e função de cada trecho.
 
 2. Identificar no mínimo dois microclímax antes do clímax final, e confirmar que não há
    intervalos longos (mais de ~2 minutos) apenas de explicação sem tensão.

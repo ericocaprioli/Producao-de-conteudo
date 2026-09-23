@@ -1,0 +1,71 @@
+# FIXTURE HIPOTÉTICO — referência conceitual do adendo:
+# "A mãe abandonou a filha diante dos dragões, mas a criança possuía uma origem extraordinária."
+# Os nomes, a cadeia causal e a thumbnail abaixo são inventados para teste; não descrevem um vídeo real.
+
+viral_wave:
+  victim_role: "young daughter, vulnerable and alone"
+  betrayer_role: "her own mother"
+  betrayal_type: "deliberate abandonment"
+  danger_type: "dragons as mortal danger"
+  visual_spectacle: "a small child facing a huge dragon"
+  hidden_value: "the child carries an extraordinary origin"
+  emotional_promise: "the abandoned child survives and is recognized"
+  future_reward: "survival, recognition or revenge against the mother"
+  title_pattern: "[mother] left [daughter] to [dragons] — but she was [secret origin]"
+  thumbnail_pattern: "tiny child before a giant dragon, mother turning away"
+  preserved_slots:
+    - emotional_relationship
+    - betrayal_type
+    - danger_type
+    - dragon_presence
+    - visual_vulnerability
+    - extraordinary_origin
+    - reward_promise
+  changed_elements: []
+  prohibited_events:
+    - "the queen leaves her daughter at the dragon cliffs as a royal sacrifice"
+    - "the child's birthmark glows when the dragon approaches"
+    - "Tiamat recognizes the child as her heir and raises her in the volcano"
+    - "the daughter returns years later riding a dragon over the capital"
+    - "the mother kneels and begs forgiveness before the royal court"
+    - "the daughter is crowned and takes the throne"
+
+reference_surface:
+  title: "Her mother left her to die at the hands of the dragons — but she was the heir of Tiamat"
+  names: [Lyra, Morwen, Tiamat, Eldmoor]
+  causal_chain:
+    - "Queen Morwen gives birth to Lyra, whose crown-shaped birthmark glows at night"
+    - "the court seer declares the birthmark a curse on the kingdom of Eldmoor"
+    - "dragons begin raiding the villages of Eldmoor"
+    - "the royal council demands a sacrifice to end the raids"
+    - "the queen leaves her daughter at the dragon cliffs as a royal sacrifice"
+    - "the child's birthmark glows when the dragon approaches"
+    - "Tiamat recognizes the child as her heir and raises her in the volcano"
+    - "the daughter returns years later riding a dragon over the capital"
+    - "the mother kneels and begs forgiveness before the royal court"
+    - "the daughter is crowned and takes the throne"
+  revelation_mechanism: "the glowing crown birthmark shows Tiamat that the child is her heir"
+  climax: "Lyra flies over the capital riding Tiamat and exposes the queen before the royal court"
+  ending: "Morwen begs forgiveness on her knees and Lyra is crowned queen of Eldmoor"
+  thumbnail:
+    description: "tiny girl kneeling on a volcanic cliff at sunset, arms raised, screaming, a giant red dragon head looming directly above her, the queen's silhouette walking away on the left edge, glowing crown birthmark on the girl's forehead"
+    text: "HEIR OF TIAMAT"
+    composition:
+      pose: "girl kneeling with arms raised"
+      framing: "wide shot"
+      camera_angle: "low angle"
+      dragon_position: "giant dragon head looming directly above the girl, top center"
+      setting: "volcanic cliff at sunset"
+      symbol_object: "glowing crown birthmark on the forehead"
+      palette: "orange and red fire tones"
+      lighting: "backlit by lava glow"
+      body_expression: "screaming in terror"
+      text: "HEIR OF TIAMAT"
+      overall_layout: "girl bottom center, dragon top center, mother silhouette left edge"
+
+functional_tags:
+  promise: [survival, recognition, revenge]
+  emotion: [injustice, pity, awe]
+  visual_hook: [vulnerable_victim, family_threat, creature_danger, strong_contrast, unanswered_visual_question]
+  fantasy_hook: [dragon, royal_origin]
+  curiosity_gap: "why would a dragon spare the child her own mother abandoned?"

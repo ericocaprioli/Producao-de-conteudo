@@ -1,0 +1,27 @@
+title_options:
+  - text: "Her Mother Walked Her Into the Dragons' Valley and Never Came Back — Until the Grey Dragon Bowed"
+    angle: family_injustice
+    viral_slots_preserved: [emotional_relationship, betrayal_type, dragon_presence, reward_promise]
+    concrete_details_changed: [wording, event, turn_mechanism, word_order]
+    emotional_promise: "the child her mother abandoned will be recognized, not devoured"
+    curiosity_gap: "why would a dragon bow to a child left to die?"
+    reference_phrase_overlap: low
+    promise_delivered_by: "bloco 1 (a dragoa abaixa a cabeça) e bloco 4 (ela obedece em público)"
+
+  - text: "Abandoned Where Dragons Hunt So Her Stepfather Could Take the Ford — But the Dragon Knew Her Mark"
+    angle: secret_or_heritage
+    viral_slots_preserved: [betrayal_type, danger_type, dragon_presence, extraordinary_origin]
+    concrete_details_changed: [wording, event, betrayer_motive, turn_mechanism]
+    emotional_promise: "the hidden sign that made her a target will make her untouchable"
+    curiosity_gap: "what did the dragon recognize in her mark?"
+    reference_phrase_overlap: low
+    promise_delivered_by: "bloco 3 (pedra da carta) e bloco 5 (sentença da Assize)"
+
+  - text: "They Called Her Mark a Curse and Left Her Where Dragons Hunt — Then the Grey One Knelt"
+    angle: dragon
+    viral_slots_preserved: [betrayal_type, danger_type, dragon_presence, extraordinary_origin]
+    concrete_details_changed: [wording, event, turn_mechanism]
+    emotional_promise: "the mark they feared becomes her protection"
+    curiosity_gap: "why does the dragon kneel?"
+    reference_phrase_overlap: low
+    promise_delivered_by: "bloco 1"

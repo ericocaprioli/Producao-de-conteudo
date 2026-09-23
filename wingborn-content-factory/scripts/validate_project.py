@@ -1,24 +1,20 @@
 #!/usr/bin/env python3
-"""Valida o arquivo project.yaml de um projeto Wingborn Content Factory.
+"""Valida o arquivo de estado project.yaml de um projeto Wingborn Content Factory.
 
 Uso:
-    python3 validate_project.py <caminho-do-projeto>
+    python3 scripts/validate_project.py <caminho-do-projeto>
 
-<caminho-do-projeto> deve ser um diretório como projects/2026-09-23-exemplo,
-contendo 00_input/project.yaml (procurado também na raiz do projeto, como
-fallback, para compatibilidade).
+Verifica schema, modo de criação, estados, gates aprovados, coerência das métricas da
+referência (nada inventado) e blocos aprovados. Ao final sugere o próximo comando, para
+permitir retomar um projeto interrompido apenas pelo arquivo de estado.
 
-Saída: relatório humano no stdout. Código de saída 0 se válido, 1 se inválido.
+Código de saída 0 se válido, 1 se inválido, 2 em erro de uso.
 """
 
 import sys
 from pathlib import Path
 
-try:
-    import yaml
-except ImportError:
-    print("ERRO: PyYAML não está instalado. Instale com: pip install pyyaml", file=sys.stderr)
-    sys.exit(2)
+from wb_common import MODES, find_project_yaml, load_yaml
 
 ALLOWED_STATES = [
     "input_received",
@@ -35,101 +31,158 @@ ALLOWED_STATES = [
     "exports_ready",
 ]
 
-# Gate que precisa estar em approved_gates antes de um projeto poder estar
-# no estado correspondente (ou em qualquer estado posterior).
-STATE_REQUIRES_GATE = {
-    "direction_selected": "direction",
-    "title_approved": "title",
-    "bible_approved": "character_bible",
-    "script_approved": "script",
-    "retention_approved": "retention",
-    "scenes_ready": "scenes",
-    "exports_ready": "exports",
+ALLOWED_GATES = {
+    "direction", "trend_alignment", "title", "character_bible", "packaging",
+    "script", "retention", "scenes", "exports",
+}
+
+# Gates exigidos a partir de cada estado (inclusive estados posteriores).
+STATE_REQUIRES_GATES = {
+    "direction_selected": ["direction"],
+    "title_approved": ["title"],
+    "bible_approved": ["character_bible"],
+    "writing_in_progress": ["packaging"],
+    "script_approved": ["script"],
+    "retention_approved": ["retention"],
+    "scenes_ready": ["scenes"],
+    "exports_ready": ["exports"],
+}
+
+NEXT_COMMAND = {
+    "input_received": "/triar-referencia (ou /criar-direcoes em original_channel_story)",
+    "reference_filtered": "/analisar-referencia",
+    "reference_analyzed": "/criar-direcoes",
+    "directions_ready": "/escolher-direcao (usuário escolhe A, B ou C)",
+    "direction_selected": "/criar-titulos",
+    "title_approved": "/criar-ficha",
+    "bible_approved": "aprovação de embalagem em /criar-ficha, depois /escrever-bloco 1",
+    "writing_in_progress": "/escrever-bloco N (próximo bloco não aprovado)",
+    "script_approved": "/revisar-retencao",
+    "retention_approved": "/gerar-cenas",
+    "scenes_ready": "/gerar-seo e depois /exportar-projeto",
+    "exports_ready": "nenhum — projeto exportado",
 }
 
 REQUIRED_TOP_LEVEL_KEYS = [
-    "id",
-    "status",
-    "language",
-    "channel_mode",
-    "blocks",
-    "length",
-    "reference_filter",
-    "reference",
-    "approved_gates",
+    "id", "status", "mode", "language", "channel_mode", "blocks", "length",
+    "reference_filter", "reference", "approved_gates",
 ]
 
-
-def find_project_yaml(project_dir: Path) -> Path | None:
-    candidates = [
-        project_dir / "00_input" / "project.yaml",
-        project_dir / "project.yaml",
-    ]
-    for c in candidates:
-        if c.exists():
-            return c
-    return None
+CHANNEL_MODES = ("core_female_protagonist", "experimental_male_protagonist")
 
 
-def validate(project_dir: Path) -> list[str]:
+def expected_meets_filter(views, age_hours, min_views, window_hours):
+    """true/false quando decidível pelos dados fornecidos; 'unknown' caso contrário."""
+    if isinstance(views, int) and views < min_views:
+        return False
+    if isinstance(age_hours, (int, float)) and age_hours > window_hours:
+        return False
+    if isinstance(views, int) and isinstance(age_hours, (int, float)):
+        return True
+    return "unknown"
+
+
+def validate_metric(ref: dict, value_key: str, source_key: str, errors: list[str]) -> None:
+    value = ref.get(value_key)
+    source = ref.get(source_key, "unknown")
+    if value is None and source not in ("unknown", None):
+        errors.append(
+            f"reference.{value_key} está vazio, então reference.{source_key} deve ser 'unknown' (está '{source}')"
+        )
+    if value is not None and source in ("unknown", None, ""):
+        errors.append(
+            f"reference.{value_key} = {value} sem fonte. Informe reference.{source_key} "
+            f"('manual' se veio do usuário) ou remova o valor — métricas nunca são inventadas"
+        )
+    if value is not None and not isinstance(value, (int, float)):
+        errors.append(f"reference.{value_key} deve ser número ou null (recebido: {value!r})")
+
+
+def validate(project_dir: Path) -> tuple[list[str], dict]:
     errors: list[str] = []
 
     yaml_path = find_project_yaml(project_dir)
     if yaml_path is None:
-        errors.append(
-            f"project.yaml não encontrado em {project_dir}/00_input/project.yaml nem em {project_dir}/project.yaml"
-        )
-        return errors
+        return [f"project.yaml não encontrado em {project_dir}/00_input/project.yaml"], {}
 
     try:
-        data = yaml.safe_load(yaml_path.read_text(encoding="utf-8"))
-    except yaml.YAMLError as exc:
-        errors.append(f"YAML inválido em {yaml_path}: {exc}")
-        return errors
-
-    if not isinstance(data, dict):
-        errors.append(f"{yaml_path} não contém um mapeamento YAML válido")
-        return errors
+        data = load_yaml(yaml_path)
+    except Exception as exc:  # YAML malformado
+        return [f"YAML inválido em {yaml_path}: {exc}"], {}
 
     for key in REQUIRED_TOP_LEVEL_KEYS:
         if key not in data:
-            errors.append(f"Campo obrigatório ausente: '{key}'")
+            errors.append(f"campo obrigatório ausente: '{key}'")
 
     status = data.get("status")
-    if status is not None and status not in ALLOWED_STATES:
-        errors.append(
-            f"status '{status}' não é um estado permitido. Estados válidos: {ALLOWED_STATES}"
-        )
+    if status not in ALLOWED_STATES:
+        errors.append(f"status '{status}' não é permitido. Estados válidos: {ALLOWED_STATES}")
 
-    approved_gates = data.get("approved_gates", [])
-    if not isinstance(approved_gates, list):
+    mode = data.get("mode")
+    if mode not in MODES:
+        errors.append(f"mode '{mode}' inválido. Use um de: {list(MODES)}")
+
+    if data.get("channel_mode") not in CHANNEL_MODES:
+        errors.append(f"channel_mode '{data.get('channel_mode')}' inválido. Use um de: {list(CHANNEL_MODES)}")
+
+    gates = data.get("approved_gates") or []
+    if not isinstance(gates, list):
         errors.append("'approved_gates' deve ser uma lista")
-        approved_gates = []
+        gates = []
+    for g in gates:
+        if g not in ALLOWED_GATES:
+            errors.append(f"gate desconhecido em approved_gates: '{g}'. Válidos: {sorted(ALLOWED_GATES)}")
 
     if status in ALLOWED_STATES:
-        status_index = ALLOWED_STATES.index(status)
-        for gate_state, gate_name in STATE_REQUIRES_GATE.items():
-            gate_index = ALLOWED_STATES.index(gate_state)
-            if status_index >= gate_index and gate_name not in approved_gates:
-                errors.append(
-                    f"status '{status}' requer o gate '{gate_name}' em 'approved_gates', "
-                    f"mas ele não foi encontrado. Não avance o estado sem aprovação do gate."
-                )
+        idx = ALLOWED_STATES.index(status)
+        required: list[str] = []
+        for state, state_gates in STATE_REQUIRES_GATES.items():
+            if idx >= ALLOWED_STATES.index(state):
+                required.extend(state_gates)
+        if mode == "adjacent_trend" and idx >= ALLOWED_STATES.index("direction_selected"):
+            required.append("trend_alignment")
+        for g in required:
+            if g not in gates:
+                errors.append(f"status '{status}' exige o gate '{g}' em approved_gates. Não avance sem aprovação.")
 
-    length = data.get("length", {})
-    if isinstance(length, dict):
-        min_c = length.get("min_per_block")
-        max_c = length.get("max_per_block")
-        if isinstance(min_c, int) and isinstance(max_c, int) and min_c > max_c:
-            errors.append(f"'length.min_per_block' ({min_c}) maior que 'length.max_per_block' ({max_c})")
+    length = data.get("length") or {}
+    min_c, max_c = length.get("min_per_block"), length.get("max_per_block")
+    if isinstance(min_c, int) and isinstance(max_c, int) and min_c > max_c:
+        errors.append(f"length.min_per_block ({min_c}) maior que length.max_per_block ({max_c})")
+    if length.get("unit") not in ("characters", "words"):
+        errors.append(f"length.unit '{length.get('unit')}' inválido. Use 'characters' ou 'words'")
 
-    reference = data.get("reference", {})
-    if isinstance(reference, dict):
-        views_source = reference.get("views_source")
-        if views_source not in (None, "unknown", "manual") and not isinstance(views_source, str):
-            errors.append("'reference.views_source' deve ser uma string ('manual', 'unknown' ou o nome da fonte)")
+    ref = data.get("reference") or {}
+    rf = data.get("reference_filter") or {}
+    validate_metric(ref, "views", "views_source", errors)
+    validate_metric(ref, "age_hours", "age_source", errors)
 
-    return errors
+    if mode in ("adjacent_trend", "reference_adaptation") and status in ALLOWED_STATES:
+        if ALLOWED_STATES.index(status) >= ALLOWED_STATES.index("reference_filtered") and not ref.get("url"):
+            errors.append(f"mode '{mode}' exige reference.url a partir de reference_filtered")
+
+    expected = expected_meets_filter(
+        ref.get("views"), ref.get("age_hours"),
+        rf.get("minimum_views", 100000), rf.get("recency_window_hours", 20),
+    )
+    stored = ref.get("meets_filter", "unknown")
+    if ref.get("url") and stored != expected:
+        errors.append(
+            f"reference.meets_filter = {stored!r}, mas pelos dados informados deveria ser {expected!r} "
+            f"(mínimo {rf.get('minimum_views')} views, até {rf.get('recency_window_hours')} h)"
+        )
+
+    blocks = data.get("blocks", 5)
+    approved_blocks = data.get("approved_blocks") or []
+    for b in approved_blocks:
+        if not isinstance(b, int) or not 1 <= b <= blocks:
+            errors.append(f"approved_blocks contém valor inválido: {b!r}")
+        elif not (project_dir / "06_script" / f"block-{b:02d}.txt").exists():
+            errors.append(f"bloco {b} está em approved_blocks, mas 06_script/block-{b:02d}.txt não existe")
+    if "script" in gates and sorted(approved_blocks) != list(range(1, blocks + 1)):
+        errors.append(f"gate 'script' aprovado, mas approved_blocks = {approved_blocks} (esperado 1..{blocks})")
+
+    return errors, data
 
 
 def main() -> int:
@@ -142,15 +195,20 @@ def main() -> int:
         print(f"ERRO: diretório de projeto não encontrado: {project_dir}", file=sys.stderr)
         return 2
 
-    errors = validate(project_dir)
-
+    errors, data = validate(project_dir)
     if errors:
         print(f"INVÁLIDO: {project_dir}")
         for e in errors:
             print(f"  - {e}")
         return 1
 
+    status = data.get("status")
     print(f"OK: {project_dir} — project.yaml válido")
+    print(f"  modo: {data.get('mode')} | estado: {status} | gates: {data.get('approved_gates') or []}")
+    if status == "writing_in_progress":
+        pending = [n for n in range(1, data.get("blocks", 5) + 1) if n not in (data.get("approved_blocks") or [])]
+        print(f"  blocos pendentes: {pending}")
+    print(f"  próximo comando: {NEXT_COMMAND.get(status, '?')}")
     return 0
 
 

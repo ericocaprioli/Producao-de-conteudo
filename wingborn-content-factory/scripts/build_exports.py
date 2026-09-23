@@ -2,27 +2,16 @@
 """Monta os arquivos finais de exportação de um projeto Wingborn Content Factory.
 
 Uso:
-    python3 build_exports.py <caminho-do-projeto>
+    python3 scripts/build_exports.py <caminho-do-projeto>
 
-Lê:
-  - 06_script/block-01.txt .. block-05.txt
-  - 08_scene_prompts/scenes.json (lista de objetos no formato de templates/scene-prompt.json)
-  - 09_seo/description.txt, 09_seo/tags.txt, 09_seo/thumbnail-prompt.txt (se existirem)
-  - 00_input/project.yaml (para metadados do manifesto)
+Lê 06_script/, 08_scene_prompts/scenes.json, 09_seo/ (description.txt, tags.txt,
+thumbnail-prompt.txt ou packaging.yaml → thumbnail.prompt_en) e 00_input/project.yaml.
 
-Escreve em 11_exports/:
-  - script_full.txt
-  - block-01.txt .. block-05.txt (normalizados)
-  - tts_plain_text.txt (somente narração, sem marcadores)
-  - image-prompts.json
-  - image-prompts-en.txt
-  - thumbnail_prompt_en.txt
-  - youtube_description.txt
-  - tags.txt
-  - production_manifest.json
+Escreve em 11_exports/: script_full.txt, block-01..05.txt, tts_plain_text.txt,
+image-prompts.json, image-prompts-en.txt, thumbnail_prompt_en.txt, youtube_description.txt,
+tags.txt e production_manifest.json.
 
-Este script recusa exportar se os blocos não passarem em validate_blocks.py, porque a
-exportação não deve mascarar um roteiro inválido.
+Recusa exportar se os blocos não passarem em validate_blocks.py.
 """
 
 import json
@@ -31,31 +20,30 @@ import subprocess
 import sys
 from pathlib import Path
 
-try:
-    import yaml
-except ImportError:
-    yaml = None
+from wb_common import count_units, load_config, load_first, load_project, normalize_newlines
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 
-PRODUCTION_MARKER_PATTERN = re.compile(
-    r"\[(CENA|SCENE|PAUSE|PAUSA|MUSIC|MÚSICA|SFX|SOM|NOTE|NOTA)\][^\n]*\n?",
-    flags=re.IGNORECASE,
-)
+PRODUCTION_MARKERS = [
+    re.compile(r"\[(CENA|SCENE|PAUSE|PAUSA|MUSIC|MÚSICA|SFX|SOM|NOTE|NOTA|CUT|CORTE)[^\]]*\]", re.IGNORECASE),
+    re.compile(r"^\s*(BLOCK|BLOCO)\s*\d+\s*[:\-—].*$", re.IGNORECASE | re.MULTILINE),
+    re.compile(r"^\s*#+\s.*$", re.MULTILINE),
+]
 
 
-def normalize_text(text: str) -> str:
-    text = text.replace("\r\n", "\n").replace("\r", "\n")
-    text = PRODUCTION_MARKER_PATTERN.sub("", text)
+def clean(text: str) -> str:
+    text = normalize_newlines(text)
+    for pattern in PRODUCTION_MARKERS:
+        text = pattern.sub("", text)
+    text = re.sub(r"[ \t]+\n", "\n", text)
     text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip() + "\n"
 
 
-def run_block_validation(project_dir: Path) -> bool:
+def blocks_are_valid(project_dir: Path) -> bool:
     result = subprocess.run(
         [sys.executable, str(SCRIPT_DIR / "validate_blocks.py"), str(project_dir)],
-        capture_output=True,
-        text=True,
+        capture_output=True, text=True,
     )
     print(result.stdout, end="")
     if result.stderr:
@@ -63,115 +51,91 @@ def run_block_validation(project_dir: Path) -> bool:
     return result.returncode == 0
 
 
-def load_project_meta(project_dir: Path) -> dict:
-    if yaml is None:
-        return {}
-    for candidate in (project_dir / "00_input" / "project.yaml", project_dir / "project.yaml"):
-        if candidate.exists():
-            return yaml.safe_load(candidate.read_text(encoding="utf-8")) or {}
-    return {}
-
-
 def main() -> int:
     if len(sys.argv) != 2:
         print(__doc__)
         return 2
 
-    project_dir = Path(sys.argv[1])
-    if not project_dir.exists():
-        print(f"ERRO: diretório de projeto não encontrado: {project_dir}", file=sys.stderr)
+    pdir = Path(sys.argv[1])
+    if not pdir.exists():
+        print(f"ERRO: diretório de projeto não encontrado: {pdir}", file=sys.stderr)
         return 2
 
     print("Validando blocos antes de exportar...")
-    if not run_block_validation(project_dir):
+    if not blocks_are_valid(pdir):
         print("ERRO: blocos inválidos. Corrija os blocos antes de exportar.", file=sys.stderr)
         return 1
 
-    script_dir = project_dir / "06_script"
-    exports_dir = project_dir / "11_exports"
-    exports_dir.mkdir(parents=True, exist_ok=True)
+    meta = load_project(pdir)
+    n_blocks = meta.get("blocks", 5)
+    out = pdir / "11_exports"
+    out.mkdir(parents=True, exist_ok=True)
+    generated: list[str] = []
 
-    generated_files: list[str] = []
-    char_counts: list[int] = []
-    block_texts: list[str] = []
+    def write(name: str, content: str) -> None:
+        (out / name).write_text(content, encoding="utf-8")
+        generated.append(name)
 
-    for n in range(1, 6):
-        src = script_dir / f"block-{n:02d}.txt"
-        raw = src.read_text(encoding="utf-8")
-        normalized = normalize_text(raw)
-        block_texts.append(normalized)
-        char_counts.append(len(normalized.rstrip("\n")))
+    texts = []
+    for n in range(1, n_blocks + 1):
+        text = clean((pdir / "06_script" / f"block-{n:02d}.txt").read_text(encoding="utf-8"))
+        texts.append(text)
+        write(f"block-{n:02d}.txt", text)
 
-        out_path = exports_dir / f"block-{n:02d}.txt"
-        out_path.write_text(normalized, encoding="utf-8")
-        generated_files.append(out_path.name)
+    write("script_full.txt", "\n".join(texts))
+    write("tts_plain_text.txt", "\n".join(t.strip() for t in texts) + "\n")
 
-    script_full_path = exports_dir / "script_full.txt"
-    script_full_path.write_text("\n".join(block_texts), encoding="utf-8")
-    generated_files.append(script_full_path.name)
-
-    tts_path = exports_dir / "tts_plain_text.txt"
-    tts_path.write_text("\n".join(t.strip() for t in block_texts) + "\n", encoding="utf-8")
-    generated_files.append(tts_path.name)
-
-    scenes_src = project_dir / "08_scene_prompts" / "scenes.json"
-    scenes = []
+    scenes_src = pdir / "08_scene_prompts" / "scenes.json"
     if scenes_src.exists():
-        scenes = json.loads(scenes_src.read_text(encoding="utf-8"))
-        scenes_out = exports_dir / "image-prompts.json"
-        scenes_out.write_text(json.dumps(scenes, indent=2, ensure_ascii=False), encoding="utf-8")
-        generated_files.append(scenes_out.name)
-
+        scenes = sorted(json.loads(scenes_src.read_text(encoding="utf-8")), key=lambda s: s.get("scene", 0))
+        write("image-prompts.json", json.dumps(scenes, indent=2, ensure_ascii=False) + "\n")
         lines = []
         for s in scenes:
-            lines.append(f"[Scene {s.get('scene')}] (block {s.get('block')}) {s.get('prompt_en', '')}")
-            neg = s.get("negative_prompt")
-            if neg:
-                lines.append(f"  negative: {neg}")
-        scenes_txt_out = exports_dir / "image-prompts-en.txt"
-        scenes_txt_out.write_text("\n".join(lines) + "\n", encoding="utf-8")
-        generated_files.append(scenes_txt_out.name)
+            lines.append(f"[Scene {s.get('scene')} | block {s.get('block')}] {s.get('prompt_en', '')}")
+            if s.get("negative_prompt"):
+                lines.append(f"  negative: {s['negative_prompt']}")
+        write("image-prompts-en.txt", "\n".join(lines) + "\n")
     else:
-        print("AVISO: 08_scene_prompts/scenes.json não encontrado — pulando prompts de imagem", file=sys.stderr)
+        print("AVISO: 08_scene_prompts/scenes.json não encontrado — prompts de imagem não exportados", file=sys.stderr)
 
-    seo_dir = project_dir / "09_seo"
-    thumb_src = seo_dir / "thumbnail-prompt.txt"
-    if thumb_src.exists():
-        out = exports_dir / "thumbnail_prompt_en.txt"
-        out.write_text(normalize_text(thumb_src.read_text(encoding="utf-8")), encoding="utf-8")
-        generated_files.append(out.name)
+    seo = pdir / "09_seo"
+    thumb_txt = seo / "thumbnail-prompt.txt"
+    packaging = load_first(seo / "packaging.yaml") or {}
+    thumb_prompt = (packaging.get("thumbnail") or {}).get("prompt_en", "")
+    if thumb_txt.exists():
+        write("thumbnail_prompt_en.txt", clean(thumb_txt.read_text(encoding="utf-8")))
+    elif thumb_prompt:
+        write("thumbnail_prompt_en.txt", thumb_prompt.strip() + "\n")
+    else:
+        print("AVISO: nenhum prompt de thumbnail encontrado", file=sys.stderr)
 
-    desc_src = seo_dir / "description.txt"
-    if desc_src.exists():
-        out = exports_dir / "youtube_description.txt"
-        out.write_text(normalize_text(desc_src.read_text(encoding="utf-8")), encoding="utf-8")
-        generated_files.append(out.name)
+    for src, dst in (("description.txt", "youtube_description.txt"), ("tags.txt", "tags.txt")):
+        if (seo / src).exists():
+            write(dst, clean((seo / src).read_text(encoding="utf-8")))
+        else:
+            print(f"AVISO: 09_seo/{src} não encontrado", file=sys.stderr)
 
-    tags_src = seo_dir / "tags.txt"
-    if tags_src.exists():
-        out = exports_dir / "tags.txt"
-        out.write_text(normalize_text(tags_src.read_text(encoding="utf-8")), encoding="utf-8")
-        generated_files.append(out.name)
-
-    meta = load_project_meta(project_dir)
+    length = meta.get("length") or {}
+    counts = [count_units(t, length.get("unit", "characters"), length.get("count_spaces", True)) for t in texts]
+    cps = load_config("retention-rules.yaml").get("narration_chars_per_second", 15)
+    total_chars = sum(count_units(t) for t in texts)
     manifest = {
-        "project_id": meta.get("id", project_dir.name),
+        "project_id": meta.get("id", pdir.name),
+        "mode": meta.get("mode", ""),
         "language": meta.get("language", ""),
-        "blocks": 5,
-        "characters_per_block": char_counts,
+        "blocks": n_blocks,
+        "characters_per_block": counts,
+        "estimated_duration_minutes": round(total_chars / cps / 60, 1),
         "selected_title": meta.get("selected_title", ""),
         "reference_url": (meta.get("reference") or {}).get("url", ""),
         "approved_gates": meta.get("approved_gates", []),
-        "generated_files": generated_files,
+        "generated_files": generated + ["production_manifest.json"],
     }
-    manifest_path = exports_dir / "production_manifest.json"
-    manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
-    generated_files.append(manifest_path.name)
+    write("production_manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
 
-    print(f"OK: exportado para {exports_dir}")
-    for f in generated_files:
+    print(f"OK: exportado para {out}")
+    for f in generated:
         print(f"  - {f}")
-
     return 0
 
 

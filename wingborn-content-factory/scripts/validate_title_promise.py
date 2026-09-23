@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
-"""Verifica heuristicamente se um título cumpre a promessa esperada.
+"""Verifica por regras simples se um título cumpre a promessa esperada.
 
 Uso:
-    python3 validate_title_promise.py "<título>" [--direction <caminho selected-direction.md>]
-    python3 validate_title_promise.py --file <caminho com um título por linha>
+    python3 scripts/validate_title_promise.py "<título>" [--project PROJECT_DIR]
+    python3 scripts/validate_title_promise.py --file titulos.txt [--project PROJECT_DIR]
+    python3 scripts/validate_title_promise.py --project PROJECT_DIR   (lê 09_seo/title-options.yaml)
 
-Usa config/title-rules.yaml (procurado relativo a este script) para palavras-chave e
-padrões proibidos. Isto é um apoio por regras simples, não uma avaliação de qualidade:
-quando a evidência é insuficiente, o script sinaliza REVIEW_REQUIRED em vez de aprovar
-ou reprovar sem base.
+Checa: comprimento, padrões proibidos, sinais de injustiça / vítima identificável /
+elemento fantástico / inversão e, com --project, a correspondência com a direção
+selecionada (papéis familiares citados, dragão plantado).
 
-Código de saída: 0 se todos os títulos passarem sem reprovação (REVIEW_REQUIRED conta como
-passagem condicional), 1 se algum título for reprovado (FAIL).
+Vereditos: PASS, REVIEW_REQUIRED (evidência insuficiente — revisar manualmente) e FAIL.
+O script não afirma qualidade: ausência de palavra-chave vira REVIEW_REQUIRED, não FAIL.
+Código de saída 1 se algum título receber FAIL.
 """
 
 import argparse
@@ -19,78 +20,61 @@ import re
 import sys
 from pathlib import Path
 
-try:
-    import yaml
-except ImportError:
-    print("ERRO: PyYAML não está instalado. Instale com: pip install pyyaml", file=sys.stderr)
-    sys.exit(2)
+from wb_common import contains_term, flatten_text, load_config, load_first
 
-SCRIPT_DIR = Path(__file__).resolve().parent
-DEFAULT_RULES_PATH = SCRIPT_DIR.parent / "config" / "title-rules.yaml"
+DRAGON_WORDS = ["dragon", "dragons", "wyrm", "drake"]
 
 
-def load_rules(path: Path) -> dict:
-    if not path.exists():
-        print(f"AVISO: {path} não encontrado, usando regras mínimas embutidas", file=sys.stderr)
-        return {
-            "max_length_chars": 100,
-            "forbidden_patterns": [],
-            "keyword_groups": {},
-        }
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+def direction_text(project_dir: Path) -> str | None:
+    data = load_first(project_dir / "04_selected_direction" / "selected-direction.yaml")
+    return flatten_text(data) if data else None
 
 
-def contains_any(text: str, keywords: list[str]) -> bool:
-    return any(re.search(r"\b" + re.escape(kw) + r"\b", text, flags=re.IGNORECASE) for kw in keywords)
-
-
-def evaluate_title(title: str, rules: dict) -> tuple[str, list[str]]:
-    """Retorna (veredito, motivos). Veredito em {PASS, REVIEW_REQUIRED, FAIL}."""
-    notes: list[str] = []
-    fail_reasons: list[str] = []
+def evaluate_title(title: str, rules: dict, direction: str | None) -> tuple[str, list[str]]:
+    fails: list[str] = []
+    reviews: list[str] = []
 
     max_len = rules.get("max_length_chars", 100)
     if len(title) > max_len:
-        fail_reasons.append(f"título tem {len(title)} caracteres, acima do limite de {max_len}")
+        fails.append(f"{len(title)} caracteres, acima do limite de {max_len}")
 
-    for forbidden in rules.get("forbidden_patterns", []):
-        pattern = forbidden.get("pattern") if isinstance(forbidden, dict) else forbidden
-        reason = forbidden.get("reason", "") if isinstance(forbidden, dict) else ""
-        if pattern and re.search(pattern, title, flags=re.IGNORECASE):
-            fail_reasons.append(f"contém padrão proibido '{pattern}'" + (f" ({reason})" if reason else ""))
+    for rule in rules.get("forbidden_patterns", []):
+        if re.search(rule["pattern"], title, flags=re.IGNORECASE):
+            msg = f"padrão '{rule['pattern']}': {rule.get('reason', '')}"
+            (fails if rule.get("severity", "fail") == "fail" else reviews).append(msg)
 
-    keyword_groups = rules.get("keyword_groups", {})
-    signals_found = {}
-    for group_name, keywords in keyword_groups.items():
-        signals_found[group_name] = contains_any(title, keywords)
+    missing = [
+        group for group, words in rules.get("keyword_groups", {}).items()
+        if not any(contains_term(title, w) for w in words)
+    ]
+    if missing:
+        reviews.append("sinais não detectados por palavra-chave (podem estar implícitos): " + ", ".join(missing))
 
-    missing_signals = [g for g, found in signals_found.items() if not found]
+    if direction is None:
+        reviews.append("correspondência com a direção não verificada (use --project após /escolher-direcao)")
+    else:
+        for role in rules.get("family_roles", []):
+            if contains_term(title, role) and not contains_term(direction, role):
+                fails.append(f"título cita '{role}', mas a direção selecionada não tem esse papel")
+        generic = [t for t in rules.get("generic_family_terms", []) if contains_term(title, t)]
+        if generic and not any(contains_term(direction, r) for r in rules.get("family_roles", [])):
+            fails.append(f"título cita {generic}, mas a direção não define um traidor familiar")
+        if any(contains_term(title, w) for w in DRAGON_WORDS) and not any(contains_term(direction, w) for w in DRAGON_WORDS):
+            fails.append("título promete dragão, mas a direção selecionada não o planta")
 
-    if fail_reasons:
-        return "FAIL", fail_reasons
-
-    if missing_signals:
-        notes.append(
-            "sinais não detectados por palavra-chave (pode estar presente de forma implícita — revisar manualmente): "
-            + ", ".join(missing_signals)
-        )
-        return "REVIEW_REQUIRED", notes
-
-    return "PASS", notes
+    if fails:
+        return "FAIL", fails + reviews
+    if reviews:
+        return "REVIEW_REQUIRED", reviews
+    return "PASS", []
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("title", nargs="?", help="Título a validar (entre aspas)")
-    parser.add_argument("--file", type=Path, help="Arquivo com um título por linha")
-    parser.add_argument("--rules", type=Path, default=DEFAULT_RULES_PATH)
+    parser = argparse.ArgumentParser(description="Valida a promessa de títulos.")
+    parser.add_argument("title", nargs="?")
+    parser.add_argument("--file", type=Path)
+    parser.add_argument("--project", type=Path)
     args = parser.parse_args()
-
-    if not args.title and not args.file:
-        print(__doc__)
-        return 2
-
-    rules = load_rules(args.rules)
 
     titles: list[str] = []
     if args.title:
@@ -99,17 +83,24 @@ def main() -> int:
         if not args.file.exists():
             print(f"ERRO: arquivo não encontrado: {args.file}", file=sys.stderr)
             return 2
-        titles.extend(line.strip() for line in args.file.read_text(encoding="utf-8").splitlines() if line.strip())
+        titles += [ln.strip() for ln in args.file.read_text(encoding="utf-8").splitlines() if ln.strip()]
+    if not titles and args.project:
+        options = load_first(args.project / "09_seo" / "title-options.yaml") or {}
+        titles = [o.get("text", "") for o in options.get("title_options", []) if o.get("text")]
+    if not titles:
+        print(__doc__)
+        return 2
+
+    rules = load_config("title-rules.yaml")
+    direction = direction_text(args.project) if args.project else None
 
     any_fail = False
     for title in titles:
-        verdict, notes = evaluate_title(title, rules)
+        verdict, notes = evaluate_title(title, rules, direction)
         print(f"{verdict}: {title}")
         for n in notes:
             print(f"  - {n}")
-        if verdict == "FAIL":
-            any_fail = True
-
+        any_fail |= verdict == "FAIL"
     return 1 if any_fail else 0
 
 

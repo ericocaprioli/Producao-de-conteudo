@@ -1,13 +1,12 @@
 # Wingborn Content Factory
 
 Sistema local de produção editorial para o canal **Wingborn Tales** (dark fantasy com dragões,
-histórias de traição/reparação emocional). Reduz o tempo entre encontrar uma referência
-emocional em alta e ter um roteiro original de 15–20 minutos, prompts de cena e SEO prontos
-para produção.
+histórias de traição e reparação). A partir de um vídeo em alta que **você escolhe manualmente**
+no YouTube, ele ajuda a criar uma **adaptação adjacente**: perto do pacote de interesse viral da
+referência, mas com história, cadeia causal, revelação, clímax, final, título e thumbnail próprios.
 
-Não é um painel web nem uma automação em segundo plano: é um conjunto de comandos, templates e
-validadores determinísticos usados dentro do Claude Code, com todo o estado salvo em arquivos
-em `projects/`.
+Não é painel web nem automação em segundo plano: são comandos, templates e validadores
+determinísticos usados dentro do Claude Code, com todo o estado salvo em `projects/`.
 
 ## Requisitos
 
@@ -18,74 +17,107 @@ em `projects/`.
 
 ```text
 wingborn-content-factory/
-├── CLAUDE.md              # instruções para o Claude Code interpretar os comandos
-├── config/                # DNA do canal, padrões de projeto, regras de título e retenção
-├── commands/               # especificação de cada comando /nome-do-comando
-├── scripts/                 # validadores determinísticos (Python, sem dependência de rede)
-├── templates/               # templates copiados para cada novo projeto
-└── projects/                 # um diretório por projeto, criado por /iniciar-projeto
+├── CLAUDE.md          # regras que o Claude Code segue ao interpretar os comandos
+├── config/            # DNA do canal, padrões, regras de título, retenção e tendência
+├── commands/          # especificação de cada /comando
+├── scripts/           # validadores determinísticos + exportação
+├── templates/         # modelos copiados para cada projeto
+├── tests/             # testes + fixture "mãe abandona filha diante dos dragões"
+└── projects/          # um diretório por projeto
 ```
 
-## Como iniciar um projeto
+## Como iniciar um projeto real
 
-Dentro de uma sessão do Claude Code, com este diretório como contexto, digite:
+1. Escolha o vídeo no YouTube (critério editorial: ≥ 100 mil visualizações nas últimas 20 h).
+2. Abra o Claude Code dentro de `wingborn-content-factory/` e digite, por exemplo:
 
-```text
-/iniciar-projeto
+   ```text
+   /iniciar-projeto https://www.youtube.com/watch?v=SEU_VIDEO — 180 mil views, publicado há 12 h, quero surfar a tendência
+   ```
+
+   O sistema cria `projects/AAAA-MM-DD-slug/` no modo `adjacent_trend`, com as métricas
+   marcadas como `manual`. O que você não informar fica como `unknown` — nada é inventado.
+
+3. Siga o fluxo; cada etapa para quando precisa de uma decisão sua:
+
+   ```text
+   /triar-referencia
+   /analisar-referencia     # cole transcrição, descrição e comentários, se tiver
+   /criar-direcoes          # escolha A, B ou C
+   /escolher-direcao
+   /criar-titulos           # escolha o título
+   /criar-ficha             # aprove a ficha e as 6 perguntas de embalagem
+   /escrever-bloco 1        # ... até 5, aprovando cada bloco
+   /revisar-retencao
+   /gerar-cenas
+   /gerar-seo
+   /exportar-projeto
+   ```
+
+Para retomar um projeto interrompido:
+
+```bash
+python3 scripts/validate_project.py projects/<id>
 ```
 
-O Claude Code vai ler `commands/iniciar-projeto.md`, perguntar somente os dados que faltarem
-(slug, idioma, premissa, modo de protagonista, faixa de caracteres, dados da referência se já
-existirem) e criar `projects/YYYY-MM-DD-slug/` com o estado inicial `input_received`.
+Ele valida o estado e mostra o próximo comando e os blocos pendentes.
 
-Fluxo completo, comando a comando:
+## Modos de criação
 
-```text
-/iniciar-projeto
-/triar-referencias
-/analisar-referencia
-/criar-direcoes        # para para você escolher A, B ou C
-/escolher-direcao
-/criar-titulos          # para para você escolher o título
-/criar-ficha            # para para aprovação da ficha de consistência
-/escrever-bloco 1       # repetir para 2, 3, 4, 5 — um bloco por vez, com validação e aprovação
-/validar-bloco N        # a qualquer momento, para checar um bloco já escrito
-/revisar-retencao
-/gerar-cenas
-/gerar-seo
-/exportar-projeto
-```
+| Modo | Quando usar | O que preserva |
+|---|---|---|
+| `adjacent_trend` | a referência está viralizando e você quer surfar a onda | 4–5 slots do pacote viral; muda a realização concreta |
+| `reference_adaptation` | referência interessante, sem evidência de onda | emoção e padrões abstratos, com mais distância |
+| `original_channel_story` | sem referência | só o DNA do canal |
 
-Cada comando só avança o estado do projeto (`status` em `project.yaml`) quando o gate
-correspondente é aprovado. É seguro interromper a qualquer momento: o próximo comando lê o
-`project.yaml` e as pastas já preenchidas para retomar de onde parou.
+Em `adjacent_trend`, `/criar-direcoes` gera **A** (proximidade alta, 5 slots), **B** (média, 4) e
+**C** (moderada, 4), e o `validate_trend_alignment.py` classifica cada uma.
 
 ## Validadores
-
-Rodar diretamente com Python, sem precisar do Claude Code:
 
 ```bash
 python3 scripts/validate_project.py projects/<id>
 python3 scripts/validate_blocks.py projects/<id> [--block N]
 python3 scripts/validate_consistency.py projects/<id>
-python3 scripts/validate_title_promise.py "Título candidato"
+python3 scripts/validate_title_promise.py "Título" [--project projects/<id>]
+python3 scripts/validate_trend_alignment.py projects/<id> [--all]
+python3 scripts/validate_packaging_alignment.py projects/<id> [--title "Título"]
 python3 scripts/build_exports.py projects/<id>
 ```
 
-Todos retornam código de saída diferente de zero quando a validação falha.
+Todos retornam código diferente de zero quando a validação falha.
+
+| Validador | Resultado |
+|---|---|
+| `validate_trend_alignment.py` | `ALIGNED`, `TOO_DISTANT`, `TOO_CLOSE`, `REVIEW_REQUIRED` |
+| `validate_packaging_alignment.py` | `PROMISE_ALIGNED`, `EMOTION_ALIGNED`, `VISUAL_HOOK_ALIGNED`, `FANTASY_HOOK_ALIGNED`, `CURIOSITY_GAP_ALIGNED`, `TEXT_TOO_CLOSE`, `COMPOSITION_TOO_CLOSE`, `PROMISE_TOO_GENERIC`, `REVIEW_REQUIRED` |
+| `validate_title_promise.py` | `PASS`, `REVIEW_REQUIRED`, `FAIL` |
+
+## Testes
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+O fixture `tests/fixtures/adjacent-trend-mother-dragons/` usa a referência hipotética "a mãe
+abandonou a filha diante dos dragões, mas a criança possuía uma origem extraordinária" e contém:
+pacote viral, três direções (A/B/C `ALIGNED`), casos `TOO_DISTANT` e `TOO_CLOSE`
+(`tests/fixtures/trend-negative-cases.yaml`), ficha, títulos, embalagem e cinco blocos de
+3.297 a 3.343 caracteres.
 
 ## Limitações conhecidas
 
-- Não há integração com nenhuma API do YouTube: visualizações, idade do vídeo e comentários
-  são sempre entrada manual do usuário, marcados como `views_source: manual` quando não vierem
-  de um conector confiável. O sistema nunca inventa esses números.
-- `validate_consistency.py` é heurístico (busca por nome/idade/palavras-chave), não uma
-  verificação semântica completa — ele aponta candidatos a revisão, não substitui leitura
-  humana do roteiro.
-- `validate_title_promise.py` usa listas de palavras-chave configuráveis
-  (`config/title-rules.yaml`); quando a evidência é insuficiente ele retorna
-  `REVIEW_REQUIRED` em vez de aprovar ou reprovar sem base.
-- O sistema não afirma e não pode afirmar que qualquer escolha (título, thumbnail, direção)
-  vai melhorar o CTR — isso só pode ser avaliado com dados reais de vídeos publicados.
-- Fases futuras (fora deste MVP): conectores para métricas do YouTube, geração automática de
-  imagens, publicação automática. Ver `CLAUDE.md` → "Fora de escopo neste MVP".
+- **Sem busca no YouTube**, por decisão de produto: métricas vêm de você (`manual`) ou ficam
+  `unknown`.
+- **Validadores de tendência e embalagem são heurísticos.** Eles comparam palavras de conteúdo
+  (ignorando termos de gênero como mãe, filha, dragão e os nomes próprios) e dimensões de
+  composição declaradas. Uma paráfrase com vocabulário totalmente novo e a mesma sequência de
+  eventos pode escapar; por isso casos ambíguos viram `REVIEW_REQUIRED` e a leitura humana
+  continua necessária.
+- Os validadores confiam nos campos preenchidos pelo modelo (slots, elementos alterados,
+  composição). Slots declarados sem evidência no texto são sinalizados, mas não refutados.
+- `validate_consistency.py` detecta idade por extenso só em inglês (em português, apenas dígitos)
+  e confere cores de cabelo/olhos/escamas por proximidade de palavras.
+- A duração estimada usa 15 caracteres/s (`config/retention-rules.yaml`); ajuste para a sua voz.
+- O sistema não afirma e não pode afirmar que um título, thumbnail ou direção melhora o CTR —
+  isso só se mede com dados reais de vídeos publicados.

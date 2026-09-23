@@ -1,0 +1,80 @@
+# Cópia fiel da direção A de 03_original_directions/directions.yaml (sem reescrita).
+id: A
+proximity_level: high
+logline: On the night of the first frost, a toll-keeper's widow walks her nine-year-old daughter into the valley
+  where dragons hunt and leaves her there, so her new husband can seize the ford charter — but the grey dragon that
+  finds the child lowers its head to the whorl her mother always hid.
+title_draft: Her Mother Walked Her Into the Dragons' Valley and Never Came Back — Until the Grey Dragon Bowed
+thumbnail_concept: A thin girl stands barefoot on a frost-covered stone bridge at blue dawn, holding a small brass
+  lantern up at arm's length; an ash-grey dragon lies coiled on the riverbank below, head lowered toward her; a
+  woman's long shadow crosses the bridge from the top edge. Cold blue palette with one warm lantern glow.
+characters:
+- name: Ailis
+  role: daughter, nine years old
+- name: Maren
+  role: mother, keeper of the toll-house
+- name: Osric
+  role: stepfather and tax-reeve
+- name: Tamsin
+  role: exiled lantern-keeper, marginalized mentor
+- name: the grey one
+  role: dragon bonded to the ford-wardens
+preserved_slots:
+- emotional_relationship
+- betrayal_type
+- danger_type
+- dragon_presence
+- extraordinary_origin
+changed_elements:
+- names
+- characters
+- phrases
+- dialogues
+- causal_chain
+- revelation_mechanism
+- event_sequence
+- symbol_object
+- climax
+- ending
+- thumbnail_composition
+- title_text
+causal_chain:
+- Maren, widow of the Carrow Ford toll-keeper, marries Osric, a tax-reeve who covets the ford charter
+- the charter can pass only to a blood heir of the old ford-wardens, and nine-year-old Ailis is the only one
+- Osric convinces Maren that the rust-red whorl on Ailis's collarbone will bring the crown's inquisitors to the
+  house
+- on the night of the first frost Maren walks Ailis into the Ashen Reach, where dragons hunt, and leaves her there
+  with a brass lantern and a promise to return
+- an ash-grey dragon lands beside the lantern and, instead of attacking, lowers its head to the whorl on the child's
+  collarbone
+- Tamsin, an exiled lantern-keeper living in the Reach, finds Ailis asleep against the dragon's foreleg
+- at low water Tamsin takes Ailis to the drowned charter stone, whose carving shows the same whorl beside a folded
+  wing
+- at the Harvest Assize Osric declares the girl dead and claims the charter for himself
+- Ailis enters with Tamsin and a charcoal rubbing of the charter stone while the grey dragon settles on the Carrow
+  Ford bridge
+- when Osric's archers aim at the dragon, Ailis orders it to stay its fire and speaks the truth herself
+revelation_mechanism: the drowned charter stone at the ford shows the whorl carved under a folded wing, proving
+  the ford-wardens were bonded to the grey one and that the charter belongs to whoever bears the sign
+climax: at the Harvest Assize on the Carrow Ford bridge, Ailis stops the grey dragon's fire and exposes Osric's
+  false death claim with the charcoal rubbing of the charter stone
+ending: the assize grants Ailis the charter under Tamsin's guardianship, Maren loses the toll-house, and Ailis keeps
+  the lantern burning in the watch-house above the ford where the grey one nests
+proximity_risk: medium — keeps five slots of the wave; mitigated by a wholly new causal chain
+wave_justification: 'Same click promise: a mother abandons her small daughter where dragons hunt, and a hidden origin
+  makes the dragon spare her. The cause (a toll charter), the proof (a drowned stone), the climax (a public assize)
+  and the reward (guardianship and belonging, not a throne) are new.'
+injustice: abandoned by her own mother so a stepfather can seize the ford charter
+symbol_object: brass lantern
+stigmatized_gift: the rust-red whorl on her collarbone, called an inquisitor's mark
+marginalized_mentor: Tamsin, the lantern-keeper the town blamed for a flood
+first_power_signal: the grey dragon lowers its head to the whorl
+central_secret: the ford-wardens were dragon-bonded
+midpoint_turn: the drowned charter stone shows the whorl
+moral_choice: let the dragon burn the archers, or command it to stay and tell the truth herself
+differences_from_reference:
+- abandoned for property, not sacrificed to end raids
+- the dragon recognizes a carved sign, no glowing mark
+- proof comes from a stone in the river, not from a dragon queen
+- public assize on a bridge instead of a return to the capital
+- guardianship and a home, not a crown; the mother never begs

@@ -1,0 +1,32 @@
+# Direções — criado por /criar-direcoes. Fonte de verdade lida por validate_trend_alignment.py.
+# Salvar em projects/<id>/03_original_directions/directions.yaml (exatamente três: A, B, C).
+# Em adjacent_trend: A = proximity_level high (5 slots), B = medium (4), C = moderate (4).
+
+directions:
+  - id: A
+    proximity_level: high
+    logline: ""
+    title_draft: ""
+    thumbnail_concept: ""
+    characters:
+      - name: ""
+        role: ""
+    preserved_slots: []
+    changed_elements: []
+    # 7 a 10 passos, cadeia causal nova
+    causal_chain: []
+    revelation_mechanism: ""
+    climax: ""
+    ending: ""
+    proximity_risk: ""
+    wave_justification: ""
+    # campos editoriais
+    injustice: ""
+    symbol_object: ""
+    stigmatized_gift: ""
+    marginalized_mentor: ""
+    first_power_signal: ""
+    central_secret: ""
+    midpoint_turn: ""
+    moral_choice: ""
+    differences_from_reference: []

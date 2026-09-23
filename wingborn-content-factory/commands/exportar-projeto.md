@@ -25,7 +25,10 @@ de imagens e publicação.
    - gera `script_full.txt`, `block-01.txt`..`block-05.txt`, `tts_plain_text.txt`,
      `image-prompts.json`, `image-prompts-en.txt`, `thumbnail_prompt_en.txt`,
      `youtube_description.txt`, `tags.txt` e `production_manifest.json` em
-     `projects/<id>/11_exports/`.
+     `projects/<id>/11_exports/`;
+   - usa `09_seo/thumbnail-prompt.txt` ou, na falta dele, `09_seo/packaging.yaml →
+     thumbnail.prompt_en`;
+   - registra no manifesto o modo e a duração estimada (caracteres ÷ velocidade de narração).
 
 2. Confirmar que `tts_plain_text.txt` contém somente o texto narrado dos cinco blocos, na
    ordem, sem marcadores ou notas de produção.

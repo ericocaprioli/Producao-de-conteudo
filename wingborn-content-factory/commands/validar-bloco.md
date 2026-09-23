@@ -2,7 +2,7 @@
 
 ## Propósito
 
-Executar e relatar o resultado da validação determinística do bloco N, sem reescrevê-lo.
+Rodar os validadores determinísticos e relatar o resultado do bloco N, sem reescrevê-lo.
 
 ## Pré-condições
 
@@ -14,23 +14,18 @@ Executar e relatar o resultado da validação determinística do bloco N, sem re
 
    ```bash
    python3 scripts/validate_blocks.py projects/<id> --block N
-   ```
-
-2. Rodar também `validate_consistency.py` se todos os blocos escritos até agora estiverem
-   presentes (ele compara o roteiro inteiro disponível com a ficha, não apenas um bloco):
-
-   ```bash
    python3 scripts/validate_consistency.py projects/<id>
    ```
 
-3. Informar ao usuário, de forma objetiva:
-   - número de caracteres do bloco N;
-   - se está dentro de 3.200–3.500 (ou faixa configurada);
-   - presença/ausência de marcadores técnicos proibidos;
-   - contradições detectadas pelo `validate_consistency.py` (se aplicável);
-   - status do gate: aprovado, ou pendente de correção/aprovação do usuário.
+2. Informar de forma objetiva:
+   - número de caracteres e se está entre 3.200 e 3.500 (ou a faixa configurada);
+   - marcadores técnicos encontrados;
+   - elementos narrativos exigidos: no bloco 1, antagonista em ~30 s e objeto em ~60 s (checados
+     pelo `validate_consistency.py`); nos demais, avaliação editorial de ação, revelação, decisão,
+     consequência e próxima tensão, deixando claro que essa parte não é verificada por script;
+   - contradições (ERRO) e avisos do `validate_consistency.py`;
+   - status do gate: bloco em `approved_blocks` ou pendente.
 
-## O que este comando não deve fazer
+## Não fazer
 
-- Não reescrever o bloco automaticamente — apenas relatar. A correção é feita via
-  `/escrever-bloco N` novamente, após decisão do usuário.
+- Não reescrever o bloco. A correção é feita com `/escrever-bloco N`, após decisão do usuário.

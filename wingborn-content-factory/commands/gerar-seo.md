@@ -23,13 +23,17 @@ Gerar os textos de SEO e o prompt de thumbnail para publicação.
 4. Criar de 12 a 15 tags (limite máximo configurável em
    `config/default-project.yaml` → `seo.tags_max`/`tags_hard_limit`).
 
-5. Criar um prompt de thumbnail separado, em inglês, coerente com o conceito criado em
-   `/criar-titulos` (sem revelar o clímax inteiro).
+5. Finalizar o prompt de thumbnail a partir de `09_seo/packaging.yaml → thumbnail.prompt_en`
+   (aprovado no gate `packaging`), sem mudar a composição aprovada: protagonista com a aparência
+   da ficha, ameaça específica do roteiro, dragão próprio, emoção dominante, iluminação e
+   contraste, 16:9, `no text, no logo, no watermark`. Mostrar o problema e sugerir a
+   recompensa, nunca o clímax completo. Rodar de novo
+   `python3 scripts/validate_packaging_alignment.py projects/<id>` e corrigir qualquer `FAIL`.
 
 6. Salvar em `projects/<id>/09_seo/`:
    - `description.txt` (descrição + CTA + hashtags juntos, como ficaria publicado);
    - `tags.txt` (uma tag por linha);
-   - `thumbnail-prompt.txt`.
+   - `thumbnail-prompt.txt` (o `prompt_en` final).
 
 7. Atualizar `project.yaml` conforme necessário (nenhuma mudança de `status` obrigatória
    aqui, a menos que o projeto ainda não tivesse `scenes_ready`).

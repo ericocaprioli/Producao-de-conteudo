@@ -2,55 +2,53 @@
 
 ## Propósito
 
-Produzir uma análise estrutural da referência selecionada — título, thumbnail, descrição,
-transcrição e comentários disponíveis — separada de qualquer criação de roteiro.
+Analisar a referência (título, thumbnail, descrição, transcrição e comentários disponíveis),
+separada de qualquer criação de roteiro. Em `adjacent_trend`, também extrair o pacote viral.
 
 ## Pré-condições
 
-- Projeto no estado `reference_filtered` ou posterior.
-- `reference.url` (ou dados manuais equivalentes) preenchidos em `project.yaml`.
+- `reference_filtered`, com `reference.url` preenchido.
 
 ## Passos
 
-1. Reunir os materiais disponíveis da referência: título, thumbnail (imagem ou descrição dela),
-   descrição do vídeo, transcrição e comentários. Se algum material não estiver disponível,
-   registrar isso explicitamente na análise em vez de inventar conteúdo. Salvar os materiais
-   brutos fornecidos pelo usuário em `projects/<id>/02_reference_analysis/` (ex.:
-   `transcript.txt`, `comments.txt`, `thumbnail-description.txt`) e referenciar os caminhos em
-   `reference.thumbnail_file`, `reference.description_file`, `reference.transcript_file`,
-   `reference.comments_file` no `project.yaml`.
+1. Reunir os materiais fornecidos pelo usuário (ou lidos do próprio link informado) e salvar os
+   brutos em `02_reference_analysis/` (`transcript.txt`, `comments.txt`, `description.txt`,
+   `thumbnail-description.txt`). Preencher os caminhos em `reference.*_file`. Material ausente é
+   registrado como ausente — nunca inventado.
 
-2. Produzir a análise cobrindo:
-   - promessa;
-   - emoção principal;
-   - público acionado;
-   - mecanismo dos primeiros 30 segundos;
-   - objeto ou segredo plantado;
-   - perguntas abertas;
-   - beats abstratos (função narrativa, não conteúdo específico);
-   - pontos de mudança;
-   - riscos de retenção;
-   - motivos visuais;
-   - comentários positivos, negativos e pedidos do público;
-   - **lista explícita de elementos específicos proibidos de reutilizar**: nomes, frases,
-     diálogos, personagens equivalentes, locais específicos, objetos específicos, sequência
-     concreta de eventos, causa da traição, revelação, clímax e final.
+2. Produzir a análise com: promessa; emoção principal; público acionado; mecanismo dos primeiros
+   30 s; objeto ou segredo plantado; perguntas abertas; beats abstratos; pontos de mudança; riscos
+   de retenção; motivos visuais; comentários positivos, negativos e pedidos; **lista de elementos
+   específicos proibidos de reutilizar** (nomes, frases, diálogos, locais, objetos, sequência
+   concreta, causa da traição, revelação, clímax, final).
 
 3. Salvar:
-   - `projects/<id>/02_reference_analysis/reference-analysis.md` (a partir de
-     `templates/reference-analysis.md`), legível por humano;
-   - `projects/<id>/02_reference_analysis/reference-analysis.json`, mesma informação em formato
-     estruturado, com pelo menos as chaves: `promise`, `main_emotion`, `audience_trigger`,
-     `first_30s_mechanism`, `planted_object_or_secret`, `open_questions`, `abstract_beats`,
-     `turning_points`, `retention_risks`, `visual_motifs`, `comments_positive`,
+   - `02_reference_analysis/reference-analysis.md` (de `templates/reference-analysis.md`);
+   - `02_reference_analysis/reference-analysis.json` com as chaves `promise`, `main_emotion`,
+     `audience_trigger`, `first_30s_mechanism`, `planted_object_or_secret`, `open_questions`,
+     `abstract_beats`, `turning_points`, `retention_risks`, `visual_motifs`, `comments_positive`,
      `comments_negative`, `comments_requests`, `forbidden_specific_elements`.
 
-4. Atualizar `project.yaml`: `status: reference_analyzed`.
+4. **Somente em `adjacent_trend`:** criar `02_reference_analysis/viral-wave-package.yaml` a
+   partir de `templates/viral-wave-package.yaml`:
+   - `viral_wave`: papéis de vítima e traidor, tipo de traição, tipo de perigo, espetáculo visual,
+     valor oculto, promessa emocional, recompensa futura, padrão de título e de thumbnail,
+     `preserved_slots` (ids de `config/trend-rules.yaml → slots` que a onda vende) e
+     `prohibited_events` (eventos concretos que nenhuma direção pode repetir);
+   - `reference_surface`: título, nomes próprios, cadeia causal concreta em ordem, mecanismo de
+     revelação, clímax, final e a thumbnail (descrição, texto e composição por dimensão);
+   - `functional_tags`: promessa, emoção, gancho visual, gancho fantástico e lacuna de curiosidade
+     da embalagem, no vocabulário de `config/trend-rules.yaml → packaging.functional_vocabulary`.
 
-5. Rodar `python3 scripts/validate_project.py projects/<id>`.
+   Exemplo: para "a mãe abandonou a filha diante dos dragões, mas a criança possuía uma origem
+   extraordinária", os slots são filha vulnerável, mãe traidora, abandono deliberado, dragões
+   como perigo, espetáculo visual da criança diante da criatura, origem extraordinária e promessa
+   de sobrevivência, reconhecimento ou vingança. Ver o fixture em
+   `tests/fixtures/adjacent-trend-mother-dragons/`.
 
-## O que este comando não deve fazer
+5. Atualizar `status: reference_analyzed` e rodar `python3 scripts/validate_project.py projects/<id>`.
 
-- Não escrever roteiro, cenas ou diálogos originais nesta etapa.
-- Não propor direções novas (isso é `/criar-direcoes`).
-- Não inventar transcrição, comentários ou métricas que não foram fornecidos.
+## Não fazer
+
+- Não escrever roteiro, cenas, diálogos ou direções.
+- Não copiar trechos da transcrição para fora da pasta de análise.

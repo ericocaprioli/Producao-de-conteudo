@@ -1,6 +1,13 @@
 # Valores padrão usados por /iniciar-projeto quando o usuário não especifica algo diferente.
 # Estes valores são copiados para projects/<id>/00_input/project.yaml na criação do projeto.
 
+# Modo de criação:
+#   adjacent_trend         -> padrão quando o usuário fornece uma referência e quer surfar a tendência
+#   reference_adaptation   -> referência interessante, mas sem evidência de uma onda
+#   original_channel_story -> sem referência; apenas o DNA do canal
+mode_with_reference: adjacent_trend
+mode_without_reference: original_channel_story
+
 language: en
 channel_mode: core_female_protagonist
 blocks: 5

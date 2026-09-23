@@ -1,0 +1,64 @@
+# Casos negativos para validate_trend_alignment.py (usados com --directions-file).
+# Avaliados contra tests/fixtures/adjacent-trend-mother-dragons/.
+
+directions:
+  # História original válida em original_channel_story, mas distante demais para a onda.
+  - id: TOO_DISTANT
+    proximity_level: moderate
+    logline: >-
+      A woman accused of poisoning the village spring discovers a dormant ancestral dragon sleeping
+      beneath the well and must prove her innocence before the harvest trial.
+    title_draft: "Accused of Poisoning the Spring, She Found an Ancient Dragon Sleeping Under the Well"
+    thumbnail_concept: "a woman lowering a lamp into a stone well, one huge golden eye opening in the dark water"
+    characters:
+      - {name: Odile, role: "herbalist"}
+      - {name: Garrow, role: "village elder"}
+    preserved_slots: [dragon_presence, extraordinary_origin]
+    changed_elements: [names, characters, phrases, dialogues, causal_chain, revelation_mechanism, event_sequence,
+                       symbol_object, climax, ending, thumbnail_composition, title_text]
+    causal_chain:
+      - "the village spring turns bitter and cattle begin to die"
+      - "elder Garrow accuses Odile, the herbalist, of poisoning it"
+      - "Odile is locked out of the village until the harvest trial"
+      - "searching the old well at night she finds a dragon asleep in the water below"
+      - "the dragon's breath is what has turned the water bitter"
+      - "Odile learns her grandmother sang the dragon to sleep each spring"
+      - "at the trial Odile wakes the dragon gently and it leaves the well"
+      - "the spring clears and the village apologizes"
+    revelation_mechanism: "a song in her grandmother's recipe book matches the dragon's sleep"
+    climax: "Odile wakes the dragon at the trial and leads it out of the well"
+    ending: "the village names Odile keeper of the spring"
+    wave_justification: "keeps a dragon and an inherited gift"
+
+  # Cópia disfarçada: mesma sequência concreta da referência, só com nomes trocados.
+  - id: TOO_CLOSE
+    proximity_level: high
+    logline: >-
+      Queen Maelis leaves her daughter Nia at the dragon cliffs as a royal sacrifice — but Nia's
+      birthmark glows when the dragon approaches, and the dragon mother Vharza raises her as her heir.
+    title_draft: "Her mother left her to die at the hands of the dragons — but she was the heir of Vharza"
+    thumbnail_concept: >-
+      tiny girl kneeling on a volcanic cliff at sunset with arms raised, screaming, a giant red dragon
+      head looming directly above her, the queen's silhouette walking away on the left edge
+    characters:
+      - {name: Nia, role: "princess"}
+      - {name: Maelis, role: "queen mother"}
+      - {name: Vharza, role: "dragon mother"}
+    preserved_slots: [emotional_relationship, betrayal_type, danger_type, dragon_presence, visual_vulnerability,
+                      extraordinary_origin, reward_promise]
+    changed_elements: [names]
+    causal_chain:
+      - "Queen Maelis gives birth to Nia, whose crown-shaped birthmark glows at night"
+      - "the court seer declares the birthmark a curse on the kingdom of Duskmere"
+      - "dragons begin raiding the villages of Duskmere"
+      - "the royal council demands a sacrifice to end the raids"
+      - "the queen leaves her daughter at the dragon cliffs as a royal sacrifice"
+      - "the child's birthmark glows when the dragon approaches"
+      - "Vharza recognizes the child as her heir and raises her in the volcano"
+      - "the daughter returns years later riding a dragon over the capital"
+      - "the mother kneels and begs forgiveness before the royal court"
+      - "the daughter is crowned and takes the throne"
+    revelation_mechanism: "the glowing crown birthmark shows Vharza that the child is her heir"
+    climax: "Nia flies over the capital riding Vharza and exposes the queen before the royal court"
+    ending: "Maelis begs forgiveness on her knees and Nia is crowned queen of Duskmere"
+    wave_justification: "same story with new names"

@@ -1,0 +1,33 @@
+# Embalagem da proposta — criado por /criar-titulos e completado por /gerar-seo.
+# Salvar em projects/<id>/09_seo/packaging.yaml. Lido por validate_packaging_alignment.py.
+
+# Mesma função de clique da referência, em vocabulário controlado (config/trend-rules.yaml → packaging)
+functional_tags:
+  promise: []
+  emotion: []
+  visual_hook: []
+  fantasy_hook: []
+  curiosity_gap: ""
+
+thumbnail:
+  # Mostrar o problema e sugerir a recompensa; nunca o clímax completo.
+  concept: ""
+  text: ""              # texto curto na thumbnail, se houver
+  text_intended: false  # true só se o gerador de imagem for usado de propósito para o texto
+  # Cada dimensão precisa ser diferente da thumbnail de referência.
+  composition:
+    pose: ""
+    framing: ""
+    camera_angle: ""
+    dragon_position: ""
+    setting: ""
+    symbol_object: ""
+    palette: ""
+    lighting: ""
+    body_expression: ""
+    text: ""
+    overall_layout: ""
+  # Deve conter: protagonista com aparência da ficha, ação/ameaça específica do roteiro,
+  # dragão ou sinal fantástico próprio, emoção dominante, composição original,
+  # iluminação e contraste, proporção 16:9 e "no text, no logo, no watermark".
+  prompt_en: ""

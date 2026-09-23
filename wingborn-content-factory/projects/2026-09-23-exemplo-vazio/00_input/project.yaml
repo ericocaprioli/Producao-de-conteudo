@@ -1,5 +1,7 @@
 id: "2026-09-23-exemplo-vazio"
 status: input_received
+# adjacent_trend | reference_adaptation | original_channel_story
+mode: adjacent_trend
 language: en
 channel_mode: core_female_protagonist
 blocks: 5
@@ -15,13 +17,20 @@ new_premise: ""
 reference:
   url: ""
   title: ""
+  # Nunca inventar métricas. Sem dado -> null + 'unknown'. Informado pelo usuário -> 'manual'.
   views: null
   age_hours: null
   views_source: unknown
+  age_source: unknown
+  # true | false | unknown — calculado a partir de views/age_hours e reference_filter
+  meets_filter: unknown
+  # Observação do usuário sobre outras versões da mesma onda recebendo visualizações (opcional)
+  wave_evidence: ""
   thumbnail_file: ""
   description_file: ""
   transcript_file: ""
   comments_file: ""
 selected_direction: ""
 selected_title: ""
+approved_blocks: []
 approved_gates: []

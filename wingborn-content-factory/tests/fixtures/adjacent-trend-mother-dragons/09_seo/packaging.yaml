@@ -1,0 +1,36 @@
+functional_tags:
+  promise: [survival, recognition, justice]
+  emotion: [injustice, pity, awe]
+  visual_hook: [vulnerable_victim, family_threat, creature_danger, strong_contrast, unanswered_visual_question]
+  fantasy_hook: [dragon, magic_mark]
+  curiosity_gap: "why would the dragon bow to the child her mother left behind?"
+
+thumbnail:
+  concept: >-
+    The problem, not the ending: a small girl alone on a frozen bridge with a lantern, a dragon below
+    her that has not yet decided, and her mother's shadow leaving. The reward is only suggested by the
+    dragon's lowered head.
+  text: "SHE WAS LEFT HERE"
+  text_intended: false
+  composition:
+    pose: "standing barefoot, lantern held up at arm's length"
+    framing: "medium-wide, subject on the right third"
+    camera_angle: "high angle from the riverbank looking down onto the bridge"
+    dragon_position: "coiled on the riverbank below the bridge, head lowered toward her"
+    setting: "frost-covered stone bridge over a river at blue dawn"
+    symbol_object: "small brass lantern"
+    palette: "cold blue and slate grey with one warm amber point"
+    lighting: "the lantern as the only warm light, soft dawn fill"
+    body_expression: "chin up, trembling but steady"
+    text: "SHE WAS LEFT HERE"
+    overall_layout: "girl right third on the bridge, dragon bottom left, a long shadow crossing from the top edge"
+  prompt_en: >-
+    16:9 cinematic dark fantasy illustration. A thin, freckled nine-year-old girl with copper-red hair
+    in a single braid, a rust-red whorl mark visible on her collarbone, stands barefoot on a
+    frost-covered stone bridge at blue dawn, holding a small brass lantern up at arm's length, chin
+    raised, trembling but steady. Below the bridge an enormous dragon with ash-grey scales and a bronze
+    band on her left horn lies coiled on the riverbank, head lowered toward the girl, undecided.
+    A woman's long shadow crosses the bridge from the top edge, as if someone is leaving. High angle
+    from the riverbank, girl on the right third, cold blue and slate palette with the lantern as the
+    only warm light, strong contrast, empty space on the left for short text.
+    no text, no logo, no watermark

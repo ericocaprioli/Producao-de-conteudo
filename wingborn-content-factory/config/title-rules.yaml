@@ -17,11 +17,21 @@ required_signals:
   - what_event_happened
   - what_reversal_is_delivered
 
+# severity: fail  -> reprova o título
+# severity: review -> exige revisão humana (a regra depende de contexto que um regex não enxerga)
 forbidden_patterns:
   - pattern: '\bthey\b'
-    reason: "pronome sem antecedente claro"
-  - pattern: '(?i)\bher mother\b'
-    reason: "verificar se a protagonista real não é outra pessoa antes de citar a mãe"
+    severity: review
+    reason: "'they' só é aceitável se o antecedente for claro no próprio título (ex.: família, dragões)"
+
+# Papéis familiares citados no título precisam existir na direção selecionada
+# (evita título que fala da mãe quando a traidora real é outra pessoa).
+family_roles: [mother, father, stepmother, stepfather, sister, brother, stepsister, stepbrother, husband, wife,
+               aunt, uncle, grandmother, grandfather, daughter, son]
+generic_family_terms: [family, parents, kin]
+
+# Marcadores de virada que criam lacuna de curiosidade.
+turn_markers: ["—", "–", " - ", "but", "until", "then", "without knowing", "not knowing", "never knew", "only to"]
 
 keyword_groups:
   injustice:
@@ -29,12 +39,18 @@ keyword_groups:
     - abandoned
     - humiliated
     - sold
-    - cast out
+    - cast
     - disowned
     - exiled
     - rejected
     - shamed
     - mocked
+    - offered
+    - sacrificed
+    - left
+    - handed
+    - walked
+    - traded
   fantastical:
     - dragon
     - dragons
@@ -48,9 +64,12 @@ keyword_groups:
     - blood
     - scales
     - ancient
+    - nest
+    - shrine
   reversal:
     - until
     - but
+    - then
     - now
     - revenge
     - returned
@@ -59,6 +78,9 @@ keyword_groups:
     - rise
     - vindication
     - reclaim
+    - chose
+    - bowed
+    - answered
   identifiable_subject:
     - she
     - her

@@ -1,43 +1,92 @@
 # Wingborn Content Factory
 
-Este diretório é um sistema local de produção editorial para o canal Wingborn Tales
-(dark fantasy com dragões, protagonista feminina, traição/reparação emocional). Ele reduz o
-tempo entre "encontrar uma referência emocional em alta" e "roteiro + prompts de cena + SEO
-prontos para narração e produção".
+Sistema local de produção editorial para o canal Wingborn Tales (dark fantasy com dragões,
+protagonista feminina, traição e reparação). Transforma uma referência emocional em alta,
+escolhida manualmente pelo usuário, em um vídeo original de 15–20 minutos: roteiro em cinco
+blocos, embalagem (título + thumbnail), prompts de cena e SEO.
 
-**Leia este arquivo antes de executar qualquer comando abaixo.** Ele define como interpretar os
-comandos, os limites de originalidade e o fluxo de estados.
+**Leia este arquivo antes de executar qualquer comando.**
 
 ## Como interpretar os comandos
 
-Cada arquivo em `commands/*.md` é a especificação completa de um comando. Quando o usuário digitar
-algo como `/iniciar-projeto`, `/escrever-bloco 2` etc., leia o arquivo `commands/<nome>.md`
-correspondente e siga exatamente os passos, pré-condições e proibições descritos nele.
+Cada `commands/<nome>.md` é a especificação completa de um comando. Quando o usuário digitar
+`/iniciar-projeto`, `/escrever-bloco 2` etc., leia o arquivo correspondente e siga os passos,
+pré-condições e proibições.
 
-Comandos disponíveis, na ordem típica de uso:
+Ordem típica:
 
-1. `/iniciar-projeto` — cria a pasta do projeto e o estado inicial.
-2. `/triar-referencias` — registra referências candidatas com métricas.
-3. `/analisar-referencia` — analisa a referência escolhida (sem criar roteiro).
-4. `/criar-direcoes` — gera três direções originais; para para escolha do usuário.
-5. `/escolher-direcao` — salva a direção escolhida.
-6. `/criar-titulos` — gera títulos e conceito de thumbnail; para para escolha do usuário.
-7. `/criar-ficha` — gera `character-bible.yaml`; para para aprovação.
-8. `/escrever-bloco N` — escreve um bloco do roteiro por vez (N = 1..5).
-9. `/validar-bloco N` — roda os validadores e relata o resultado.
-10. `/revisar-retencao` — gera o mapa de retenção dos 15–20 minutos.
-11. `/gerar-cenas` — gera 20–30 prompts de imagem, só após retenção aprovada.
-12. `/gerar-seo` — gera descrição, tags, hashtags, CTA e prompt de thumbnail.
-13. `/exportar-projeto` — monta os arquivos finais em `11_exports/`.
+1. `/iniciar-projeto` — cria a pasta e o estado inicial.
+2. `/triar-referencia` — registra o link escolhido pelo usuário e classifica o filtro.
+3. `/analisar-referencia` — análise + (em `adjacent_trend`) pacote viral.
+4. `/criar-direcoes` — três direções; para para o usuário escolher A, B ou C.
+5. `/escolher-direcao` — salva a escolha sem reescrever.
+6. `/criar-titulos` — fichas de título, thumbnail e prompt; para para escolha.
+7. `/criar-ficha` — ficha de consistência + aprovação de embalagem (gate `packaging`).
+8. `/escrever-bloco N` — um bloco por vez, validado e aprovado.
+9. `/validar-bloco N` — relatório dos validadores.
+10. `/revisar-retencao` — mapa de retenção.
+11. `/gerar-cenas` — 20–30 prompts de imagem.
+12. `/gerar-seo` — descrição, tags, hashtags, CTA, prompt final de thumbnail.
+13. `/exportar-projeto` — arquivos finais em `11_exports/`.
 
-## Estado do projeto
+## Referência: seleção manual
 
-Cada projeto vive em `projects/YYYY-MM-DD-slug/` e tem um arquivo de estado em
-`00_input/project.yaml`, seguindo o schema de `templates/project.yaml`. **Tudo é salvo em
-arquivo, não na memória da conversa** — qualquer projeto pode ser interrompido e retomado
-lendo `project.yaml` e as pastas numeradas já preenchidas.
+O usuário escolhe o vídeo base no YouTube e informa o link. **O sistema não pesquisa, não
+seleciona, não monitora e não faz scraping do YouTube** — mesmo que haja ferramentas de busca de
+vídeos disponíveis na sessão, não use-as para escolher ou trocar a referência. É permitido ler
+metadados, transcrição ou comentários **do link informado**.
 
-Estados permitidos, em ordem:
+Critério editorial do usuário: ≥ 100.000 visualizações e publicação nas últimas 20 horas
+(`reference_filter`). Serve para classificar a referência informada (`meets_filter`), não para
+buscar vídeos. **Nunca inventar métricas**: sem dado → `null` + fonte `unknown`; informado pelo
+usuário → fonte `manual`. `validate_project.py` recusa número sem fonte e `meets_filter`
+incoerente com os números.
+
+## Modos de criação (`project.yaml → mode`)
+
+- `adjacent_trend` — padrão quando o usuário fornece a referência e quer surfar a tendência.
+  Preserva 4–5 slots do pacote viral e muda a realização narrativa concreta.
+- `reference_adaptation` — referência interessante sem evidência de onda. Preserva emoção e
+  padrões abstratos, com maior distância de superfície.
+- `original_channel_story` — sem referência; apenas o DNA do canal.
+
+## Originalidade × distanciamento excessivo
+
+O objetivo é **adaptação adjacente**: perto do pacote de interesse viral, com história concreta,
+cadeia causal, revelação, clímax e final próprios. Nem história genérica, nem cópia disfarçada.
+
+- Slots de mercado (podem ser mantidos em `adjacent_trend`): relação emocional, tipo de traição,
+  tipo de perigo, presença do dragão, vulnerabilidade visual, origem/poder extraordinário,
+  promessa de sobrevivência/reconhecimento/vingança. "Mãe + filha + dragões" **não** é cópia.
+- Sempre alterar: nomes, personagens concretos, frases, diálogos, cadeia causal, mecanismo da
+  revelação, sequência de eventos, objeto/símbolo, clímax, final, composição da thumbnail e texto
+  do título.
+- Nunca reutilizar transcrição/tradução, eventos de `prohibited_events` ou a sequência concreta
+  da referência. Trocar só nomes, espécie ou cenário é cópia.
+- Se o usuário pedir "trocar só o tema" ou "manter a mesma sequência": não obedecer diretamente;
+  explicar que o sistema preserva a função emocional (e os slots da onda) e criar três direções
+  com cadeias causais diferentes.
+
+Em `adjacent_trend`, as três direções têm distância controlada: **A** alta (5 slots), **B** média
+(4 slots; muda idade, local, forma do abandono, função do dragão, reparação), **C** moderada
+(4 slots; muda ambiente, parentesco secundário, objeto, mitologia, caminho da revelação).
+
+## Mesma força viral, nova expressão (embalagem)
+
+Título, thumbnail, prompt visual e abertura do bloco 1 preservam a **arquitetura de clique** da
+referência — vítima identificável + injustiça familiar concreta + perigo visual + elemento
+dragônico + segredo/origem + recompensa futura — comparada por funções, não por frases.
+Não aprovar paráfrase da referência nem título genérico que abandone os slots. A thumbnail mostra
+o problema e sugere a recompensa, nunca o clímax completo, com composição própria em todas as
+dimensões. Antes do roteiro, o usuário responde às seis perguntas do gate `packaging`
+(`templates/packaging-approval.md`).
+
+## Estado do projeto e retomada
+
+Cada projeto vive em `projects/YYYY-MM-DD-slug/` com o estado em `00_input/project.yaml`
+(schema em `templates/project.yaml`). Tudo é salvo em arquivo; para retomar, rode
+`python3 scripts/validate_project.py projects/<id>` — ele valida o estado e informa o próximo
+comando e os blocos pendentes.
 
 ```text
 input_received → reference_filtered → reference_analyzed → directions_ready →
@@ -45,75 +94,44 @@ direction_selected → title_approved → bible_approved → writing_in_progress
 script_approved → retention_approved → scenes_ready → exports_ready
 ```
 
-**Nunca avance `status` para um estado cujo gate correspondente não esteja em
-`approved_gates`.** Os gates são: `direction`, `title`, `character_bible`, `script`,
-`retention`, `scenes`, `exports`. Rode `python3 scripts/validate_project.py projects/<id>`
-depois de qualquer mudança de estado para confirmar.
+Gates (`approved_gates`), exigidos a partir do estado indicado:
+`direction` (direction_selected), `trend_alignment` (direction_selected, só em adjacent_trend),
+`title` (title_approved), `character_bible` (bible_approved), `packaging` (writing_in_progress),
+`script` (script_approved), `retention`, `scenes`, `exports`. Blocos aprovados ficam em
+`approved_blocks`. **Nunca avance `status` sem o gate aprovado pelo usuário.**
 
-## Limites de originalidade (aplicam-se a `/criar-direcoes` e a todo o roteiro)
+## Validadores (`scripts/`)
 
-Preservar apenas em nível abstrato: emoção desejada, promessa de curiosidade, injustiça
-familiar, medo versus verdade, mistério, progressão de revelação, sensação de vingança ou
-reparação, função do dragão, ritmo geral de tensão e recompensa.
+Requerem Python 3.10+ e PyYAML. Código de saída diferente de zero é bloqueio real.
 
-Nunca reutilizar: nomes, frases, diálogos, transcrição/tradução, personagens equivalentes,
-locais específicos, objetos específicos, sequência concreta de eventos, mesma causa da
-traição, mesma revelação, mesmo clímax, mesmo final, ou simples troca de espécie/nome/cenário.
+- `validate_project.py <projeto>` — schema, modo, estados, gates, métricas sem invenção, retomada.
+- `validate_blocks.py <projeto> [--block N]` — 3.200–3.500 caracteres (espaços, pontuação e
+  quebras internas contam), UTF-8, marcadores técnicos, sequência dos arquivos.
+- `validate_consistency.py <projeto>` — ficha × roteiro: nomes ausentes/alterados, idade,
+  aparência, dragão, objeto-símbolo, local do clímax, abertura do bloco 1.
+- `validate_title_promise.py "<título>" [--project <projeto>]` — sinais do título e
+  correspondência com a direção selecionada.
+- `validate_trend_alignment.py <projeto> [--all]` — ALIGNED / TOO_DISTANT / TOO_CLOSE /
+  REVIEW_REQUIRED.
+- `validate_packaging_alignment.py <projeto>` — equivalência de clique do título e da thumbnail.
+- `build_exports.py <projeto>` — exportação final; recusa blocos inválidos.
 
-Se o usuário pedir uma reescrita muito próxima da referência ("trocar só o tema", "manter a
-mesma sequência"), **não obedecer diretamente**: explicar brevemente que o sistema preserva
-apenas a função emocional, e seguir para três direções com cadeias causais diferentes.
+Os validadores de tendência e embalagem são heurísticos. Quando devolverem `REVIEW_REQUIRED`,
+mostre os motivos ao usuário em vez de decidir sozinho.
 
-## Filtro de referências e dados
-
-Visualizações mínimas 100.000, janela máxima 20 horas desde a publicação
-(`config/default-project.yaml` → `reference_filter`). **Nunca inventar** visualizações, idade
-do vídeo ou comentários. Sem API/conector confiável, aceitar entrada manual e marcar o campo
-correspondente (`reference.views_source`) como `manual`.
-
-## DNA do canal
-
-Ver `config/channel.yaml` para os elementos centrais (protagonista feminina por padrão,
-traição/abandono, dark fantasy, dragão com função dramática, dom inicialmente temido,
-revelação gradual, vindicação, reparação, tom calmo e cinematográfico, final fechado).
-Protagonista masculina só é permitida quando o projeto for marcado explicitamente como
-experimento editorial (`channel_mode: experimental_male_protagonist`).
-
-## Validadores determinísticos
-
-Todos em `scripts/`, executáveis com `python3 scripts/<nome>.py <args>`. Requerem PyYAML
-(`pip install pyyaml`). Retornam código de saída diferente de zero quando a validação falha —
-trate isso como bloqueio real, não como sugestão.
-
-- `validate_project.py <projeto>` — valida `project.yaml` (schema, estados, gates).
-- `validate_blocks.py <projeto> [--block N]` — valida contagem de caracteres (3.200–3.500,
-  com espaços) e ausência de marcadores técnicos nos blocos.
-- `validate_consistency.py <projeto>` — compara `character-bible.yaml` com o roteiro
-  (heurístico: nomes ausentes, idade contraditória, objeto-símbolo desaparecendo etc.).
-- `validate_title_promise.py "<título>"` — checagem heurística de sinais no título; pode
-  retornar `REVIEW_REQUIRED` em vez de afirmar qualidade sem evidência.
-- `build_exports.py <projeto>` — monta os arquivos finais em `11_exports/`, recusa exportar
-  blocos inválidos.
-
-## Regras de escrita de bloco (resumo — ver `commands/escrever-bloco.md` para o detalhe)
-
-- 3.200–3.500 caracteres por bloco, incluindo espaços.
-- Texto narrativo limpo, sem título de bloco, sem `[CENA]`/`[PAUSE]`/instruções de produção.
-- Um bloco por vez; validar e obter aprovação do usuário antes do próximo.
-- Bloco 1 deve apresentar a injustiça em ~30s, identificar o antagonista, plantar
-  objeto/marca/segredo antes de ~60s, criar pergunta urgente e entregar a primeira virada cedo.
+Testes: `python3 -m unittest discover -s tests -v` (fixture em
+`tests/fixtures/adjacent-trend-mother-dragons/`).
 
 ## Fora de escopo neste MVP
 
-Não implementar sem pedido explícito e fora deste fluxo: scraping agressivo do YouTube,
-publicação automática, integração automática com Kaggle ou ChatGPT, execução em segundo plano
-sem revisão do usuário, painel web, seleção automática definitiva baseada só em visualizações.
-Conectores externos são uma fase separada, a considerar somente depois de três projetos
-validados manualmente.
+Busca automática ou scraping do YouTube, publicação automática, integração com Kaggle ou
+ChatGPT, execução em segundo plano sem revisão, painel web, seleção automática baseada só em
+visualizações. Conectores externos só depois de três projetos validados, como fase separada.
 
-## O que nunca fazer
+## Nunca
 
-- Nunca inventar métricas de referência (views, idade, comentários).
-- Nunca pular um gate de aprovação do usuário.
-- Nunca produzir uma adaptação disfarçada da referência.
-- Nunca afirmar que o sistema melhora CTR sem dados reais de novos vídeos publicados.
+- Inventar métricas, comentários ou transcrição.
+- Pular um gate de aprovação do usuário.
+- Produzir adaptação disfarçada, ou história tão distante que abandone a onda escolhida em
+  `adjacent_trend`.
+- Afirmar que o sistema, um título ou uma thumbnail melhora o CTR sem dados de vídeos publicados.

@@ -1,0 +1,32 @@
+protagonist:
+  name: "Ailis"
+  age: 9
+  appearance: "thin and freckled, copper-red hair in a single braid, a rust-red whorl mark on her collarbone"
+  wound: "her mother chose a stepfather's ambition over her"
+  strength: "she notices what adults overlook"
+  desire: "to be wanted without having to earn it"
+  fear: "being left in the dark"
+  climax_choice: "she orders the dragon to stay its fire and tells the truth herself"
+antagonist:
+  name: "Maren"
+  relation: "mother"
+  public_power: "keeper of the Carrow Ford toll-house"
+  hidden_motive: "fear of losing Osric and the comfort his claim promises"
+ally:
+  name: "Tamsin"
+  role: "exiled lantern-keeper of the Ashen Reach"
+  risk_taken: "returns to the town that exiled her to testify"
+dragon:
+  name_rule: "never named by humans; Ailis calls her only the grey one"
+  appearance: "ash-grey scales, a bronze band on her left horn"
+  behavior: "silent and patient; lowers her head to the marked"
+  bond_rule: "answers only the bearer of the ford-wardens' whorl"
+story:
+  symbol_object: "brass lantern"
+  opening_danger: "abandoned at night in the Ashen Reach where dragons hunt"
+  hidden_truth: "the ford-wardens were dragon-bonded and the charter belongs to the marked heir"
+  first_power_signal: "the grey dragon lowers her head to Ailis's whorl"
+  second_power_signal: "the drowned charter stone shows the same whorl beside a folded wing"
+  public_revelation: "the charter-stone rubbing shown at the Harvest Assize"
+  climax_location: "Carrow Ford bridge"
+  final_repair: "Ailis receives the charter under Tamsin's guardianship and a home above the ford"

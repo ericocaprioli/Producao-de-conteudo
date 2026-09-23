@@ -1,6 +1,17 @@
-# Regras usadas por /revisar-retencao. Baseadas nos princípios do canal, não em fórmula fixa.
+# Regras usadas por /revisar-retencao e pelas checagens de abertura do bloco 1.
+# Baseadas nos princípios do canal, não em fórmula fixa.
 
 target_duration_minutes: [15, 20]
+
+# Velocidade média de narração usada para converter caracteres em tempo.
+# 15 caracteres/segundo ≈ 150 palavras/minuto em inglês. Ajuste para a sua voz real.
+narration_chars_per_second: 15
+
+# Abertura do bloco 1 (em segundos de narração).
+opening:
+  antagonist_identified_by_seconds: 30
+  symbol_planted_by_seconds: 60
+  fantasy_signal_by_seconds: 60
 
 timeline_template:
   - segment: "00:00-00:30"

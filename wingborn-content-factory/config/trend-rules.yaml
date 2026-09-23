@@ -1,0 +1,116 @@
+# Regras usadas por validate_trend_alignment.py e validate_packaging_alignment.py.
+# Os limiares são heurísticos e ajustáveis. Casos ambíguos devem resultar em
+# REVIEW_REQUIRED, nunca em falsa certeza semântica.
+
+modes:
+  - adjacent_trend
+  - reference_adaptation
+  - original_channel_story
+
+# Slots do pacote viral. São "slots de mercado": manter mãe + filha + dragões NÃO é cópia.
+# As palavras-chave servem apenas para verificar se um slot declarado pelo modelo
+# tem evidência no texto da direção (correspondência por prefixo, sem distinção de caixa).
+slots:
+  emotional_relationship:
+    description: "relação emocional entre vítima e traidor (ex.: mãe → filha)"
+    keywords: [mother, father, daughter, son, sister, brother, stepmother, stepfather, husband, wife, family, parent,
+               mãe, pai, filha, filho, irmã, irmão, madrasta, padrasto, marido, esposa, família]
+  betrayal_type:
+    description: "tipo de traição (abandono deliberado, venda, entrega, expulsão)"
+    keywords: [abandon, left, leav, cast, sold, sell, offer, handed, surrender, exile, disown, betray,
+               sacrific, tribute, payment, vend, entreg, expuls, deix]
+  danger_type:
+    description: "tipo de perigo (dragões como ameaça mortal, território hostil)"
+    keywords: [devour, die, death, hunt, territor, nest, prey, burn, kill, danger, perig, morte, morrer, devor, ninho]
+  dragon_presence:
+    description: "presença do dragão na promessa"
+    keywords: [dragon, wyrm, drake, dragão, dragõ]
+  visual_vulnerability:
+    description: "vulnerabilidade visual da vítima (criança sozinha, amarrada, ajoelhada)"
+    keywords: [child, girl, small, alone, barefoot, crying, kneel, trembl, bound, young, eight, nine,
+               criança, menina, sozinha, pequena]
+  extraordinary_origin:
+    description: "origem ou poder extraordinário"
+    keywords: [mark, blood, heir, lineage, bloodline, origin, sigil, royal, ancient, queen, chosen, whorl,
+               marca, sangue, herdeira, linhagem, origem, rainha]
+  reward_promise:
+    description: "promessa de sobrevivência, reconhecimento, vingança ou reparação"
+    keywords: [recogni, reveng, vengeance, surviv, return, protect, chose, bow, charter, throne, vindicat, justice,
+               obey, claim, reconhec, vingança, sobreviv, volt, proteg, justiça]
+
+# Vocabulário de elementos concretos que uma direção declara ter alterado.
+# As chaves obrigatórias precisam constar em changed_elements em adjacent_trend.
+changed_elements:
+  vocabulary: [names, characters, phrases, dialogues, causal_chain, revelation_mechanism, event_sequence,
+               symbol_object, climax, ending, thumbnail_composition, title_text, age, location,
+               abandonment_form, dragon_function, reparation, environment, secondary_kinship, mythology,
+               revelation_path]
+  mandatory: [names, characters, causal_chain, revelation_mechanism, event_sequence, symbol_object, climax,
+              ending, thumbnail_composition, title_text]
+  minimum_count: 5
+
+# Perfis de proximidade para as três direções de adjacent_trend.
+proximity_profiles:
+  high:
+    slots_preserved: 5
+    must_change: [causal_chain, revelation_mechanism, climax, ending]
+  medium:
+    slots_preserved: 4
+    must_change: [age, location, abandonment_form, dragon_function, reparation]
+  moderate:
+    slots_preserved: 4
+    must_change: [environment, secondary_kinship, symbol_object, mythology, revelation_path]
+
+alignment:
+  min_slots: 4
+  max_slots: 5
+  causal_chain_min_steps: 7
+  causal_chain_max_steps: 10
+  # Correspondência de evento: tokens de conteúdo compartilhados (sem termos de gênero).
+  event_min_shared_tokens: 2
+  event_min_containment: 0.6
+  event_min_jaccard: 0.3
+  # Quantos eventos proibidos reaproveitados tornam a direção TOO_CLOSE (1 = REVIEW_REQUIRED).
+  prohibited_events_too_close: 2
+  # Quantos passos da cadeia da referência, na mesma ordem, caracterizam sequência copiada.
+  chain_order_too_close: 3
+  # Título quase idêntico: razão de sequência por palavra, ou Jaccard de conteúdo.
+  title_seq_ratio_too_close: 0.6
+  title_content_jaccard_too_close: 0.6
+
+# Termos de gênero/mercado. São ignorados nas medidas de semelhança de superfície para que
+# "mulher + dragão" ou "mãe + filha + dragões" não sejam tratados como cópia.
+genre_terms: [dragon, dragons, wyrm, drake, mother, daughter, child, girl, woman, family, abandon, abandoned,
+              left, leave, leaves, die, dies, death, blood, heir, queen, king, curse, cursed, mark, nest, fire,
+              ancient, royal, betray, betrayed, sold, cast, her, she, dark, night,
+              mãe, filha, dragão, dragões, menina, criança, mulher, sangue, herdeira, rainha, marca, maldição]
+
+packaging:
+  functional_vocabulary:
+    promise: [survival, recognition, revenge, reparation, vindication, belonging, inheritance, protection, justice]
+    emotion: [injustice, pity, dread, awe, anger, grief, hope, triumph, tenderness, betrayal]
+    visual_hook: [vulnerable_victim, family_threat, creature_danger, strong_contrast, unanswered_visual_question,
+                  text_space]
+    fantasy_hook: [dragon, dragon_sign, magic_mark, ancient_power, royal_origin]
+  visual_hook_min_coverage: 0.75
+  # Dimensões da composição que precisam mudar. Pares em lista contam como UMA dimensão
+  # ("paleta dominante OU distribuição da luz"): só conta como igual se ambas forem iguais.
+  composition_dimensions:
+    - pose
+    - framing
+    - camera_angle
+    - dragon_position
+    - setting
+    - symbol_object
+    - [palette, lighting]
+    - body_expression
+    - text
+    - overall_layout
+  composition_dimension_min_jaccard: 0.6
+  composition_too_close_min_matches: 4
+  thumbnail_prompt_paraphrase_min_shared: 3
+  thumbnail_prompt_paraphrase_min_jaccard: 0.4
+  required_prompt_terms: ["16:9"]
+  required_negative_terms: ["no text", "no logo", "no watermark"]
+  min_title_slots_preserved: 3
+  min_title_signal_groups: 3

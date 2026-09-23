@@ -1,0 +1,13 @@
+# Fichas de título — criado por /criar-titulos. Salvar em projects/<id>/09_seo/title-options.yaml.
+# De 3 a 5 opções em ângulos diferentes. Cada ficha segue o Adendo 2 (mesma força viral,
+# nova expressão). Não aprovar paráfrase da referência nem título genérico sem os slots da onda.
+
+title_options:
+  - text: ""
+    angle: ""                      # family_injustice | vulnerability | dragon | secret_or_heritage | revenge_or_reparation
+    viral_slots_preserved: []      # ids de config/trend-rules.yaml → slots
+    concrete_details_changed: []   # redação, ordem, nomes, evento, mecanismo da virada...
+    emotional_promise: ""
+    curiosity_gap: ""
+    reference_phrase_overlap: ""   # low | review_required
+    promise_delivered_by: ""       # em que bloco/cena a história entrega a promessa do título

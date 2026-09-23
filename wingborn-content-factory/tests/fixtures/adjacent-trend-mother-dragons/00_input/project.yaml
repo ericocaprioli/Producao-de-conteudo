@@ -1,0 +1,33 @@
+# FIXTURE — projeto adjacent_trend com roteiro completo aprovado (direção A).
+id: fixture-adjacent-trend-mother-dragons
+status: script_approved
+mode: adjacent_trend
+language: en
+channel_mode: core_female_protagonist
+blocks: 5
+length:
+  unit: characters
+  min_per_block: 3200
+  max_per_block: 3500
+  count_spaces: true
+reference_filter:
+  minimum_views: 100000
+  recency_window_hours: 20
+new_premise: ""
+reference:
+  url: "https://example.com/fixture-reference-video"
+  title: "Her mother left her to die at the hands of the dragons — but she was the heir of Tiamat"
+  views: 250000
+  age_hours: 14
+  views_source: manual
+  age_source: manual
+  meets_filter: true
+  wave_evidence: "hipotético: outras versões da mesma premissa também recebendo visualizações"
+  thumbnail_file: ""
+  description_file: ""
+  transcript_file: ""
+  comments_file: ""
+selected_direction: A
+selected_title: "Her Mother Walked Her Into the Dragons' Valley and Never Came Back — Until the Grey Dragon Bowed"
+approved_blocks: [1, 2, 3, 4, 5]
+approved_gates: [direction, trend_alignment, title, character_bible, packaging, script]

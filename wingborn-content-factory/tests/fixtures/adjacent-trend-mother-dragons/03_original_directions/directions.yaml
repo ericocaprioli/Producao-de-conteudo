@@ -1,0 +1,182 @@
+# FIXTURE — três direções em adjacent_trend para a referência hipotética
+# "a mãe abandonou a filha diante dos dragões, mas a criança possuía uma origem extraordinária".
+
+directions:
+  - id: A
+    proximity_level: high
+    logline: >-
+      On the night of the first frost, a toll-keeper's widow walks her nine-year-old daughter into
+      the valley where dragons hunt and leaves her there, so her new husband can seize the ford
+      charter — but the grey dragon that finds the child lowers its head to the whorl her mother
+      always hid.
+    title_draft: "Her Mother Walked Her Into the Dragons' Valley and Never Came Back — Until the Grey Dragon Bowed"
+    thumbnail_concept: >-
+      A thin girl stands barefoot on a frost-covered stone bridge at blue dawn, holding a small
+      brass lantern up at arm's length; an ash-grey dragon lies coiled on the riverbank below, head
+      lowered toward her; a woman's long shadow crosses the bridge from the top edge. Cold blue
+      palette with one warm lantern glow.
+    characters:
+      - {name: Ailis, role: "daughter, nine years old"}
+      - {name: Maren, role: "mother, keeper of the toll-house"}
+      - {name: Osric, role: "stepfather and tax-reeve"}
+      - {name: Tamsin, role: "exiled lantern-keeper, marginalized mentor"}
+      - {name: "the grey one", role: "dragon bonded to the ford-wardens"}
+    preserved_slots: [emotional_relationship, betrayal_type, danger_type, dragon_presence, extraordinary_origin]
+    changed_elements: [names, characters, phrases, dialogues, causal_chain, revelation_mechanism, event_sequence,
+                       symbol_object, climax, ending, thumbnail_composition, title_text]
+    causal_chain:
+      - "Maren, widow of the Carrow Ford toll-keeper, marries Osric, a tax-reeve who covets the ford charter"
+      - "the charter can pass only to a blood heir of the old ford-wardens, and nine-year-old Ailis is the only one"
+      - "Osric convinces Maren that the rust-red whorl on Ailis's collarbone will bring the crown's inquisitors to the house"
+      - "on the night of the first frost Maren walks Ailis into the Ashen Reach, where dragons hunt, and leaves her there with a brass lantern and a promise to return"
+      - "an ash-grey dragon lands beside the lantern and, instead of attacking, lowers its head to the whorl on the child's collarbone"
+      - "Tamsin, an exiled lantern-keeper living in the Reach, finds Ailis asleep against the dragon's foreleg"
+      - "at low water Tamsin takes Ailis to the drowned charter stone, whose carving shows the same whorl beside a folded wing"
+      - "at the Harvest Assize Osric declares the girl dead and claims the charter for himself"
+      - "Ailis enters with Tamsin and a charcoal rubbing of the charter stone while the grey dragon settles on the Carrow Ford bridge"
+      - "when Osric's archers aim at the dragon, Ailis orders it to stay its fire and speaks the truth herself"
+    revelation_mechanism: >-
+      the drowned charter stone at the ford shows the whorl carved under a folded wing, proving the
+      ford-wardens were bonded to the grey one and that the charter belongs to whoever bears the sign
+    climax: >-
+      at the Harvest Assize on the Carrow Ford bridge, Ailis stops the grey dragon's fire and exposes
+      Osric's false death claim with the charcoal rubbing of the charter stone
+    ending: >-
+      the assize grants Ailis the charter under Tamsin's guardianship, Maren loses the toll-house, and
+      Ailis keeps the lantern burning in the watch-house above the ford where the grey one nests
+    proximity_risk: "medium — keeps five slots of the wave; mitigated by a wholly new causal chain"
+    wave_justification: >-
+      Same click promise: a mother abandons her small daughter where dragons hunt, and a hidden
+      origin makes the dragon spare her. The cause (a toll charter), the proof (a drowned stone),
+      the climax (a public assize) and the reward (guardianship and belonging, not a throne) are new.
+    injustice: "abandoned by her own mother so a stepfather can seize the ford charter"
+    symbol_object: "brass lantern"
+    stigmatized_gift: "the rust-red whorl on her collarbone, called an inquisitor's mark"
+    marginalized_mentor: "Tamsin, the lantern-keeper the town blamed for a flood"
+    first_power_signal: "the grey dragon lowers its head to the whorl"
+    central_secret: "the ford-wardens were dragon-bonded"
+    midpoint_turn: "the drowned charter stone shows the whorl"
+    moral_choice: "let the dragon burn the archers, or command it to stay and tell the truth herself"
+    differences_from_reference:
+      - "abandoned for property, not sacrificed to end raids"
+      - "the dragon recognizes a carved sign, no glowing mark"
+      - "proof comes from a stone in the river, not from a dragon queen"
+      - "public assize on a bridge instead of a return to the capital"
+      - "guardianship and a home, not a crown; the mother never begs"
+
+  - id: B
+    proximity_level: medium
+    logline: >-
+      In a salt-marsh village that pays the dragons one child every tithe winter, a mother in debt
+      secretly swaps the lot so it falls on her eight-year-old daughter — but the nest raises the girl
+      as the only human it protects, and she comes back to end the tithe forever.
+    title_draft: "Her Mother Paid the Marsh Dragons With Her Eight-Year-Old Daughter — The Nest Raised Her Instead"
+    thumbnail_concept: >-
+      A small girl wrapped in a faded wedding shawl stands waist-deep in grey marsh water among tall
+      reeds at dusk, facing the viewer; far behind her, in the mist, a long green dragon curls around
+      a ring of standing stones; at the right edge a woman's hand lets go of the shawl's fringe.
+      Muted green and pewter palette, soft side light.
+    characters:
+      - {name: Wren, role: "daughter, eight at the tithe"}
+      - {name: Hesk, role: "mother, a widow in debt"}
+      - {name: Aldous, role: "village reeve"}
+      - {name: Colm, role: "fever-healer the village calls mad"}
+      - {name: Sorrow-in-Salt, role: "old marsh dragon"}
+    preserved_slots: [emotional_relationship, betrayal_type, dragon_presence, reward_promise]
+    changed_elements: [names, characters, phrases, dialogues, causal_chain, revelation_mechanism, event_sequence,
+                       symbol_object, climax, ending, thumbnail_composition, title_text, age, location,
+                       abandonment_form, dragon_function, reparation]
+    causal_chain:
+      - "Wendle Fen pays the marsh dragons one child every tithe winter to keep them from burning the salt pans"
+      - "Hesk, a widow in debt to reeve Aldous, swaps the tithe lot so it falls on her daughter Wren instead of the reeve's son"
+      - "Hesk hands Wren over at the tithe stones wrapped in her own wedding shawl"
+      - "the old dragon Sorrow-in-Salt keeps the tithe children alive, but most of them sicken with marsh fever"
+      - "Wren survives because Colm taught her his salt-cure, and she nurses the dragon's sick hatchling back to health"
+      - "the nest adopts Wren, and she learns the dragons speak with one another through tide-drums"
+      - "the tide-drum carvings in the nest record every tithe child and show the dragons never asked for them"
+      - "on tithe day Wren walks out of the marsh ahead of the dragons and stands on the tithe stones before the village"
+      - "she beats the tide-drum and the dragons lay the lost children's bones before the reeve's hall"
+      - "the fen abolishes the tithe and the reeve's family is cast out"
+    revelation_mechanism: >-
+      the tide-drum carvings inside the nest record every tithe child and show the dragons never
+      demanded them; the reeve's family invented the tithe to rule the fen
+    climax: >-
+      on tithe day Wren beats the tide-drum on the tithe stones and the dragons lay the lost
+      children's bones before the reeve's hall
+    ending: >-
+      the fen abolishes the tithe, the reeve's family is cast out, and Wren becomes warden of the marsh
+      path, keeping her mother's shawl but not her mother
+    proximity_risk: "low — keeps four slots; the dragon is a protector, not the threat that spares her"
+    wave_justification: >-
+      Keeps the mother who hands her small daughter to dragons and the promise of a vulnerable girl
+      protected and vindicated; changes age, place, the form of abandonment (a rigged tithe), the
+      dragon's function (guardian) and the reparation (freeing the other children).
+    injustice: "her mother trades her life to clear a debt"
+    symbol_object: "faded wedding shawl"
+    stigmatized_gift: "the salt-cure knowledge the village calls witchcraft"
+    marginalized_mentor: "Colm, the fever-healer the village calls mad"
+    first_power_signal: "the sick hatchling recovers under Wren's care"
+    central_secret: "the dragons never demanded the tithe"
+    midpoint_turn: "the tide-drum carvings"
+    moral_choice: "expose the reeve's family or let the dragons burn the hall"
+    differences_from_reference:
+      - "a rigged village tithe instead of a royal sacrifice"
+      - "the dragon is a guardian, not a predator"
+      - "no royal origin; her value is knowledge and care"
+      - "reparation frees the other children"
+
+  - id: C
+    proximity_level: moderate
+    logline: >-
+      A lumber-baron's wife swears her eclipse-born daughter is a curse and abandons her in the forest
+      the dragons burn each autumn — not knowing that the lullaby the girl learned from her great-aunt
+      belongs to the first dragon-queen.
+    title_draft: "Called a Curse by Her Mother and Left in the Dragon Forest — Until Her Lullaby Silenced the Fire"
+    thumbnail_concept: >-
+      A girl curled inside a hollow oak, lit from above by falling embers, eyes closed and humming;
+      outside the trunk three dragon silhouettes circle through smoke; an empty cart track leads away
+      into the dark on the right. Deep teal and ember orange, top light.
+    characters:
+      - {name: Idony, role: "daughter, eleven"}
+      - {name: Bretta, role: "mother, a lumber-baron's wife"}
+      - {name: Ysolde, role: "great-aunt, a deaf weaver"}
+      - {name: Fenn, role: "shunned charcoal-burner, marginalized mentor"}
+    preserved_slots: [emotional_relationship, betrayal_type, danger_type, extraordinary_origin]
+    changed_elements: [names, characters, phrases, dialogues, causal_chain, revelation_mechanism, event_sequence,
+                       symbol_object, climax, ending, thumbnail_composition, title_text, environment,
+                       secondary_kinship, mythology, revelation_path]
+    causal_chain:
+      - "in the timber town of Harrowgate Idony is born during an eclipse, and her mother Bretta swears the child is a curse"
+      - "Idony's only protector is her great-aunt Ysolde, a deaf weaver who teaches her a wordless lullaby"
+      - "when Ysolde dies, Bretta drives eleven-year-old Idony by cart into the Thornwald, the forest the dragons burn each autumn, and leaves her there"
+      - "Idony hides in a hollow oak as the burning begins and hums Ysolde's lullaby to calm herself"
+      - "the forest dragons stop burning and circle the oak in silence"
+      - "Fenn, a charcoal-burner shunned for living inside the Thornwald, hears the song and shelters her at his kiln"
+      - "Fenn shows her a woodcut of the Singer, the first dragon-queen, a human woman who sang dragons to sleep"
+      - "Ysolde's loom, left to Fenn, hides a tapestry that knots the same melody, proving Ysolde was the Singer's last descendant"
+      - "when Bretta's husband fires the forest edge to clear timber, the dragons descend on Harrowgate"
+      - "Idony stands in the market square and sings until the dragons fold their wings, and the town sees who Bretta abandoned"
+    revelation_mechanism: >-
+      a lullaby taught by a great-aunt silences the dragons, and a tapestry on the dead weaver's loom
+      records the same melody as the song of the first dragon-queen
+    climax: "Idony sings in the burning market square until the dragons fold their wings"
+    ending: >-
+      Harrowgate grants the Thornwald to Idony and Fenn as a protected wood, Bretta is shunned, and
+      Idony keeps Ysolde's loom
+    proximity_risk: "low — keeps four slots; new environment, mythology and revelation path"
+    wave_justification: >-
+      Keeps the mother who rejects her daughter as a curse and leaves her to die among dragons, and
+      the hidden origin; the forest setting, the great-aunt, the lullaby, the weaving and the
+      market-square climax are new.
+    injustice: "rejected as a curse and abandoned by her mother"
+    symbol_object: "Ysolde's loom"
+    stigmatized_gift: "a song her mother calls witch-humming"
+    marginalized_mentor: "Fenn, the charcoal-burner"
+    first_power_signal: "the dragons stop burning around the hollow oak"
+    central_secret: "Ysolde was the Singer's last descendant"
+    midpoint_turn: "the tapestry on the loom"
+    moral_choice: "stay safe in the forest or walk into the burning town to sing"
+    differences_from_reference:
+      - "forest and timber town instead of cliffs and capital"
+      - "origin passes through a great-aunt and a song, not a birthmark"
+      - "climax in a market square; no return on dragonback"

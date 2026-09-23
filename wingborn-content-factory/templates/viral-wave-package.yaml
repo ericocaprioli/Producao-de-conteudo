@@ -1,0 +1,57 @@
+# Pacote viral — criado por /analisar-referencia no modo adjacent_trend.
+# Salvar em projects/<id>/02_reference_analysis/viral-wave-package.yaml.
+# viral_wave: funções que a onda vende (slots de mercado). reference_surface: a realização
+# concreta da referência, que NÃO pode ser repetida. Os dois blocos são usados pelos validadores.
+
+viral_wave:
+  victim_role: ""
+  betrayer_role: ""
+  betrayal_type: ""
+  danger_type: ""
+  visual_spectacle: ""
+  hidden_value: ""
+  emotional_promise: ""
+  future_reward: ""
+  title_pattern: ""
+  thumbnail_pattern: ""
+  # ids de config/trend-rules.yaml → slots
+  preserved_slots: []
+  changed_elements: []
+  # eventos concretos da referência que nenhuma direção pode repetir
+  prohibited_events: []
+
+reference_surface:
+  title: ""
+  # nomes próprios da referência (personagens, criaturas, lugares)
+  names: []
+  # sequência concreta da referência, em ordem
+  causal_chain: []
+  revelation_mechanism: ""
+  climax: ""
+  ending: ""
+  thumbnail:
+    description: ""
+    text: ""
+    composition:
+      pose: ""
+      framing: ""
+      camera_angle: ""
+      dragon_position: ""
+      setting: ""
+      symbol_object: ""
+      palette: ""
+      lighting: ""
+      body_expression: ""
+      text: ""
+      overall_layout: ""
+
+# Função da embalagem da referência, em vocabulário controlado (config/trend-rules.yaml → packaging)
+functional_tags:
+  promise: []
+  emotion: []
+  visual_hook: []
+  fantasy_hook: []
+  curiosity_gap: ""
+
+# Opcional: palavras-chave específicas desta onda para verificar cada slot no texto das direções
+slot_keywords: {}
