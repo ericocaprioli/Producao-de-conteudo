@@ -75,4 +75,4 @@ São quatro, acima do mínimo de dois.
 - [x] Pelo menos dois microclímax antes do clímax final (4)
 - [x] Nenhum intervalo longo apenas de explicação
 - [x] Cobertura dos cinco blocos na linha do tempo
-- [ ] Aprovação do usuário
+- [x] Aprovação do usuário
