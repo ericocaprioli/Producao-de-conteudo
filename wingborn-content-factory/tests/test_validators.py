@@ -418,6 +418,8 @@ class TestExports(FixtureCopy):
                   for n in range(1, 6)]
         positions = [tts.index(b[:60]) for b in blocks]
         self.assertEqual(positions, sorted(positions))
+        for prev, nxt in zip(blocks, blocks[1:]):
+            self.assertIn(prev[-40:] + "\n\n" + nxt[:40], tts, "blocos precisam de linha em branco entre si")
         manifest = json.loads((out / "production_manifest.json").read_text(encoding="utf-8"))
         self.assertEqual(len(manifest["characters_per_block"]), 5)
         self.assertTrue(all(3200 <= c <= 3500 for c in manifest["characters_per_block"]))

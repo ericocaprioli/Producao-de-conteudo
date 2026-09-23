@@ -82,8 +82,9 @@ def main() -> int:
         texts.append(text)
         write(f"block-{n:02d}.txt", text)
 
+    # Linha em branco entre blocos: o narrador trata cada bloco como parágrafo próprio (pausa longa).
     write("script_full.txt", "\n".join(texts))
-    write("tts_plain_text.txt", "\n".join(t.strip() for t in texts) + "\n")
+    write("tts_plain_text.txt", "\n\n".join(t.strip() for t in texts) + "\n")
 
     scenes_src = pdir / "08_scene_prompts" / "scenes.json"
     if scenes_src.exists():

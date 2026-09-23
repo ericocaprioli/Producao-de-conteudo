@@ -37,6 +37,9 @@ de imagens e publicação.
 
 4. Informar ao usuário o caminho final: `projects/<id>/11_exports/`.
 
+5. Próximo passo fora do Claude: narrar `tts_plain_text.txt` com a voz do usuário seguindo
+   `narration/README.md` (notebook `narration/kaggle_narracao.ipynb`, no Kaggle).
+
 ## O que este comando não deve fazer
 
 - Não exportar blocos que falharem em `validate_blocks.py`.
