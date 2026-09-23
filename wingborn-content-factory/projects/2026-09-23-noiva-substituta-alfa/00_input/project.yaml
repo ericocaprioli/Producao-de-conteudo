@@ -1,7 +1,7 @@
 id: "2026-09-23-noiva-substituta-alfa"
-status: input_received
+status: reference_filtered
 # adjacent_trend | reference_adaptation | original_channel_story
-mode: adjacent_trend
+mode: reference_adaptation
 language: en
 channel_mode: core_female_protagonist
 blocks: 5
