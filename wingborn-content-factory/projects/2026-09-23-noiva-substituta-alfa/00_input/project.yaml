@@ -1,5 +1,5 @@
 id: "2026-09-23-noiva-substituta-alfa"
-status: writing_in_progress
+status: script_approved
 # adjacent_trend | reference_adaptation | original_channel_story
 mode: reference_adaptation
 language: en
@@ -32,5 +32,5 @@ reference:
   comments_file: "projects/2026-09-23-noiva-substituta-alfa/02_reference_analysis/comments.txt"
 selected_direction: "A"
 selected_title: "Her Stepmother Traded Her Life for a Mountain Pass — But the Dragon She Healed Remembered Her Name"
-approved_blocks: [1, 2, 3, 4]
-approved_gates: [direction, title, character_bible, packaging]
+approved_blocks: [1, 2, 3, 4, 5]
+approved_gates: [direction, title, character_bible, packaging, script]
