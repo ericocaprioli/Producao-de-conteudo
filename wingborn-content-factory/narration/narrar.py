@@ -6,7 +6,13 @@ Pensado para o Kaggle, mas funciona em qualquer máquina com GPU:
 
 Entradas (procuradas sozinhas em /kaggle/input, /content e na pasta atual):
     - tts_plain_text.txt   exportado por /exportar-projeto (ou qualquer .txt único)
-    - um áudio da sua voz  (.wav .mp3 .m4a .flac .ogg .opus .aac)
+    - um áudio da sua voz  (.wav .mp3 .m4a .flac .ogg .opus .aac) — pode ser em português
+    - opcional: voz_base.* — áudio de uma voz fluente em inglês com licença de uso
+
+Modos:
+    nativo    (padrão) 1) narra em inglês fluente com a voz base (padrão do Chatterbox ou voz_base.*)
+              2) converte cada trecho para o SEU timbre (ChatterboxVC). Pronúncia nativa, voz sua.
+    clonagem  narra direto imitando a sua gravação: herda também o sotaque dela.
 
 Saídas na pasta atual:
     narracao_final.wav   narração completa, volume normalizado para o YouTube (-16 LUFS)
@@ -29,6 +35,8 @@ import time
 from pathlib import Path
 
 DEFAULTS = {
+    "modo": "nativo",          # "nativo" (sem sotaque) ou "clonagem" (imita a gravação, com sotaque)
+    "voz_base": None,          # caminho de uma voz fluente em inglês (opcional; padrão = voz do Chatterbox)
     "exaggeration": 0.7,       # emoção: 0.5 neutro, 0.7+ dramático
     "cfg_weight": 0.3,         # menor = ritmo mais solto e menos sotaque copiado da referência
     "temperature": 0.8,
@@ -47,7 +55,9 @@ DEFAULTS = {
 }
 SEARCH_DIRS = ["/kaggle/input", "/content", "."]
 AUDIO_EXTS = (".wav", ".mp3", ".m4a", ".flac", ".ogg", ".opus", ".aac")
-IGNORED_OUTPUTS = {"narracao_final.wav", "narracao_bruta.wav", "referencia.wav"}
+IGNORED_OUTPUTS = {"narracao_final.wav", "narracao_bruta.wav", "referencia.wav", "voz_base_preparada.wav"}
+BASE_VOICE_STEM = "voz_base"
+MODES = ("nativo", "clonagem")
 
 
 class Erro(Exception):
@@ -75,8 +85,8 @@ def _walk(dirs: list[str]) -> list[Path]:
     return files
 
 
-def find_inputs(cfg: dict, dirs: list[str] = SEARCH_DIRS) -> tuple[Path, Path]:
-    files = _walk(dirs)
+def find_inputs(cfg: dict, dirs: list[str] | None = None) -> tuple[Path, Path]:
+    files = _walk(SEARCH_DIRS if dirs is None else dirs)
 
     if cfg.get("roteiro"):
         script = Path(cfg["roteiro"])
@@ -96,7 +106,8 @@ def find_inputs(cfg: dict, dirs: list[str] = SEARCH_DIRS) -> tuple[Path, Path]:
     if cfg.get("referencia"):
         ref = Path(cfg["referencia"])
     else:
-        audios = [f for f in files if f.suffix.lower() in AUDIO_EXTS and f.name not in IGNORED_OUTPUTS]
+        audios = [f for f in files if f.suffix.lower() in AUDIO_EXTS and f.name not in IGNORED_OUTPUTS
+                  and f.stem.lower() != BASE_VOICE_STEM]
         if not audios:
             raise Erro("Não achei o áudio da sua voz. Adicione-o ao dataset (Add Input) ou informe REFERENCIA.")
         idx = cfg.get("ref_index", 0)
@@ -112,6 +123,18 @@ def find_inputs(cfg: dict, dirs: list[str] = SEARCH_DIRS) -> tuple[Path, Path]:
         if not p.exists():
             raise Erro(f"O arquivo de {nome} não existe: {p}")
     return script, ref
+
+
+def find_base_voice(cfg: dict, dirs: list[str] | None = None) -> Path | None:
+    """Voz fluente usada no modo nativo. None = voz padrão embutida no Chatterbox."""
+    if cfg.get("voz_base"):
+        p = Path(cfg["voz_base"])
+        if not p.exists():
+            raise Erro(f"voz_base não existe: {p}")
+        return p
+    found = [f for f in _walk(SEARCH_DIRS if dirs is None else dirs) if f.stem.lower() == BASE_VOICE_STEM and f.suffix.lower() in AUDIO_EXTS
+             and f.name not in IGNORED_OUTPUTS]
+    return found[0] if found else None
 
 
 # ---------------------------------------------------------------------------
@@ -177,9 +200,10 @@ def file_hash(path: Path) -> str:
     return hashlib.md5(Path(path).read_bytes()).hexdigest()
 
 
-def chunk_key(text: str, cfg: dict, ref_hash: str) -> str:
-    """Identidade de um trecho: muda se o texto, a voz ou os ajustes de geração mudarem."""
-    params = (text, ref_hash, cfg["exaggeration"], cfg["cfg_weight"], cfg["temperature"])
+def chunk_key(text: str, cfg: dict, ref_hash: str, base_hash: str = "") -> str:
+    """Identidade de um trecho: muda se o texto, as vozes, o modo ou os ajustes de geração mudarem."""
+    params = (text, ref_hash, cfg["exaggeration"], cfg["cfg_weight"], cfg["temperature"],
+              cfg.get("modo", "nativo"), base_hash)
     return hashlib.md5(repr(params).encode("utf-8")).hexdigest()[:16]
 
 
@@ -242,10 +266,13 @@ def normalize(src: Path, dst: Path, sr: int) -> None:
 # Geração
 # ---------------------------------------------------------------------------
 
-def load_model():
+def load_model(kind: str = "tts"):
     try:
         import torch
-        from chatterbox.tts import ChatterboxTTS
+        if kind == "vc":
+            from chatterbox.vc import ChatterboxVC as Model
+        else:
+            from chatterbox.tts import ChatterboxTTS as Model
     except Exception as e:  # noqa: BLE001 - mensagem amigável para qualquer falha de import
         raise Erro(
             "O Chatterbox não carregou. Rode de novo a célula 1 (instalação) e depois esta. "
@@ -253,7 +280,7 @@ def load_model():
         ) from e
     if not torch.cuda.is_available():
         raise Erro("GPU desligada. No Kaggle: Settings → Accelerator → GPU T4 x2 (ou P100) e rode tudo de novo.")
-    return ChatterboxTTS.from_pretrained(device="cuda")
+    return Model.from_pretrained(device="cuda")
 
 
 def main() -> int:
@@ -261,9 +288,17 @@ def main() -> int:
     import soundfile as sf
 
     cfg = load_config()
+    if cfg["modo"] not in MODES:
+        raise Erro(f"modo '{cfg['modo']}' inválido. Use {MODES}.")
+    native = cfg["modo"] == "nativo"
     script_path, ref_src = find_inputs(cfg)
+    base_src = find_base_voice(cfg) if native else None
     print(f"Roteiro:    {script_path}")
-    print(f"Referência: {ref_src}")
+    print(f"Sua voz:    {ref_src}")
+    if native:
+        print(f"Modo nativo: inglês fluente com {base_src or 'a voz padrão do Chatterbox'}, convertido para a sua voz.")
+    else:
+        print("Modo clonagem: imita a sua gravação (inclusive o sotaque).")
 
     text = script_path.read_text(encoding="utf-8")
     chunks = split_script(text, cfg["max_chars"], cfg["pausa_frase"], cfg["pausa_paragrafo"])
@@ -275,8 +310,10 @@ def main() -> int:
 
     ref = prepare_reference(ref_src, cfg["ref_inicio_seg"], cfg["ref_duracao_seg"])
     ref_hash = file_hash(ref)
+    base = prepare_reference(base_src, 0, cfg["ref_duracao_seg"], Path("voz_base_preparada.wav")) if base_src else None
+    base_hash = file_hash(base) if base else ("padrao" if native else "")
     texts = {i: t for i, (t, _) in enumerate(chunks, 1)}
-    keys = {i: chunk_key(t, cfg, ref_hash) for i, t in texts.items()}
+    keys = {i: chunk_key(t, cfg, ref_hash, base_hash) for i, t in texts.items()}
 
     takes = Path("takes")
     takes.mkdir(exist_ok=True)
@@ -287,22 +324,38 @@ def main() -> int:
     missing = [i for i in texts if not path(i, 1).exists()]
     print(f"{len(chunks)} trechos; {len(chunks) - len(missing)} já prontos no cache, {len(missing)} para gerar.")
 
-    model = None
+    models: dict = {}
     sr = 24000
 
+    def model(kind: str):
+        if kind not in models:
+            print("Carregando o modelo de " + ("conversão de voz" if kind == "vc" else "narração") + " na GPU...")
+            models[kind] = load_model(kind)
+        return models[kind]
+
+    def save(wav, f: Path, rate: int) -> None:
+        audio = wav.squeeze(0).detach().cpu().numpy().astype("float32")
+        sf.write(str(f), trim_silence(audio, rate), rate)
+
     def generate(i: int, t: int) -> None:
-        nonlocal model, sr
         f = path(i, t)
         if f.exists():
             return
-        if model is None:
-            print("Carregando o modelo na GPU...")
-            model = load_model()
-            sr = model.sr
-        wav = model.generate(texts[i], audio_prompt_path=str(ref), exaggeration=cfg["exaggeration"],
-                             cfg_weight=cfg["cfg_weight"], temperature=cfg["temperature"])
-        audio = wav.squeeze(0).detach().cpu().numpy().astype("float32")
-        sf.write(str(f), trim_silence(audio, model.sr), model.sr)
+        tts = model("tts")
+        prompt = str(base if native else ref) if (base or not native) else None
+        wav = tts.generate(texts[i], audio_prompt_path=prompt, exaggeration=cfg["exaggeration"],
+                           cfg_weight=cfg["cfg_weight"], temperature=cfg["temperature"])
+        if not native:
+            save(wav, f, tts.sr)
+            return
+        base_take = f.with_name(f.stem + "_base.wav")
+        save(wav, base_take, tts.sr)
+        vc = model("vc")
+        try:
+            converted = vc.generate(str(base_take), target_voice_path=str(ref))
+        except TypeError as e:
+            raise Erro(f"A versão instalada do Chatterbox mudou a conversão de voz. Use modo 'clonagem'. ({e})") from e
+        save(converted, f, vc.sr)
 
     t0 = time.time()
     for n, i in enumerate(missing, 1):

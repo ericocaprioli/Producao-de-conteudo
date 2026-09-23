@@ -3,6 +3,20 @@
 Transforma o `11_exports/tts_plain_text.txt` de um projeto em `narracao_final.wav`, usando uma
 gravação curta da sua voz como referência.
 
+## Como a voz é gerada (modo `nativo`, o padrão)
+
+1. Cada trecho é narrado em **inglês fluente** pela voz padrão do Chatterbox, que é nativa.
+2. Em seguida é **convertido para o seu timbre** (conversão de voz do próprio Chatterbox), usando a
+   sua gravação como referência.
+
+A pronúncia e o ritmo vêm da voz nativa, e o timbre é o seu. Por isso a sua gravação **pode ser
+em português**: 15–30 s, voz limpa, no tom calmo de narrador. Só cerca de 10 s são aproveitados;
+mais áudio não melhora esse modo.
+
+Opcional: para outra voz base em inglês, adicione ao dataset um arquivo chamado `voz_base`
+(`.wav`, `.mp3` etc.), **somente com licença de uso**; nunca a voz de outra pessoa sem autorização.
+Com `"modo": "clonagem"` o notebook volta a imitar a sua gravação direto, herdando o sotaque dela.
+
 ## Uma vez só
 
 1. Crie uma conta no Kaggle e **verifique o telefone** (sem isso não há internet nem GPU).

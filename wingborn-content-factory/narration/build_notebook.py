@@ -14,7 +14,7 @@ NOTEBOOK = HERE / "kaggle_narracao.ipynb"
 INTRO = """# Narração Wingborn — sua voz com Chatterbox
 
 **Antes de começar (uma vez por vídeo):**
-1. No Kaggle, crie um *dataset* com 2 arquivos: o `tts_plain_text.txt` (pasta `11_exports/` do projeto) e um áudio da sua voz (15–30 s, voz limpa, sem música).
+1. No Kaggle, crie um *dataset* com 2 arquivos: o `tts_plain_text.txt` (pasta `11_exports/` do projeto) e um áudio da sua voz (15–30 s, voz limpa, sem música). **Pode ser em português**: no modo `nativo` o notebook usa só o timbre dele e narra em inglês fluente, sem sotaque.
 2. Neste notebook: **Add Input** → escolha esse dataset.
 3. **Settings → Accelerator → GPU** e **Settings → Internet → On** (a internet exige telefone verificado na conta Kaggle).
 
@@ -54,13 +54,15 @@ CONFIG = '''# 3) Ajustes (opcional). Os valores abaixo já funcionam; mude só s
 import json
 
 config = {
+    "modo": "nativo",           # "nativo": inglês fluente sem sotaque, convertido para a SUA voz
+                                # "clonagem": imita a sua gravação direto (herda o sotaque dela)
     "exaggeration": 0.7,        # emoção: 0.5 neutro, 0.7+ dramático (alto demais distorce)
     "cfg_weight": 0.3,          # menor = ritmo mais solto e menos sotaque copiado da referência
     "temperature": 0.8,
     "so_primeiros": None,       # TESTE RÁPIDO: coloque 3 para gerar só os 3 primeiros trechos
     "usar_take": {},            # depois de ouvir, ex.: {12: 2} usa a take 2 no trecho 12
     "refazer_suspeitos": 2,     # tentativas extras automáticas para trechos com duração estranha
-    "ref_index": 0,             # se o dataset tiver vários áudios, qual usar (0 = primeiro)
+    "ref_index": 0,             # se o dataset tiver vários áudios da sua voz, qual usar (0 = primeiro)
     "ref_inicio_seg": 0,        # pule um início com silêncio ou ruído na sua gravação
     "roteiro": None,            # caminho manual do .txt, se a detecção automática falhar
     "referencia": None,         # caminho manual do áudio, se a detecção automática falhar
@@ -88,7 +90,7 @@ if not alvo:
 for i in alvo:
     display(Markdown(f"**Trecho {i}:** {r['textos'][i]}"))
     base = r["takes"][i].rsplit("_take", 1)[0]
-    for f in sorted(glob.glob(base + "_take*.wav")):
+    for f in sorted(g for g in glob.glob(base + "_take*.wav") if not g.endswith("_base.wav")):
         print(f.rsplit("_", 1)[1][:-4], "(em uso)" if f == r["takes"][i] else "")
         display(Audio(f))
 '''

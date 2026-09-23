@@ -75,6 +75,20 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(cfg["usar_take"], {12: 2})
         self.assertEqual(cfg["max_chars"], 250)
 
+    def test_base_voice_is_not_taken_as_user_voice(self):
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "tts_plain_text.txt").write_text("Hi.")
+            (Path(d) / "voz_base.mp3").write_bytes(b"0")
+            (Path(d) / "minha_voz.m4a").write_bytes(b"0")
+            _, ref = narrar.find_inputs(dict(narrar.DEFAULTS), [d])
+            self.assertEqual(ref.name, "minha_voz.m4a")
+            self.assertEqual(narrar.find_base_voice(dict(narrar.DEFAULTS), [d]).name, "voz_base.mp3")
+
+    def test_chunk_key_changes_with_mode(self):
+        cfg = dict(narrar.DEFAULTS)
+        self.assertNotEqual(narrar.chunk_key("t", cfg, "v", "padrao"),
+                            narrar.chunk_key("t", {**cfg, "modo": "clonagem"}, "v", ""))
+
     def test_find_inputs(self):
         with tempfile.TemporaryDirectory() as d:
             ds = Path(d) / "dataset"
@@ -118,13 +132,27 @@ class FakeModel:
 
     def __init__(self):
         self.calls = []
+        self.prompts = []
 
-    def generate(self, text, **kwargs):
+    def generate(self, text, audio_prompt_path=None, **kwargs):
         self.calls.append(text)
+        self.prompts.append(audio_prompt_path)
         seconds = len(text) / 15
         if "HALLUCINATE" in text and self.calls.count(text) == 1:
             seconds *= 4  # primeira take ruim, segunda boa
         return FakeTensor(np.ones(int(self.sr * seconds), dtype="float32") * 0.3)
+
+
+class FakeVC:
+    sr = 1000
+
+    def __init__(self):
+        self.calls = []
+
+    def generate(self, audio, target_voice_path=None):
+        self.calls.append((audio, target_voice_path))
+        data, _ = sf.read(audio, dtype="float32")
+        return FakeTensor(data * 0.9)
 
 
 @unittest.skipIf(np is None, "numpy/soundfile ausentes")
@@ -135,8 +163,9 @@ class TestEndToEnd(unittest.TestCase):
         self.cwd = os.getcwd()
         os.chdir(self.dir)
         self.model = FakeModel()
+        self.vc = FakeVC()
         self._orig = (narrar.load_model, narrar.prepare_reference, narrar.normalize, narrar.SEARCH_DIRS)
-        narrar.load_model = lambda: self.model
+        narrar.load_model = lambda kind="tts": self.vc if kind == "vc" else self.model
         narrar.prepare_reference = lambda src, a, b, out=Path("referencia.wav"): shutil.copy(src, out) and out
         narrar.normalize = lambda src, dst, sr: shutil.copy(src, dst)
         ds = self.dir / "input"
@@ -151,6 +180,26 @@ class TestEndToEnd(unittest.TestCase):
         narrar.load_model, narrar.prepare_reference, narrar.normalize, narrar.SEARCH_DIRS = self._orig
         os.chdir(self.cwd)
         self._tmp.cleanup()
+
+    def test_native_mode_converts_default_voice_to_user_timbre(self):
+        self.assertEqual(narrar.main(), 0)
+        self.assertTrue(all(p is None for p in self.model.prompts), "voz base padrão: sem audio_prompt")
+        self.assertTrue(self.vc.calls)
+        self.assertTrue(all(target == "referencia.wav" for _, target in self.vc.calls))
+        report = json.loads(Path("relatorio.json").read_text())
+        self.assertFalse(any(p.endswith("_base.wav") for p in report["takes"].values()))
+
+    def test_native_mode_uses_voz_base_when_present(self):
+        sf.write(str(self.dir / "input" / "voz_base.wav"), np.zeros(800, dtype="float32"), 1000)
+        self.assertEqual(narrar.main(), 0)
+        self.assertTrue(all(p == "voz_base_preparada.wav" for p in self.model.prompts))
+        self.assertTrue(all(target == "referencia.wav" for _, target in self.vc.calls))
+
+    def test_clone_mode_skips_conversion(self):
+        Path("config.json").write_text(json.dumps({"modo": "clonagem"}))
+        self.assertEqual(narrar.main(), 0)
+        self.assertEqual(self.vc.calls, [])
+        self.assertTrue(all(p == "referencia.wav" for p in self.model.prompts))
 
     def test_full_run_retries_bad_chunk_and_caches(self):
         self.assertEqual(narrar.main(), 0)
