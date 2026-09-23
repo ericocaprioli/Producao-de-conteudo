@@ -32,5 +32,5 @@ reference:
   comments_file: "projects/2026-09-23-noiva-substituta-alfa/02_reference_analysis/comments.txt"
 selected_direction: "A"
 selected_title: "Her Stepmother Traded Her Life for a Mountain Pass — But the Dragon She Healed Remembered Her Name"
-approved_blocks: [1, 2, 3]
+approved_blocks: [1, 2, 3, 4]
 approved_gates: [direction, title, character_bible, packaging]
