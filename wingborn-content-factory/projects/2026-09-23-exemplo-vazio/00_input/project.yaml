@@ -1,0 +1,27 @@
+id: "2026-09-23-exemplo-vazio"
+status: input_received
+language: en
+channel_mode: core_female_protagonist
+blocks: 5
+length:
+  unit: characters
+  min_per_block: 3200
+  max_per_block: 3500
+  count_spaces: true
+reference_filter:
+  minimum_views: 100000
+  recency_window_hours: 20
+new_premise: ""
+reference:
+  url: ""
+  title: ""
+  views: null
+  age_hours: null
+  views_source: unknown
+  thumbnail_file: ""
+  description_file: ""
+  transcript_file: ""
+  comments_file: ""
+selected_direction: ""
+selected_title: ""
+approved_gates: []

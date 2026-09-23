@@ -1,0 +1,12 @@
+{
+  "scene": 1,
+  "block": 1,
+  "script_excerpt": "",
+  "function": "action|reaction|evidence|relationship|world|reward",
+  "characters": [],
+  "location": "",
+  "emotion": "",
+  "continuity_anchor": "",
+  "prompt_en": "",
+  "negative_prompt": "no text, no logo, no watermark"
+}

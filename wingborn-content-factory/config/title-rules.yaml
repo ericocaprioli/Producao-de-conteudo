@@ -1,0 +1,71 @@
+# Regras usadas por /criar-titulos e validate_title_promise.py.
+# As listas de palavras são heurísticas de apoio, não uma prova de qualidade do título.
+
+max_length_chars: 100
+count_range: [3, 5]
+
+angles:
+  - family_injustice
+  - vulnerability
+  - dragon
+  - secret_or_heritage
+  - revenge_or_reparation
+
+required_signals:
+  - who_suffered
+  - who_caused_harm
+  - what_event_happened
+  - what_reversal_is_delivered
+
+forbidden_patterns:
+  - pattern: '\bthey\b'
+    reason: "pronome sem antecedente claro"
+  - pattern: '(?i)\bher mother\b'
+    reason: "verificar se a protagonista real não é outra pessoa antes de citar a mãe"
+
+keyword_groups:
+  injustice:
+    - betrayed
+    - abandoned
+    - humiliated
+    - sold
+    - cast out
+    - disowned
+    - exiled
+    - rejected
+    - shamed
+    - mocked
+  fantastical:
+    - dragon
+    - dragons
+    - fire
+    - flame
+    - curse
+    - cursed
+    - magic
+    - throne
+    - kingdom
+    - blood
+    - scales
+    - ancient
+  reversal:
+    - until
+    - but
+    - now
+    - revenge
+    - returned
+    - truth
+    - secret
+    - rise
+    - vindication
+    - reclaim
+  identifiable_subject:
+    - she
+    - her
+    - daughter
+    - girl
+    - princess
+    - servant
+    - bride
+    - sister
+    - widow

@@ -1,0 +1,54 @@
+# DNA do canal Wingborn Tales.
+# Usado como referência editorial pelos comandos de análise, direções e ficha de personagens.
+# Não é validado automaticamente por script; serve de guia para Claude Code.
+
+channel_name: "Wingborn Tales"
+
+core_elements:
+  protagonist_default: female
+  protagonist_male_allowed_only_as: editorial_experiment
+  conflict:
+    - traição por alguém íntimo
+    - abandono
+    - humilhação
+    - venda
+    - expulsão
+    - condenação
+    - rejeição
+  genre: dark_fantasy
+  dragon_role: dramatic_function
+  gift_or_origin: initially_feared_or_misunderstood
+  revelation: gradual
+  payoff:
+    - vindicação diante de quem humilhou a protagonista
+    - reparação emocional
+    - dignidade
+    - pertencimento
+  tone:
+    - calmo
+    - cinematográfico
+    - apropriado para escuta noturna
+  ending: closed_ending_protagonist_self_sufficient
+
+retention_principles:
+  - título com injustiça específica
+  - thumbnail com vulnerabilidade, ameaça familiar e sugestão de dragão
+  - poder inicialmente temido ou incompreendido
+  - mentor marginalizado que reconhece a protagonista
+  - objeto simples como âncora emocional
+  - sinais do dragão antes do clímax
+  - contraste visual entre isolamento frio e reconhecimento quente
+  - vindicação pública
+  - escolha moral entre medo e verdade
+
+# Registro de combinações já usadas para evitar saturação.
+# Cada comando que cria direções ou fichas deve consultar e depois atualizar esta lista
+# (o comando /criar-direcoes é responsável por acrescentar entradas após a escolha do usuário).
+overused_combinations_to_avoid:
+  - mãe assassina
+  - Tiamat
+  - herdeira
+  - abandono infantil
+  - "o sangue desperta o dragão"
+
+used_combinations_log: []

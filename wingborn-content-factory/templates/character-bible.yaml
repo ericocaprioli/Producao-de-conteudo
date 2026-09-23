@@ -1,0 +1,32 @@
+protagonist:
+  name: ""
+  age: 32
+  appearance: ""
+  wound: ""
+  strength: ""
+  desire: ""
+  fear: ""
+  climax_choice: ""
+antagonist:
+  name: ""
+  relation: ""
+  public_power: ""
+  hidden_motive: ""
+ally:
+  name: ""
+  role: ""
+  risk_taken: ""
+dragon:
+  name_rule: ""
+  appearance: ""
+  behavior: ""
+  bond_rule: ""
+story:
+  symbol_object: ""
+  opening_danger: ""
+  hidden_truth: ""
+  first_power_signal: ""
+  second_power_signal: ""
+  public_revelation: ""
+  climax_location: ""
+  final_repair: ""

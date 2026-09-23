@@ -1,0 +1,24 @@
+# Valores padrão usados por /iniciar-projeto quando o usuário não especifica algo diferente.
+# Estes valores são copiados para projects/<id>/00_input/project.yaml na criação do projeto.
+
+language: en
+channel_mode: core_female_protagonist
+blocks: 5
+length:
+  unit: characters
+  min_per_block: 3200
+  max_per_block: 3500
+  count_spaces: true
+reference_filter:
+  minimum_views: 100000
+  recency_window_hours: 20
+scenes:
+  min_count: 20
+  max_count: 30
+seo:
+  description_min_words: 120
+  description_max_words: 180
+  hashtags_count: 3
+  tags_min: 12
+  tags_max: 15
+  tags_hard_limit: 500

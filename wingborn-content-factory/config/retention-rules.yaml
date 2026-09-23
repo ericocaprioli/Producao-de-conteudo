@@ -1,0 +1,24 @@
+# Regras usadas por /revisar-retencao. Baseadas nos princípios do canal, não em fórmula fixa.
+
+target_duration_minutes: [15, 20]
+
+timeline_template:
+  - segment: "00:00-00:30"
+    purpose: "injustiça e promessa"
+  - segment: "00:30-01:00"
+    purpose: "objeto, marca ou segredo plantado"
+  - segment: "01:00-03:00"
+    purpose: "consequência e primeira pergunta"
+  - segment: "03:00-06:00"
+    purpose: "primeira recompensa ou demonstração de poder"
+  - segment: "06:00-09:00"
+    purpose: "humilhação, descoberta ou risco"
+  - segment: "09:00-12:00"
+    purpose: "revelação intermediária e aproximação do dragão"
+  - segment: "12:00-16:00"
+    purpose: "confronto e clímax"
+  - segment: "16:00-20:00"
+    purpose: "reparação e encerramento, ajustado à duração real"
+
+minimum_microclimaxes_before_final: 2
+max_pure_explanation_minutes: 2
