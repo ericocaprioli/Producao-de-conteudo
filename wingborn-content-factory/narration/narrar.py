@@ -26,13 +26,21 @@ exige "Restart session".
 
 import hashlib
 import json
+import os
 import re
 import shutil
 import statistics
 import subprocess
 import sys
 import time
+import warnings
 from pathlib import Path
+
+# Silencia avisos e barras de progresso das bibliotecas (não afetam o áudio).
+warnings.filterwarnings("ignore")
+for _var, _val in (("TQDM_DISABLE", "1"), ("TRANSFORMERS_VERBOSITY", "error"), ("HF_HUB_VERBOSITY", "error"),
+                   ("HF_HUB_DISABLE_PROGRESS_BARS", "1"), ("PYTHONWARNINGS", "ignore")):
+    os.environ.setdefault(_var, _val)
 
 DEFAULTS = {
     "modo": "nativo",          # "nativo" (sem sotaque) ou "clonagem" (imita a gravação, com sotaque)
@@ -357,11 +365,18 @@ def main() -> int:
             raise Erro(f"A versão instalada do Chatterbox mudou a conversão de voz. Use modo 'clonagem'. ({e})") from e
         save(converted, f, vc.sr)
 
-    t0 = time.time()
+    t0, done_chars = None, 0
+    remaining_chars = sum(len(texts[i]) for i in missing)
     for n, i in enumerate(missing, 1):
         generate(i, 1)
-        rest = (time.time() - t0) / n * (len(missing) - n)
-        print(f"trecho {i}/{len(chunks)} pronto — faltam ~{rest / 60:.0f} min", flush=True)
+        if t0 is None:  # o 1º trecho inclui o carregamento dos modelos: não entra na estimativa
+            t0 = time.time()
+            remaining_chars -= len(texts[i])
+            print(f"trecho {i}/{len(chunks)} pronto (modelos carregados)", flush=True)
+            continue
+        done_chars += len(texts[i])
+        rest = (time.time() - t0) / done_chars * (remaining_chars - done_chars)
+        print(f"trecho {i}/{len(chunks)} pronto — faltam ~{max(rest, 0) / 60:.0f} min", flush=True)
 
     def duration(i: int, t: int) -> float:
         info = sf.info(str(path(i, t)))
