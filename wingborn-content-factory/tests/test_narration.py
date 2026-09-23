@@ -35,6 +35,16 @@ class TestSplit(unittest.TestCase):
     def test_single_newline_does_not_split_paragraph(self):
         self.assertEqual(len(narrar.split_script("Line one\nline two.", 250, 0.25, 0.7)), 1)
 
+    def test_one_sentence_per_chunk_merges_short_ones(self):
+        text = "Seven stitches. Eight. Nine. She tied off the thread and cut it with her teeth. The tear was closed."
+        chunks = narrar.split_script(text, 250, 0.45, 1.1, frase_por_trecho=True, min_chars=40)
+        self.assertEqual([c for c, _ in chunks], [
+            "Seven stitches. Eight. Nine. She tied off the thread and cut it with her teeth.",
+            "The tear was closed.",
+        ])
+        self.assertEqual([p for _, p in chunks], [0.45, 1.1])
+        self.assertEqual(" ".join(c for c, _ in chunks).split(), text.split())
+
     def test_long_sentence_split_at_commas_then_words(self):
         sentence = ", ".join(["a clause with several words in it"] * 12) + "."
         parts = narrar.split_long(sentence, 100)
@@ -57,7 +67,7 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(base, narrar.chunk_key("text", cfg, "voiceA"))
         self.assertNotEqual(base, narrar.chunk_key("text!", cfg, "voiceA"))
         self.assertNotEqual(base, narrar.chunk_key("text", cfg, "voiceB"))
-        self.assertNotEqual(base, narrar.chunk_key("text", {**cfg, "exaggeration": 0.5}, "voiceA"))
+        self.assertNotEqual(base, narrar.chunk_key("text", {**cfg, "exaggeration": 0.8}, "voiceA"))
 
     def test_suspicious_durations(self):
         texts = {i: "x" * 150 for i in range(1, 7)}
@@ -167,7 +177,8 @@ class TestEndToEnd(unittest.TestCase):
         self._orig = (narrar.load_model, narrar.prepare_reference, narrar.normalize, narrar.SEARCH_DIRS)
         narrar.load_model = lambda kind="tts": self.vc if kind == "vc" else self.model
         narrar.prepare_reference = lambda src, a, b, out=Path("referencia.wav"): shutil.copy(src, out) and out
-        narrar.normalize = lambda src, dst, sr: shutil.copy(src, dst)
+        self.tempos = []
+        narrar.normalize = lambda src, dst, sr, tempo=1.0: (self.tempos.append(tempo), shutil.copy(src, dst))
         ds = self.dir / "input"
         ds.mkdir()
         paragraphs = [f"Paragraph {n} is calm and slow, told for quiet nights." for n in range(1, 7)]
@@ -194,6 +205,17 @@ class TestEndToEnd(unittest.TestCase):
         self.assertEqual(narrar.main(), 0)
         self.assertTrue(all(p == "voz_base_preparada.wav" for p in self.model.prompts))
         self.assertTrue(all(target == "referencia.wav" for _, target in self.vc.calls))
+
+    def test_speed_slows_audio_and_subtitles_follow(self):
+        Path("config.json").write_text(json.dumps({"velocidade": 0.5, "frase_por_trecho": False}))
+        self.assertEqual(narrar.main(), 0)
+        self.assertEqual(self.tempos, [0.5])
+        first_text = json.loads(Path("relatorio.json").read_text())["textos"]["1"]
+        first = Path("narracao.srt").read_text().split("\n")[1]
+        end = first.split(" --> ")[1]
+        h, m, rest = end.split(":")
+        seconds = int(h) * 3600 + int(m) * 60 + float(rest.replace(",", "."))
+        self.assertAlmostEqual(seconds, len(first_text) / 15 / 0.5, delta=0.01)
 
     def test_clone_mode_skips_conversion(self):
         Path("config.json").write_text(json.dumps({"modo": "clonagem"}))

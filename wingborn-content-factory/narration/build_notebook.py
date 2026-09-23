@@ -56,9 +56,15 @@ import json
 config = {
     "modo": "nativo",           # "nativo": inglês fluente sem sotaque, convertido para a SUA voz
                                 # "clonagem": imita a sua gravação direto (herda o sotaque dela)
-    "exaggeration": 0.7,        # emoção: 0.5 neutro, 0.7+ dramático (alto demais distorce)
-    "cfg_weight": 0.3,          # menor = ritmo mais solto e menos sotaque copiado da referência
+    # RITMO — mudar estes três NÃO gera a voz de novo (só remonta o áudio, em segundos):
+    "velocidade": 0.9,          # 1.0 = ritmo da voz base; 0.9 = 10% mais lento; 0.85 = bem calmo
+    "pausa_frase": 0.45,        # silêncio entre frases (segundos)
+    "pausa_paragrafo": 1.1,     # silêncio entre parágrafos (segundos)
+    # VOZ — mudar estes gera tudo de novo:
+    "exaggeration": 0.5,        # emoção: 0.5 calmo, 0.7+ dramático (acima de 0.5 a fala acelera)
+    "cfg_weight": 0.3,          # menor = ritmo mais solto
     "temperature": 0.8,
+    "frase_por_trecho": True,   # uma frase por trecho, com pausa entre as frases
     "so_primeiros": None,       # TESTE RÁPIDO: coloque 3 para gerar só os 3 primeiros trechos
     "usar_take": {},            # depois de ouvir, ex.: {12: 2} usa a take 2 no trecho 12
     "refazer_suspeitos": 2,     # tentativas extras automáticas para trechos com duração estranha
