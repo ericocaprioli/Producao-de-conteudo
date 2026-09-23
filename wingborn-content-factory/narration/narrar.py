@@ -45,12 +45,15 @@ for _var, _val in (("TQDM_DISABLE", "1"), ("TRANSFORMERS_VERBOSITY", "error"), (
 DEFAULTS = {
     "modo": "nativo",          # "nativo" (sem sotaque) ou "clonagem" (imita a gravação, com sotaque)
     "voz_base": None,          # caminho de uma voz fluente em inglês (opcional; padrão = voz do Chatterbox)
-    "exaggeration": 0.7,       # emoção: 0.5 neutro, 0.7+ dramático
+    "exaggeration": 0.5,       # emoção: 0.5 calmo, 0.7+ dramático (acima de 0.5 a fala acelera)
     "cfg_weight": 0.3,         # menor = ritmo mais solto e menos sotaque copiado da referência
     "temperature": 0.8,
     "max_chars": 250,          # tamanho máximo de cada trecho
-    "pausa_frase": 0.25,       # silêncio entre trechos do mesmo parágrafo (s)
-    "pausa_paragrafo": 0.7,    # silêncio no fim de cada parágrafo (s)
+    "velocidade": 0.9,         # 1.0 = ritmo da voz base; 0.9 = 10% mais lento, sem mudar o tom (0.5–2.0)
+    "frase_por_trecho": True,  # cada frase vira um trecho, com pausa entre elas
+    "min_chars_trecho": 40,    # frases mais curtas que isso são juntadas à seguinte
+    "pausa_frase": 0.45,       # silêncio entre frases do mesmo parágrafo (s)
+    "pausa_paragrafo": 1.1,    # silêncio no fim de cada parágrafo (s)
     "so_primeiros": None,      # teste rápido: gera só os N primeiros trechos
     "refazer_suspeitos": 2,    # tentativas extras para trechos com duração anormal (0 desliga)
     "usar_take": {},           # {"12": 2}: força a take 2 no trecho 12
@@ -178,8 +181,13 @@ def split_long(sentence: str, max_chars: int) -> list[str]:
     return out
 
 
-def split_script(text: str, max_chars: int, pausa_frase: float, pausa_paragrafo: float) -> list[tuple[str, float]]:
-    """Divide em (trecho, pausa_depois). Linha em branco separa parágrafos."""
+def split_script(text: str, max_chars: int, pausa_frase: float, pausa_paragrafo: float,
+                 frase_por_trecho: bool = False, min_chars: int = 40) -> list[tuple[str, float]]:
+    """Divide em (trecho, pausa_depois). Linha em branco separa parágrafos.
+
+    frase_por_trecho=True: uma frase por trecho (pausa entre todas as frases); frases curtas
+    demais são juntadas à seguinte, porque o modelo erra em textos muito curtos.
+    """
     paragraphs = [" ".join(p.split()) for p in re.split(r"\n\s*\n", text.replace("\r\n", "\n")) if p.strip()]
     chunks: list[tuple[str, float]] = []
     for p in paragraphs:
@@ -188,7 +196,10 @@ def split_script(text: str, max_chars: int, pausa_frase: float, pausa_paragrafo:
             sentences += split_long(s, max_chars)
         cur, start = "", len(chunks)
         for s in sentences:
-            if cur and len(cur) + 1 + len(s) > max_chars:
+            if frase_por_trecho and len(cur) >= min_chars:
+                chunks.append((cur, pausa_frase))
+                cur = s
+            elif cur and len(cur) + 1 + len(s) > max_chars:
                 chunks.append((cur, pausa_frase))
                 cur = s
             else:
@@ -264,10 +275,11 @@ def prepare_reference(src: Path, inicio: float, duracao: float, out: Path = Path
     return out
 
 
-def normalize(src: Path, dst: Path, sr: int) -> None:
-    """Volume no padrão do YouTube (~ -16 LUFS), mantendo a taxa de amostragem."""
+def normalize(src: Path, dst: Path, sr: int, tempo: float = 1.0) -> None:
+    """Velocidade (sem mudar o tom) e volume no padrão do YouTube (~ -16 LUFS)."""
+    filters = ([f"atempo={tempo}"] if tempo != 1.0 else []) + ["loudnorm=I=-16:TP=-1.5:LRA=11"]
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src),
-                    "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", str(sr), str(dst)], check=True)
+                    "-af", ",".join(filters), "-ar", str(sr), str(dst)], check=True)
 
 
 # ---------------------------------------------------------------------------
@@ -309,7 +321,11 @@ def main() -> int:
         print("Modo clonagem: imita a sua gravação (inclusive o sotaque).")
 
     text = script_path.read_text(encoding="utf-8")
-    chunks = split_script(text, cfg["max_chars"], cfg["pausa_frase"], cfg["pausa_paragrafo"])
+    tempo = float(cfg.get("velocidade") or 1.0)
+    if not 0.5 <= tempo <= 2.0:
+        raise Erro(f"velocidade {tempo} fora do intervalo 0.5–2.0")
+    chunks = split_script(text, cfg["max_chars"], cfg["pausa_frase"], cfg["pausa_paragrafo"],
+                          bool(cfg.get("frase_por_trecho")), int(cfg.get("min_chars_trecho") or 40))
     if cfg.get("so_primeiros"):
         chunks = chunks[: int(cfg["so_primeiros"])]
         print(f"MODO TESTE: só os {len(chunks)} primeiros trechos.")
@@ -401,6 +417,8 @@ def main() -> int:
             generate(i, t)
             chosen[i] = t
 
+    # As pausas são inseridas antes da mudança de velocidade; depois dela, todos os tempos
+    # são divididos por `tempo` (a legenda acompanha o áudio final).
     parts, entries, cursor = [], [], 0.0
     for i, (_, pause) in enumerate(chunks, 1):
         audio, file_sr = sf.read(str(path(i, chosen[i])), dtype="float32")
@@ -409,11 +427,12 @@ def main() -> int:
             audio = audio.mean(axis=1)
         start = cursor
         cursor += len(audio) / sr
-        entries.append((start, cursor, texts[i]))
-        parts += [audio, np.zeros(int(sr * pause), dtype="float32")]
-        cursor += pause
+        entries.append((start / tempo, cursor / tempo, texts[i]))
+        parts += [audio, np.zeros(int(sr * pause * tempo), dtype="float32")]
+        cursor += pause * tempo
+    cursor /= tempo
     sf.write("narracao_bruta.wav", np.concatenate(parts), sr)
-    normalize(Path("narracao_bruta.wav"), Path("narracao_final.wav"), sr)
+    normalize(Path("narracao_bruta.wav"), Path("narracao_final.wav"), sr, tempo)
     Path("narracao.srt").write_text(build_srt(entries), encoding="utf-8")
 
     still_bad = suspicious({i: duration(i, chosen[i]) for i in texts}, texts)

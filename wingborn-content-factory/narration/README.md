@@ -40,6 +40,17 @@ Com `"modo": "clonagem"` o notebook volta a imitar a sua gravação direto, herd
    - `narracao.srt` — legenda com o tempo de cada trecho (use para posicionar as cenas e como legenda do vídeo);
    - `relatorio.txt` — duração total e os trechos que merecem ser ouvidos.
 
+## Se a narração ficar corrida (ou lenta)
+
+No modo `nativo`, o **ritmo vem da voz base**, não da sua gravação: pausar no seu áudio não muda a
+narração. Ajuste na célula 3:
+
+- `"velocidade"`: 0.9 é o padrão (10% mais lento que a voz base); 0.85 fica bem calmo; 1.0 é o original.
+- `"pausa_frase"` e `"pausa_paragrafo"`: silêncio entre frases e entre parágrafos, em segundos.
+
+Esses três **não geram a voz de novo**: rode as células 3 e 4 na mesma sessão e o áudio é remontado
+em segundos. Já `"exaggeration"` acima de 0.5 acelera a fala, e mudá-lo gera tudo de novo.
+
 ## Se um trecho ficar ruim
 
 O script mede a duração de cada trecho e refaz sozinho os que saem muito longos (alucinação) ou

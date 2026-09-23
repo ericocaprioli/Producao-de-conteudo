@@ -134,6 +134,7 @@ Clique em cada cartão para baixar.
 | Kaggle: "Chatterbox não carregou" | rode de novo a célula 1 e depois a 4 |
 | Kaggle: "Não achei o roteiro / o áudio" | o dataset não está ligado: painel da direita → **Add Input** → escolha o seu dataset |
 | A narração parou no meio | rode a célula 4 de novo: ela continua de onde parou, se a sessão ainda estiver aberta |
+| A narração ficou corrida | na célula 3, baixe `"velocidade"` (ex.: 0.85) ou aumente `"pausa_frase"`, e rode as células 3 e 4: não gera a voz de novo |
 | A voz ficou com sotaque | confira se a célula 3 está com `"modo": "nativo"` |
 | Um trecho da narração ficou estranho | veja `relatorio.txt`; na célula 3, `"usar_take": {número: 2}`, e rode as células 3 e 4 |
 | Os arquivos sumiram do Output | a sessão foi encerrada; rode de novo, ou use **Save Version** da próxima vez |
