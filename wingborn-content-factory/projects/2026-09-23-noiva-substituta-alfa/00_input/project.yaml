@@ -1,0 +1,36 @@
+id: "2026-09-23-noiva-substituta-alfa"
+status: input_received
+# adjacent_trend | reference_adaptation | original_channel_story
+mode: adjacent_trend
+language: en
+channel_mode: core_female_protagonist
+blocks: 5
+length:
+  unit: characters
+  min_per_block: 3200
+  max_per_block: 3500
+  count_spaces: true
+reference_filter:
+  minimum_views: 100000
+  recency_window_hours: 20
+new_premise: ""
+reference:
+  url: "https://www.youtube.com/watch?v=RU9Zkmobs9s"
+  title: "She Married the Ruthless Alpha as a Substitute Bride—Then He Discovered She Was His True Mate"
+  # Nunca inventar métricas. Sem dado -> null + 'unknown'. Informado pelo usuário -> 'manual'.
+  views: 2368417
+  age_hours: 506
+  views_source: nexlev
+  age_source: nexlev
+  # true | false | unknown — calculado a partir de views/age_hours e reference_filter
+  meets_filter: false
+  # Observação do usuário sobre outras versões da mesma onda recebendo visualizações (opcional)
+  wave_evidence: ""
+  thumbnail_file: ""
+  description_file: ""
+  transcript_file: ""
+  comments_file: ""
+selected_direction: ""
+selected_title: ""
+approved_blocks: []
+approved_gates: []
