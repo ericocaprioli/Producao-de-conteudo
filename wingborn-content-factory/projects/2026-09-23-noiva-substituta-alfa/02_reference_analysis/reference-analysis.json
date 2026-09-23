@@ -1,0 +1,103 @@
+{
+  "sources_read": {
+    "transcript": "100% (00:00-82:00)",
+    "comments": "20 de 577 (top)",
+    "description": true,
+    "thumbnail": "não analisada"
+  },
+  "promise": "a moça descartável forçada a substituir a meia-irmã como noiva de um senhor temido é a verdadeira escolhida",
+  "main_emotion": "injustiça doméstica prolongada seguida de reconhecimento e inversão de status",
+  "audience_trigger": "mulheres adultas fãs de dramas curtos e Cinderela sombria",
+  "first_30s_mechanism": "primeira pessoa expõe a substituição; chantagem com a mãe moribunda; ameaça de morte se descoberta",
+  "planted_object_or_secret": [
+    "marca de nascença em flor que reage ao par",
+    "cheiro disfarçado",
+    "doença da mãe que é veneno",
+    "origem desconhecida da mãe"
+  ],
+  "open_questions": [
+    "ele vai descobrir quem estava com ele?",
+    "a mãe sobrevive?",
+    "de onde vem a marca?",
+    "quem é a herdeira desaparecida?"
+  ],
+  "abstract_beats": [
+    "substituição forçada sob chantagem familiar",
+    "farsa prolongada além do combinado",
+    "humilhação diurna",
+    "o senhor temido investiga",
+    "aliado externo busca herdeira desaparecida",
+    "doença revelada como crime",
+    "prova sobrenatural expõe a impostora",
+    "impostora desmascarada",
+    "tentativa de morte e revelação da linhagem",
+    "reconhecimento público, punição e união"
+  ],
+  "turning_points": [
+    "04:00 acordo vira escravidão",
+    "33:00 veneno",
+    "48:00 só sangue de herdeiro cura",
+    "51:00 oráculo",
+    "71:00 impostora desmascarada",
+    "76:00 avô revela linhagem"
+  ],
+  "retention_risks": [
+    "crueldade longa antes da recompensa",
+    "par masculino passivo",
+    "explicações políticas",
+    "conteúdo sexual incompatível com o canal"
+  ],
+  "visual_motifs": [
+    "quarto escuro sem velas",
+    "cinza e trapos contra vestido de gala",
+    "lírio-do-vale",
+    "masmorra e arena",
+    "lobo branco",
+    "moeda de prata e flecha",
+    "banquete"
+  ],
+  "comments_positive": [
+    "ela reage cedo",
+    "devoção investigativa dele",
+    "final e reencontro familiar"
+  ],
+  "comments_negative": [
+    "crueldade excessiva, final curto",
+    "protagonista fraca",
+    "par masculino inútil"
+  ],
+  "comments_requests": [
+    "mais recompensa no final",
+    "agência mais cedo"
+  ],
+  "forbidden_specific_elements": [
+    "nomes: Kalin, Lillian, Cesily, Valyria, Laura, Sha, Lucas, Linda, Kane/Cain, Crescent Pack, Silver Moon, Blood Moon Pack, Ashen Wolves, Everrost County, White Wolf",
+    "lobisomens, alfa, luna, matilha, fated mate, deusa da lua",
+    "substituição na noite de núpcias no escuro / qualquer substituição sexual",
+    "marca de lírio-do-vale, pó e cheiro disfarçados",
+    "mãe envenenada por maldição de sangue curável por sangue de herdeiro/bebê",
+    "exigência de engravidar do marido da irmã",
+    "avô que procura a filha há 40 anos pelo cheiro",
+    "oráculo revelando a parceira",
+    "teste da moeda de prata com flecha",
+    "chicotadas, curar as costas, impostora copiando ferimentos",
+    "antagonista debaixo da cama",
+    "arena com feras",
+    "casamento com filhote daminha",
+    "frases: tonight I'm the one taking her place; no mercy for liars; mistakes are fate in disguise",
+    "cadeia causal: chantagem > gravidez > investigação > veneno > oráculo > desmascaramento > arena > avô > casamento"
+  ],
+  "dna_tensions": {
+    "fit": [
+      "sofrimento",
+      "vindicação",
+      "origem oculta",
+      "reconhecimento público"
+    ],
+    "conflict": [
+      "promessa romântico-sexual",
+      "final dependente do par",
+      "ausência de dragão"
+    ]
+  }
+}
