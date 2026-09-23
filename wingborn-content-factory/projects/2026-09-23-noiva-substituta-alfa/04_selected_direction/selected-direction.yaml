@@ -1,0 +1,50 @@
+# Cópia fiel da direção A de 03_original_directions/directions.yaml (sem reescrita).
+id: A
+working_title: The Hostage Who Mended Wings
+logline: Every generation a daughter of House Varrow must live as hostage at the dragon citadel of the northern
+  pass to keep the treaty. The stepmother sends Maelle, a 26-year-old stepdaughter kept as the house seamstress,
+  under her own daughter's name. Everyone at the citadel expects her to die there. Instead, Maelle becomes the one
+  person who can mend the torn wing of a grounded old dragon.
+protagonist: Maelle, 26, seamstress treated as a servant in her late father's house
+antagonist: stepmother Odrenne, regent of House Varrow
+injustice: sent in her stepsister's place as a hostage, so the stepmother can break the treaty and sell the pass
+  without losing her own daughter
+symbol_object: her mother's bone needle case
+stigmatized_gift: she can stitch living membrane; at home it was called unnatural, 'mending like a witch'
+marginalized_mentor: Hallam, a one-armed wing-mender the riders mock as useless since his dragon died
+dragon: Veyra, an old grey-gold she-dragon grounded for years by a torn wing, feared as bitter and dangerous
+location: the citadel of Cold Reach, carved into the northern pass
+first_power_signal: Veyra lets Maelle close a small tear in her wing without burning her
+central_secret: the stepmother has promised the pass to a rival lord; when the treaty breaks, the citadel's law
+  is to execute the hostage — so the swap was planned as a death sentence
+midpoint_turn: the citadel's warden notices the hostage's hands are a seamstress's, not a lady's, and a letter from
+  Varrow proves the plot
+climax: at the treaty renewal the rival lord's riders attack the pass; Veyra flies again on the wing Maelle mended
+  and turns them back in front of both houses
+moral_choice: reveal her true name and risk execution as an impostor, or stay 'Lady Isolde' and stay safe while
+  the stepmother goes unpunished
+final_repair: the warden names her Keeper of the Pass for what she did, not for her birth; she keeps her name and
+  never goes back to Varrow
+goal: survive the hostage year and get word to no one — then, to protect the pass
+climax_risk: the pass falls and the whole valley burns
+reparation_type: a place earned by her own work; public dignity
+changed_items:
+- protagonist
+- age_or_social_status
+- antagonist_kinship
+- cause_of_injustice
+- symbol_object
+- dragon
+- location
+- mentor
+- secret
+- goal
+- climax_risk
+- reparation_type
+differences_from_reference:
+- hostage treaty instead of a marriage; no bed and no romance
+- the substitution is a planned death sentence tied to a betrayal of the realm, not a pregnancy scheme
+- revealed by a craft (mending), not a mark, scent, oracle or bloodline
+- the dragon is a wounded creature she heals, and it becomes her ally in the climax
+- the ending is a title earned by her own work; no grandfather, no wedding
+proximity_risk: low
