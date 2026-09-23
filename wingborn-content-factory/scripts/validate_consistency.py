@@ -166,9 +166,16 @@ def main() -> int:
     names = {role: n.strip() for role, n in names.items() if isinstance(n, str) and n.strip()}
     known_lower = {n.lower() for n in names.values()}
 
+    # Roteiro parcial (escrita bloco a bloco): ausências só são erro/aviso quando os blocos existem.
+    complete = all(blocks)
+    late_blocks_written = len(blocks) >= 5 and all(blocks[3:5])
+
     for role, name in names.items():
         if not contains_term(script, name):
-            errors.append(f"nome de {role} ('{name}') não aparece no roteiro")
+            if complete:
+                errors.append(f"nome de {role} ('{name}') não aparece no roteiro")
+            else:
+                print(f"  INFO: {role} ('{name}') ainda não apareceu nos blocos escritos")
         variants = name_variants(name, script, known_lower)
         if variants:
             errors.append(f"nome de {role} possivelmente alterado: {sorted(variants)} (ficha: '{name}')")
@@ -203,13 +210,13 @@ def main() -> int:
         if not phrase_present(script, symbol):
             errors.append(f"objeto-símbolo da ficha ('{symbol}') nunca é mencionado no roteiro")
         else:
-            if not any(phrase_present(b, symbol) for b in present[:2]):
+            if all(blocks[:2]) and not any(phrase_present(b, symbol) for b in present[:2]):
                 warnings.append(f"objeto-símbolo ('{symbol}') não é plantado nos blocos 1–2")
-            if len(present) >= 5 and not any(phrase_present(b, symbol) for b in present[3:5]):
+            if late_blocks_written and not any(phrase_present(b, symbol) for b in present[3:5]):
                 warnings.append(f"objeto-símbolo ('{symbol}') desaparece antes dos blocos 4–5 — verificar se é explicado")
 
     climax_location = (story.get("climax_location") or "").strip()
-    if climax_location and len(present) >= 5 and all(present[3:5]):
+    if climax_location and late_blocks_written:
         if not any(contains_term(b, climax_location) for b in present[3:5]):
             warnings.append(f"local do clímax da ficha ('{climax_location}') não aparece nos blocos 4–5")
 

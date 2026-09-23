@@ -15,4 +15,4 @@ Título: *Her Stepmother Traded Her Life for a Mountain Pass — But the Dragon 
 | O prompt não é uma paráfrase do original? | sim | Jaccard prompt × descrição da original: 0,05. |
 | A nova história realmente entrega a promessa? | sim | Bloco 2: Veyra deixa Maelle costurar. Bloco 4: no portão de Cold Reach, Veyra voa e Maelle diz o próprio nome. Bloco 5: é nomeada Guardiã da Passagem. |
 
-Aprovado pelo usuário: pendente
+Aprovado pelo usuário: sim — 2026-09-23

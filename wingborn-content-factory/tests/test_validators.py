@@ -147,6 +147,14 @@ class TestConsistency(FixtureCopy):
         self.assertEqual(result.returncode, 1)
         self.assertIn("Brannoc", result.stdout)
 
+    def test_partial_script_does_not_flag_unwritten_blocks(self):
+        for n in range(2, 6):
+            (self.project / "06_script" / f"block-{n:02d}.txt").unlink()
+        result = run("validate_consistency.py", self.project)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("INFO: ally ('Tamsin') ainda não apareceu", result.stdout)
+        self.assertNotIn("desaparece", result.stdout)
+
     def test_age_in_words_contradiction_detected(self):
         self.replace_in("06_script/block-01.txt", "Ailis was nine years old.", "Ailis was twelve years old.")
         result = run("validate_consistency.py", self.project)
