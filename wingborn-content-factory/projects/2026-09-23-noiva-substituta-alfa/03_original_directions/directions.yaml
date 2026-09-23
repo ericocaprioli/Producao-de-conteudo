@@ -1,0 +1,106 @@
+# Direções — modo reference_adaptation. Fonte de verdade das três opções.
+# Preservado só em nível abstrato: substituição forçada pela família, humilhação, identidade
+# escondida, investigação/suspeita, revelação gradual, vindicação pública, reparação.
+# O validate_trend_alignment.py não se aplica a este modo.
+
+directions:
+  - id: A
+    working_title: "The Hostage Who Mended Wings"
+    logline: >-
+      Every generation a daughter of House Varrow must live as hostage at the dragon citadel of the northern
+      pass to keep the treaty. The stepmother sends Maelle, a 26-year-old stepdaughter kept as the house
+      seamstress, under her own daughter's name. Everyone at the citadel expects her to die there. Instead,
+      Maelle becomes the one person who can mend the torn wing of a grounded old dragon.
+    protagonist: "Maelle, 26, seamstress treated as a servant in her late father's house"
+    antagonist: "stepmother Odrenne, regent of House Varrow"
+    injustice: "sent in her stepsister's place as a hostage, so the stepmother can break the treaty and sell the pass without losing her own daughter"
+    symbol_object: "her mother's bone needle case"
+    stigmatized_gift: "she can stitch living membrane; at home it was called unnatural, 'mending like a witch'"
+    marginalized_mentor: "Hallam, a one-armed wing-mender the riders mock as useless since his dragon died"
+    dragon: "Veyra, an old grey-gold she-dragon grounded for years by a torn wing, feared as bitter and dangerous"
+    location: "the citadel of Cold Reach, carved into the northern pass"
+    first_power_signal: "Veyra lets Maelle close a small tear in her wing without burning her"
+    central_secret: "the stepmother has promised the pass to a rival lord; when the treaty breaks, the citadel's law is to execute the hostage — so the swap was planned as a death sentence"
+    midpoint_turn: "the citadel's warden notices the hostage's hands are a seamstress's, not a lady's, and a letter from Varrow proves the plot"
+    climax: "at the treaty renewal the rival lord's riders attack the pass; Veyra flies again on the wing Maelle mended and turns them back in front of both houses"
+    moral_choice: "reveal her true name and risk execution as an impostor, or stay 'Lady Isolde' and stay safe while the stepmother goes unpunished"
+    final_repair: "the warden names her Keeper of the Pass for what she did, not for her birth; she keeps her name and never goes back to Varrow"
+    goal: "survive the hostage year and get word to no one — then, to protect the pass"
+    climax_risk: "the pass falls and the whole valley burns"
+    reparation_type: "a place earned by her own work; public dignity"
+    changed_items: [protagonist, age_or_social_status, antagonist_kinship, cause_of_injustice, symbol_object,
+                    dragon, location, mentor, secret, goal, climax_risk, reparation_type]
+    differences_from_reference:
+      - "hostage treaty instead of a marriage; no bed and no romance"
+      - "the substitution is a planned death sentence tied to a betrayal of the realm, not a pregnancy scheme"
+      - "revealed by a craft (mending), not a mark, scent, oracle or bloodline"
+      - "the dragon is a wounded creature she heals, and it becomes her ally in the climax"
+      - "the ending is a title earned by her own work; no grandfather, no wedding"
+    proximity_risk: low
+
+  - id: B
+    working_title: "The Ember Bride Who Heard the Eggs"
+    logline: >-
+      In the city of Sarn, each year a woman is given as 'Ember Bride' to tend the sleeping dragon's shrine
+      for life, and no one ever sees her again. The magistrate rigs the lot so his widowed half-sister Ysra,
+      a 32-year-old midwife, goes in place of his own daughter. Inside the shrine, Ysra hears what no one has
+      ever listened for: heartbeats inside the dragon's eggs, growing weaker.
+    protagonist: "Ysra, 32, widowed midwife, living on her half-brother's charity"
+    antagonist: "half-brother Corvane, magistrate of Sarn"
+    injustice: "a rigged lot sends her in his daughter's place into a service believed to be a death"
+    symbol_object: "her brass listening horn, used to hear unborn children"
+    stigmatized_gift: "she can hear heartbeats through stone and shell; the priests call it listening to the dead"
+    marginalized_mentor: "Tobin, a temple scribe defrocked for asking where the brides went"
+    dragon: "a vast black dragon, sleeping for decades on a clutch of eggs the city believes cursed"
+    location: "the Ember Shrine under the volcanic city of Sarn"
+    first_power_signal: "the black dragon opens one eye and lets her lay the horn against an egg"
+    central_secret: "the earlier brides were never eaten; Corvane's family sold them to the salt mines and blamed the dragon to keep the lot running"
+    midpoint_turn: "Tobin finds the sale ledgers in the magistracy archive, signed with the family seal"
+    climax: "on the fire festival night the eggs begin to hatch in front of the whole city; Ysra delivers the hatchlings while the ledgers are read aloud"
+    moral_choice: "flee through the tunnel Tobin opened, or stay and deliver the hatchlings in public, where Corvane's guards can take her"
+    final_repair: "the lot is abolished, the women in the mines are freed, and Ysra becomes the first keeper who walks in and out of the shrine as she pleases"
+    goal: "save the eggs; then free the women who came before her"
+    climax_risk: "the hatchlings die and the dragon wakes in grief over the city"
+    reparation_type: "collective justice and freedom, not just personal status"
+    changed_items: [protagonist, age_or_social_status, antagonist_kinship, cause_of_injustice, symbol_object,
+                    dragon, location, mentor, secret, goal, climax_risk, reparation_type]
+    differences_from_reference:
+      - "a ritual lottery instead of a wedding substitution; she is a widow and a midwife, not a maid"
+      - "the antagonist is a half-brother magistrate; the crime is human trafficking, not poisoning"
+      - "no hidden noble bloodline; her power is a professional skill"
+      - "the dragon is a mother in danger, not a mate or a king"
+      - "the reparation frees other women"
+    proximity_risk: low
+
+  - id: C
+    working_title: "She Wore Her Cousin's Name to the Dragon Trials"
+    logline: >-
+      Lady Brisande is terrified of the dragon trials, where the unworthy are burned. So her mother forces
+      her cousin Oriane, a 24-year-old orphan working in their stables, to enter the academy under
+      Brisande's name. Oriane bonds with the unclaimed dragon no rider could approach. Now the family wants
+      the swap reversed so Brisande can claim the dragon at the public ceremony.
+    protagonist: "Oriane, 24, orphaned cousin kept as a stable hand"
+    antagonist: "aunt Lady Merrow, and cousin Brisande"
+    injustice: "forced to risk death under her cousin's name, then to hand over the bond she earned"
+    symbol_object: "her father's cracked riding glove"
+    stigmatized_gift: "dragons settle when she hums; the household called it low stable magic"
+    marginalized_mentor: "Dace, a lamed former rider, now the academy's night groom"
+    dragon: "Ashkaar, a copper-scaled unclaimed dragon who has scarred three would-be riders"
+    location: "the Sky Academy of Tel Harrow, on the sea cliffs"
+    first_power_signal: "Ashkaar lowers his head to her glove on the first night"
+    central_secret: "her father was branded a deserter so Lady Merrow's husband could take his rider's title and lands"
+    midpoint_turn: "Dace recognizes the glove: he flew with Oriane's father and knows the desertion was a lie"
+    climax: "at the claiming ceremony Brisande steps forward as Ashkaar's rider; the dragon refuses her in front of the whole academy"
+    moral_choice: "stay silent and let the family keep the title, or say her name and face the punishment for impersonation"
+    final_repair: "Dace testifies, her father's name is restored, and she flies Ashkaar under her own name; the aunt loses the stolen title"
+    goal: "survive the trials, then take back her name"
+    climax_risk: "execution for impersonation, and Ashkaar put down as a killer"
+    reparation_type: "her father's name restored and her own name spoken in public"
+    changed_items: [age_or_social_status, antagonist_kinship, cause_of_injustice, symbol_object, dragon, location,
+                    mentor, secret, goal, climax_risk, reparation_type]
+    differences_from_reference:
+      - "impersonation at a dragon-rider trial instead of a wedding; no romantic partner"
+      - "the antagonists are an aunt and a cousin; the stolen thing is a title, not a husband"
+      - "the proof is a comrade's testimony and the dragon's public refusal, not an oracle or a scent"
+      - "no poison and no lost grandfather"
+    proximity_risk: "medium — keeps the 'name exchange' most visibly; the causal chain is completely different"
