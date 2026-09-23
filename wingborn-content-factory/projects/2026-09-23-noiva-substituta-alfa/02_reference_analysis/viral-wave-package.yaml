@@ -1,0 +1,16 @@
+# Modo reference_adaptation: não há pacote de onda. Este arquivo registra apenas a embalagem da
+# referência (reference_surface + functional_tags) para validate_packaging_alignment.py comparar.
+# A thumbnail da referência não foi vista nesta sessão: composição fica vazia (comparação não aplicável).
+
+viral_wave: {}
+
+reference_surface:
+  title: "She Married the Ruthless Alpha as a Substitute Bride—Then He Discovered She Was His True Mate"
+  names: [Kalin, Lillian, Cesily, Valyria, Laura, Sha, Kane, Everrost]
+
+functional_tags:
+  promise: [recognition, vindication, belonging]
+  emotion: [injustice, pity, hope]
+  visual_hook: []
+  fantasy_hook: [magic_mark, ancient_power]
+  curiosity_gap: "what happens when the feared lord discovers who the substitute really is?"

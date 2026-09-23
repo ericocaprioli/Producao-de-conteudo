@@ -1,0 +1,36 @@
+functional_tags:
+  promise: [recognition, vindication, belonging]
+  emotion: [injustice, pity, hope, awe]
+  visual_hook: [vulnerable_victim, family_threat, creature_danger, strong_contrast, unanswered_visual_question, text_space]
+  fantasy_hook: [dragon, ancient_power]
+  curiosity_gap: "why would the dragon no one can touch let the hostage mend her wing?"
+
+thumbnail:
+  concept: >-
+    The problem, not the ending: a young hostage kneeling alone on a frozen citadel ledge, needle and thread
+    raised against a vast torn dragon wing; the dragon's eye watching her from the dark; far below, the
+    stepmother's carriage driving away down the pass. It suggests trust is possible without showing the flight.
+  text: "SENT TO DIE"
+  text_intended: false
+  composition:
+    pose: "kneeling on one knee, needle and thread raised toward the wing"
+    framing: "wide, subject small in the lower left third, wing filling the frame"
+    camera_angle: "slightly low, looking up through the torn wing membrane"
+    dragon_position: "only the wing and one huge amber eye visible behind the membrane, upper right"
+    setting: "frozen stone ledge of a mountain citadel at dusk, snow falling"
+    symbol_object: "open bone needle case beside her knee"
+    palette: "cold blue-grey stone and snow against warm gold light through the membrane"
+    lighting: "sunset backlight glowing through the torn wing"
+    body_expression: "steady hands, frightened eyes"
+    text: "SENT TO DIE"
+    overall_layout: "girl lower left, wing arc across the top, carriage tiny at bottom right on the winding pass, empty sky upper left for text"
+  prompt_en: >-
+    16:9 cinematic dark fantasy illustration. A pale young woman of 26 with dark auburn hair in a loose knot,
+    wearing a plain grey hostage cloak, kneels on one knee on a frozen stone ledge of a mountain citadel at dusk,
+    snow falling, raising a bone needle and thread toward a vast torn dragon wing whose membrane glows gold with
+    the sunset behind it. Through the tear, one enormous amber eye of an old grey-gold dragon watches her.
+    An open bone needle case lies beside her knee. Far below, a tiny black carriage drives away down the
+    winding pass. Slightly low angle looking up through the wing, subject small in the lower left third,
+    cold blue-grey stone against warm gold light, strong contrast, empty sky in the upper left for short text,
+    steady hands and frightened eyes.
+    no text, no logo, no watermark

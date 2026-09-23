@@ -1,0 +1,36 @@
+title_options:
+  - text: "Her Stepmother Traded Her to the Dragons in Her Stepsister's Place — But She Mended Their Wings"
+    angle: family_injustice
+    viral_slots_preserved: [emotional_relationship, betrayal_type, dragon_presence, reward_promise]
+    concrete_details_changed: [wording, event, turn_mechanism, relationship, setting]
+    emotional_promise: "the girl sent away to die becomes the one the dragons need"
+    curiosity_gap: "how does a seamstress survive the dragon citadel?"
+    reference_phrase_overlap: low
+    promise_delivered_by: "bloco 2 (primeira costura na asa de Veyra) e bloco 4 (Veyra voa)"
+
+  - text: "Handed to the Dragons as a Hostage Under Her Stepsister's Name — But the Seamstress Didn't Die"
+    angle: vulnerability
+    viral_slots_preserved: [betrayal_type, visual_vulnerability, dragon_presence, reward_promise]
+    concrete_details_changed: [wording, event, identity_swap_form, turn_mechanism]
+    emotional_promise: "the disposable stand-in outlives everyone's expectations"
+    curiosity_gap: "why was she supposed to die, and how does she survive?"
+    reference_phrase_overlap: low
+    promise_delivered_by: "bloco 3 (a carta revela a sentença de morte) e bloco 5 (ela é nomeada guardiã)"
+
+  - text: "The Dragon No One Could Touch Let the Abandoned Hostage Mend Her Wing — Then She Flew for Her"
+    angle: dragon
+    viral_slots_preserved: [dragon_presence, visual_vulnerability, extraordinary_origin, reward_promise]
+    concrete_details_changed: [wording, event, turn_mechanism, relationship]
+    emotional_promise: "the feared creature chooses the despised girl"
+    curiosity_gap: "why does the dragon trust her?"
+    reference_phrase_overlap: low
+    promise_delivered_by: "bloco 2 e clímax do bloco 4"
+
+  - text: "Her Stepmother Traded Her Life for a Mountain Pass — But the Dragon She Healed Remembered Her Name"
+    angle: revenge_or_reparation
+    viral_slots_preserved: [emotional_relationship, betrayal_type, dragon_presence, reward_promise]
+    concrete_details_changed: [wording, event, betrayer_motive, turn_mechanism]
+    emotional_promise: "the betrayal is exposed and she is recognized for who she is"
+    curiosity_gap: "what did the stepmother sell, and what does the dragon do about it?"
+    reference_phrase_overlap: low
+    promise_delivered_by: "bloco 4 (renovação do tratado) e bloco 5 (nome dela dito em público)"
