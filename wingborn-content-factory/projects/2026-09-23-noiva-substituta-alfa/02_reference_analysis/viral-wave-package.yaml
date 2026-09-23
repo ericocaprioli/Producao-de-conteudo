@@ -1,16 +1,34 @@
 # Modo reference_adaptation: não há pacote de onda. Este arquivo registra apenas a embalagem da
 # referência (reference_surface + functional_tags) para validate_packaging_alignment.py comparar.
-# A thumbnail da referência não foi vista nesta sessão: composição fica vazia (comparação não aplicável).
+# Thumbnail da referência fornecida pelo usuário em 02_reference_analysis/thumbnail.png.
 
 viral_wave: {}
 
 reference_surface:
   title: "She Married the Ruthless Alpha as a Substitute Bride—Then He Discovered She Was His True Mate"
   names: [Kalin, Lillian, Cesily, Valyria, Laura, Sha, Kane, Everrost]
+  thumbnail:
+    description: >-
+      a dark-haired lord in a black embroidered coat lifts the white bridal veil of a young bride with long
+      brown hair and a silver tiara, who looks up at him anxiously; a jealous blonde woman in a pink gown watches
+      from the right; gothic hall with chandeliers, candles and a full moon window; a stone wolf head at top left
+    text: ""
+    composition:
+      pose: "man lifting the bride's veil with one hand, bride looking up at him"
+      framing: "medium close-up of three figures"
+      camera_angle: "eye level"
+      dragon_position: "no creature; carved stone wolf head at top left"
+      setting: "gothic hall with chandeliers, candles and a full moon window at night"
+      symbol_object: "white bridal veil and silver tiara"
+      palette: "black and navy with white-silver bride and warm candle gold"
+      lighting: "moonlight and chandelier glow, soft rim light"
+      body_expression: "bride anxious with lips parted; rival glaring with jealousy"
+      text: "no text"
+      overall_layout: "man left, bride center, jealous rival right background, moon top center"
 
 functional_tags:
   promise: [recognition, vindication, belonging]
   emotion: [injustice, pity, hope]
-  visual_hook: []
+  visual_hook: [vulnerable_victim, family_threat, strong_contrast, unanswered_visual_question]
   fantasy_hook: [magic_mark, ancient_power]
   curiosity_gap: "what happens when the feared lord discovers who the substitute really is?"
