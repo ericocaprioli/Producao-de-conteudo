@@ -1,0 +1,391 @@
+[
+  {
+    "scene": 1,
+    "block": 1,
+    "script_excerpt": "You will go north today. You will go as Isolde.",
+    "function": "action",
+    "characters": [
+      "Maelle",
+      "Odrenne"
+    ],
+    "location": "sewing room of House Varrow",
+    "emotion": "dread",
+    "continuity_anchor": "bone needle case",
+    "prompt_en": "a cold, elegant woman in her fifties in grey silk stands in a doorway looking down at a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers, who is bent over the hem of a long curtain in a cramped sewing room, a small carved bone needle case lying open at her elbow. Grey morning light, cold shadows. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 2,
+    "block": 1,
+    "script_excerpt": "They dressed her in Isolde's travelling cloak and Isolde's gloves.",
+    "function": "reaction",
+    "characters": [
+      "Maelle"
+    ],
+    "location": "main stair of House Varrow",
+    "emotion": "humiliation",
+    "continuity_anchor": "bone needle case hidden in sleeve",
+    "prompt_en": "a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers, dressed in a fine borrowed travelling cloak and gloves that are not hers, walks down a grand stone stair, one hand pressed to her sleeve where a small carved bone needle case is hidden; servants look away. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 3,
+    "block": 1,
+    "script_excerpt": "towers cut straight into the grey rock, and above them... the dark shapes of dragons",
+    "function": "world",
+    "characters": [
+      "Maelle"
+    ],
+    "location": "road to the northern pass",
+    "emotion": "awe",
+    "continuity_anchor": "grey travelling cloak",
+    "prompt_en": "A small black carriage climbs a winding snowy mountain road toward a citadel carved straight into grey rock; dark dragons circle slowly above the towers. a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers is visible at the carriage window. Wide establishing shot. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 4,
+    "block": 1,
+    "script_excerpt": "Should House Varrow break the treaty, the hostage shall answer for it at the gate.",
+    "function": "evidence",
+    "characters": [
+      "Maelle",
+      "warden"
+    ],
+    "location": "gate hall of Cold Reach",
+    "emotion": "fear",
+    "continuity_anchor": "treaty scroll",
+    "prompt_en": "a tall warden with a lined, tired face in a dark fur-trimmed coat reads aloud from a long treaty scroll in a torchlit stone gate hall; a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers in a grey hostage cloak stands before him, her face draining of colour. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 5,
+    "block": 1,
+    "script_excerpt": "turned one amber eye toward the lit window, and looked straight at Maelle",
+    "function": "relationship",
+    "characters": [
+      "Maelle",
+      "Veyra"
+    ],
+    "location": "guest room window over the yard",
+    "emotion": "unease",
+    "continuity_anchor": "torn left wing",
+    "prompt_en": "Night. From above, a narrow lit window high in a tower; below in a yard of trampled snow, an old dragon with dull grey-gold scales, amber eyes, a scar across her jaw and a long torn left wing lies alone in torchlight, wing spread across the stones, lifting her head to stare up at the window where a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers stands. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 6,
+    "block": 2,
+    "script_excerpt": "the polite, careful faces people use for someone they expect to see hanged",
+    "function": "world",
+    "characters": [
+      "Maelle"
+    ],
+    "location": "citadel yard at morning",
+    "emotion": "isolation",
+    "continuity_anchor": "grey hostage cloak",
+    "prompt_en": "Morning in a snowy citadel yard; riders saddling large dragons turn to watch a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers in a grey hostage cloak walk across alone. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 7,
+    "block": 2,
+    "script_excerpt": "He worked the awl with his teeth and his single hand",
+    "function": "relationship",
+    "characters": [
+      "Maelle",
+      "Hallam"
+    ],
+    "location": "citadel yard, by the wall",
+    "emotion": "curiosity",
+    "continuity_anchor": "leather harness and awl",
+    "prompt_en": "a weathered one-armed man in his fifties, empty sleeve pinned to his shoulder sits on an upturned bucket mending a leather harness, holding the awl in his teeth; a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers stands beside him looking toward a torn dragon wing across the yard. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 8,
+    "block": 2,
+    "script_excerpt": "It is not a sail. It is more like silk. It tears along the grain.",
+    "function": "evidence",
+    "characters": [
+      "Maelle",
+      "Veyra"
+    ],
+    "location": "beside the torn wing",
+    "emotion": "focus",
+    "continuity_anchor": "torn left wing",
+    "prompt_en": "Close-up of the torn membrane of an old dragon with dull grey-gold scales, amber eyes, a scar across her jaw and a long torn left wing, light showing the grain like silk; the fingertips of a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers point along the tear. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 9,
+    "block": 2,
+    "script_excerpt": "Then she drew the first stitch.",
+    "function": "action",
+    "characters": [
+      "Maelle",
+      "Veyra",
+      "Hallam"
+    ],
+    "location": "citadel yard at dusk",
+    "emotion": "courage",
+    "continuity_anchor": "bone needle case",
+    "prompt_en": "Dusk, empty snowy yard. a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers kneels in the snow at the wingtip of an old dragon with dull grey-gold scales, amber eyes, a scar across her jaw and a long torn left wing, drawing a hair-fine needle through the membrane, a small carved bone needle case open beside her knee; the dragon's head has turned, jaws slightly open, a glow deep in the throat. a weathered one-armed man in his fifties, empty sleeve pinned to his shoulder watches from the wall with a bucket. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 10,
+    "block": 2,
+    "script_excerpt": "The dragon lowered her head until the scarred jaw rested on the snow",
+    "function": "reward",
+    "characters": [
+      "Maelle",
+      "Veyra"
+    ],
+    "location": "citadel yard at dusk",
+    "emotion": "tenderness and suspense",
+    "continuity_anchor": "closed tear at wingtip",
+    "prompt_en": "an old dragon with dull grey-gold scales, amber eyes, a scar across her jaw and a long torn left wing rests her scarred jaw on the snow beside the knees of a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers, warm breath steaming; in the dark doorway of the barracks behind them, a rider stands watching. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 11,
+    "block": 3,
+    "script_excerpt": "He asked where a lady of Varrow had learned to sew like that.",
+    "function": "reaction",
+    "characters": [
+      "Maelle",
+      "warden"
+    ],
+    "location": "warden's map room",
+    "emotion": "tension",
+    "continuity_anchor": "maps on the table",
+    "prompt_en": "a tall warden with a lined, tired face in a dark fur-trimmed coat sits behind a table covered in maps, questioning a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers, who stands with her callused hands folded; through the window, a grey-gold dragon watches the tower. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 12,
+    "block": 3,
+    "script_excerpt": "He held the edges in his one hand and she drew them together",
+    "function": "relationship",
+    "characters": [
+      "Maelle",
+      "Hallam",
+      "Veyra"
+    ],
+    "location": "citadel yard, afternoons",
+    "emotion": "warmth",
+    "continuity_anchor": "bone needle case",
+    "prompt_en": "Afternoon light. a weathered one-armed man in his fifties, empty sleeve pinned to his shoulder holds the edges of the torn wing of an old dragon with dull grey-gold scales, amber eyes, a scar across her jaw and a long torn left wing with his one hand while a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers stitches; a few riders stand at a respectful distance holding cups of steaming wine. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 13,
+    "block": 3,
+    "script_excerpt": "On the eighteenth day Veyra lowered her wing for her.",
+    "function": "reward",
+    "characters": [
+      "Maelle",
+      "Veyra"
+    ],
+    "location": "citadel yard",
+    "emotion": "trust",
+    "continuity_anchor": "long tear turned up",
+    "prompt_en": "an old dragon with dull grey-gold scales, amber eyes, a scar across her jaw and a long torn left wing lays her whole torn wing flat across the stones with the long tear turned up and closes her eyes; a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers kneels at the shoulder of the wing, needle ready. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 14,
+    "block": 3,
+    "script_excerpt": "The seal was the grey hawk of House Varrow.",
+    "function": "evidence",
+    "characters": [
+      "riders",
+      "courier"
+    ],
+    "location": "mountain pass at night",
+    "emotion": "betrayal discovered",
+    "continuity_anchor": "letter with grey hawk seal",
+    "prompt_en": "Night on a snowy mountain pass; riders with torches search a captured courier's saddle and pull out a sealed letter; close detail of a grey wax seal shaped like a hawk. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 15,
+    "block": 3,
+    "script_excerpt": "spread it wide against the stars, and held it there, trembling, and did not fly",
+    "function": "reward",
+    "characters": [
+      "Maelle",
+      "Veyra",
+      "Hallam"
+    ],
+    "location": "citadel yard at night",
+    "emotion": "hope",
+    "continuity_anchor": "finished seam",
+    "prompt_en": "Night, lantern light. Exhausted a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers with bleeding fingertips cuts the last thread as an old dragon with dull grey-gold scales, amber eyes, a scar across her jaw and a mended left wing crossed by a fine silk seam lifts and spreads the mended wing wide against a sky full of stars; a weathered one-armed man in his fifties, empty sleeve pinned to his shoulder asleep against the wall. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 16,
+    "block": 4,
+    "script_excerpt": "came Odrenne of Varrow, to renew the treaty in person",
+    "function": "action",
+    "characters": [
+      "Odrenne",
+      "warden",
+      "Maelle"
+    ],
+    "location": "the Cold Reach gate",
+    "emotion": "cold confrontation",
+    "continuity_anchor": "black carriage with grey hawk",
+    "prompt_en": "Clear cold morning at a great stone gateway on a mountain pass; a tall warden with a lined, tired face in a dark fur-trimmed coat waits at a stone table with an unrolled treaty; a cold, elegant woman in her fifties in grey silk in furs steps down from a black carriage painted with a grey hawk; a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers in a grey hostage cloak stands apart. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 17,
+    "block": 4,
+    "script_excerpt": "They came over the eastern ridge in a long dark line",
+    "function": "action",
+    "characters": [
+      "Castellan's riders"
+    ],
+    "location": "eastern ridge of the pass",
+    "emotion": "threat",
+    "continuity_anchor": "dark line of dragons",
+    "prompt_en": "More than twenty dark dragons with riders fly low and fast over a snowy eastern ridge in a long line toward a mountain citadel gate; a horn-blower on the wall. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 18,
+    "block": 4,
+    "script_excerpt": "walked her to the centre of the gateway, into the open",
+    "function": "reaction",
+    "characters": [
+      "Maelle"
+    ],
+    "location": "centre of the Cold Reach gate",
+    "emotion": "exposed, resolute",
+    "continuity_anchor": "grey hostage cloak",
+    "prompt_en": "a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers stands alone in the centre of an open stone gateway in the wind, cloak whipping, looking up at a sky filling with enemy dragons; a black carriage retreats behind her. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 19,
+    "block": 4,
+    "script_excerpt": "the gold light of the morning poured through the new seam like light through a church window",
+    "function": "action",
+    "characters": [
+      "Veyra"
+    ],
+    "location": "citadel yard",
+    "emotion": "awe",
+    "continuity_anchor": "the mended seam glowing",
+    "prompt_en": "an old dragon with dull grey-gold scales, amber eyes, a scar across her jaw and a mended left wing crossed by a fine silk seam rises and spreads both wings in a snowy yard, morning sun pouring through the silk seam like stained glass, snow lifting in a white wave as she takes off. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 20,
+    "block": 4,
+    "script_excerpt": "the dark line was scattering back over the eastern ridge",
+    "function": "reward",
+    "characters": [
+      "Veyra",
+      "Maelle"
+    ],
+    "location": "sky above the Cold Reach gate",
+    "emotion": "triumph",
+    "continuity_anchor": "mended wing",
+    "prompt_en": "an old dragon with dull grey-gold scales, amber eyes, a scar across her jaw and a mended left wing crossed by a fine silk seam circles above a stone gate roaring fire as enemy dragons scatter back over the ridge; far below, a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers looks up from the gateway. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 21,
+    "block": 4,
+    "script_excerpt": "My name is Maelle. I am the daughter of Aldren of Varrow.",
+    "function": "evidence",
+    "characters": [
+      "warden",
+      "Maelle",
+      "Odrenne"
+    ],
+    "location": "the Cold Reach gate",
+    "emotion": "vindication",
+    "continuity_anchor": "Odrenne's letter",
+    "prompt_en": "a tall warden with a lined, tired face in a dark fur-trimmed coat holds an opened letter before a crowd of riders; a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers stands straight and speaks, face calm; a cold, elegant woman in her fifties in grey silk stands frozen beside her carriage; a grey-gold dragon circles overhead. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 22,
+    "block": 5,
+    "script_excerpt": "Two riders stepped forward and took the reins of the black carriage.",
+    "function": "action",
+    "characters": [
+      "Odrenne"
+    ],
+    "location": "the Cold Reach gate",
+    "emotion": "justice",
+    "continuity_anchor": "black carriage",
+    "prompt_en": "Two riders take the reins of a black carriage painted with a grey hawk while a cold, elegant woman in her fifties in grey silk stands still, her smile fading. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 23,
+    "block": 5,
+    "script_excerpt": "they drew their gloves off and held up their bare hands",
+    "function": "reward",
+    "characters": [
+      "Maelle",
+      "Hallam",
+      "riders"
+    ],
+    "location": "wall of the Cold Reach gate",
+    "emotion": "honour",
+    "continuity_anchor": "bare raised hands",
+    "prompt_en": "A line of riders on a stone wall raise their bare hands in salute; at the end of the line a weathered one-armed man in his fifties, empty sleeve pinned to his shoulder raises his single hand highest; a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers watches from the gateway, moved. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 24,
+    "block": 5,
+    "script_excerpt": "Maelle put her palm flat against the seam, and the old dragon closed her eyes.",
+    "function": "relationship",
+    "characters": [
+      "Maelle",
+      "Veyra"
+    ],
+    "location": "the Cold Reach gate",
+    "emotion": "belonging",
+    "continuity_anchor": "palm on the seam",
+    "prompt_en": "an old dragon with dull grey-gold scales, amber eyes, a scar across her jaw and a mended left wing crossed by a fine silk seam lands gently in the gateway; a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers rests her palm flat against the silk seam of the folded wing; the dragon's eyes are closed. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 25,
+    "block": 5,
+    "script_excerpt": "She laid him beneath a stone above the gate, where the wind was clean",
+    "function": "world",
+    "characters": [
+      "Maelle"
+    ],
+    "location": "cliff above the gate in spring",
+    "emotion": "peace",
+    "continuity_anchor": "father's grave stone",
+    "prompt_en": "Spring on a mountain cliff above a stone citadel gate; a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers kneels by a simple new grave stone looking south over a long valley; melting snow, clear light. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  },
+  {
+    "scene": 26,
+    "block": 5,
+    "script_excerpt": "Maelle, she would say. Just Maelle. And it was enough.",
+    "function": "reward",
+    "characters": [
+      "Maelle",
+      "Veyra",
+      "young riders"
+    ],
+    "location": "fire by the gate at evening",
+    "emotion": "quiet fulfilment",
+    "continuity_anchor": "bone needle case",
+    "prompt_en": "Evening, a small fire by a stone gate; a pale, slight woman of 26 with dark auburn hair in a loose knot, grey eyes and needle-callused fingers sits with mending in her lap, a small carved bone needle case open beside her, two young riders practising stitches on scrap membrane; an old dragon with dull grey-gold scales, amber eyes, a scar across her jaw and a mended left wing crossed by a fine silk seam sleeps curled in the snow beside her. Warm firelight against cold blue dusk. Cinematic dark fantasy illustration, painterly, 16:9, soft volumetric light, calm and melancholic mood.",
+    "negative_prompt": "no text, no logo, no watermark"
+  }
+]

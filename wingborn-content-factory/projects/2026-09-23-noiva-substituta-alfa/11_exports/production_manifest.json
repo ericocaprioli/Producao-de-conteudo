@@ -1,0 +1,41 @@
+{
+  "project_id": "2026-09-23-noiva-substituta-alfa",
+  "mode": "reference_adaptation",
+  "language": "en",
+  "blocks": 5,
+  "characters_per_block": [
+    3421,
+    3438,
+    3431,
+    3479,
+    3329
+  ],
+  "estimated_duration_minutes": 19.0,
+  "selected_title": "Her Stepmother Traded Her Life for a Mountain Pass — But the Dragon She Healed Remembered Her Name",
+  "reference_url": "https://www.youtube.com/watch?v=RU9Zkmobs9s",
+  "approved_gates": [
+    "direction",
+    "title",
+    "character_bible",
+    "packaging",
+    "script",
+    "retention",
+    "scenes",
+    "exports"
+  ],
+  "generated_files": [
+    "block-01.txt",
+    "block-02.txt",
+    "block-03.txt",
+    "block-04.txt",
+    "block-05.txt",
+    "script_full.txt",
+    "tts_plain_text.txt",
+    "image-prompts.json",
+    "image-prompts-en.txt",
+    "thumbnail_prompt_en.txt",
+    "youtube_description.txt",
+    "tags.txt",
+    "production_manifest.json"
+  ]
+}
